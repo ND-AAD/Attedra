@@ -1,0 +1,181 @@
+{
+  "id": "T03_07_required_structured_value_needs_complete_value",
+  "family": "T03",
+  "rules": [
+    "6.4.2",
+    "5.4.4",
+    "6.4.1",
+    "6.5.1",
+    "6.5.3",
+    "5.5.1"
+  ],
+  "description": "A required structured value is a complete value: a height-only answer does not meet a required width and height, and a later complete answer in a different key order does, without backdating.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-dims",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "est-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "est-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-dims",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-dims",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0602",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-dims|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "dimensions": {
+            "standing": "outstanding"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0603",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "height": 2100,
+          "width": 900
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-dims|a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "dimensions": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-0603|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-dims|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "standing": "outstanding"
+          }
+        }
+      }
+    }
+  ]
+}

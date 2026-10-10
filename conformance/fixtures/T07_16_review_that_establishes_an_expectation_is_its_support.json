@@ -1,0 +1,353 @@
+{
+  "id": "T07_16_review_that_establishes_an_expectation_is_its_support",
+  "family": "T07",
+  "rules": [
+    "6.3.1",
+    "7.4.1",
+    "7.4.2",
+    "7.4.3",
+    "6.7.2",
+    "6.7.9",
+    "9.5.2"
+  ],
+  "description": "A change_required review of the A-601/specification finish conflict, carrying @establishes, is the expectation's support. The review does not end the conflict story. Withdrawing the review returns the story to unreviewed and ends the support, so the unfulfilled expectation reads withdrawn.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification",
+          "label": "Specification 09 91"
+        },
+        {
+          "id": "project",
+          "kind": "project",
+          "label": "Project"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "spec-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1",
+          "kind": "story",
+          "label": "Finish: A-601 vs specification"
+        },
+        {
+          "id": "story-1-det",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "rev-1",
+          "kind": "review"
+        },
+        {
+          "id": "rev-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "spec-0601",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1-det",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "spec-0601",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T08:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rev-1",
+      "context": "rev-1-at",
+      "source": "rev-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1-det",
+            "source": "story-1"
+          }
+        ],
+        "@outcome": "change_required",
+        "@establishes": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "spec-0601",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T08:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "rationale": "A-601 to show stain, per the specification."
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "rev-1|rev-1-at|rev-1",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|a601-0601|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "acts": [
+          "rev-1|rev-1-at|rev-1"
+        ],
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "review": "reviewed",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "rev-1",
+            "context": "rev-1-at",
+            "source": "rev-1"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "review": "unreviewed",
+          "disagreement": "disagreeing"
+        }
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 7: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

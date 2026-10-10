@@ -1,0 +1,139 @@
+{
+  "id": "T09_26_fresh_is_optional_and_defaults_to_false",
+  "family": "T09",
+  "rules": [
+    "4.1.1",
+    "6.2.2",
+    "10.2.3",
+    "6.5.1"
+  ],
+  "description": "An expectation context whose definition omits fresh is valid and is read as fresh false: existing applicable evidence fulfills the expectation at its establishment. The definition is returned as written, without an added fresh member.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-nofresh",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              }
+            }
+          }
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-nofresh"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "expectation",
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-30-07:00"
+            },
+            "fresh": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-nofresh",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-nofresh",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-nofresh|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0601|a-601",
+            "qualifying_moment": "2026-06-02T10:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    }
+  ]
+}

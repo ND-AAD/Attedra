@@ -1,0 +1,332 @@
+{
+  "id": "T12_13_review_and_ignore_effective_not_before_occurrence",
+  "family": "T12",
+  "rules": [
+    "10.2.7",
+    "8.4.1",
+    "9.5.2"
+  ],
+  "description": "A review or an ignore whose @effective is earlier than its context's instant is rejected under 10.2.7. An @effective equal to the occurrence time is accepted (the bound is inclusive).",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-1",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@effective": "2026-06-02T10:00-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "ign-1",
+      "context": "ign-1-at",
+      "source": "ign-1",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@effective": "2026-06-03T10:59-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rv-1|rv-1-at|rv-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@effective": "2026-06-03T10:00-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-03T10:00-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-03T09:59-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "review": "unreviewed"
+        }
+      }
+    }
+  ]
+}

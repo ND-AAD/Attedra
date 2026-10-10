@@ -1,0 +1,159 @@
+{
+  "id": "T11_15_changes_between_two_assertions_use_carry_forward_order",
+  "family": "T11",
+  "rules": [
+    "9.4.1",
+    "5.6.2",
+    "7.1.1",
+    "4.3.2",
+    "5.2.1"
+  ],
+  "description": "The changes read can compare two of a source's Assertions: each side is the source's position assembled from its statements that precede or are that Assertion in carry-forward order. Two milestones of one schedule published at the same instant are separated by their ordinals, which the frame form cannot express. The result has no from frame, and sides given in reverse order return reversed_comparison.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "m-50",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "m-100",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "m-50",
+      "context": "m-50",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02T10:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m-100",
+      "context": "m-100",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02T10:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "m-50",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "m-100",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from_assertion": "door-101|m-50|a-601",
+        "to_assertion": "door-101|m-100|a-601"
+      },
+      "expect": {
+        "from": "~absent",
+        "interpretation": null,
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|m-50|a-601",
+            "new": "door-101|m-100|a-601"
+          },
+          {
+            "property": "hardware",
+            "transition": "unchanged",
+            "prior": "door-101|m-50|a-601",
+            "new": "door-101|m-50|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from_assertion": "door-101|m-100|a-601",
+        "to_assertion": "door-101|m-50|a-601"
+      },
+      "expect": {
+        "limitation": "reversed_comparison"
+      }
+    }
+  ]
+}

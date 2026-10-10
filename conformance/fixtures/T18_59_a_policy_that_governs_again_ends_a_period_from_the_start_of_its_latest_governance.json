@@ -1,0 +1,573 @@
+{
+  "id": "T18_59_a_policy_that_governs_again_ends_a_period_from_the_start_of_its_latest_governance",
+  "family": "T18",
+  "rules": [
+    "7.7.2",
+    "7.7.3",
+    "7.6.14",
+    "7.7.5",
+    "9.5.1",
+    "9.5.8"
+  ],
+  "description": "A change story governed from the start by the fixture policy has a directive whose lacquer requirement is outstanding. From Monday 8 June an application policy the reference does not implement governs it, and no end act is recorded for that policy, so the story stays open. The requirement is fulfilled on Tuesday: the fixture policy, which governed the period before Monday, records its own end act, directive_closed at Tuesday, but it does not govern then and the story stays open. When the fixture policy is adopted again from Wednesday, its ending had already held, so the period ends at Wednesday, the start of its latest uninterrupted governance, not at Tuesday.",
+  "note": "7.6.14: the ending's \"time is the later of that act's `at` and the instant from which that policy has governed the unit without interruption up to that ending (7.7.3)\". 7.7.3: \"Each end act gives its own policy's ending of the period, and its content does not depend on when that policy governs (7.6.5).\" README section 5, Ending policies: the reference records the fixture policy's end acts \"for every period it governs at some instant\", and \"when the policy begins to govern a period after that ending, the period ends at the start of its governance (7.7.3), which reads report and the act does not change.\"",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "minutes",
+          "kind": "minutes"
+        },
+        {
+          "id": "chg-1",
+          "kind": "story"
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "adopt-1",
+          "kind": "reconciliation"
+        },
+        {
+          "id": "adopt-2",
+          "kind": "reconciliation"
+        },
+        {
+          "id": "ev-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "adopt-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue9",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-09T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "adopt-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-lacquer",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-tue|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-1",
+      "context": "chg-1/d1",
+      "source": "chg-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-tue",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-tue",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null,
+          "policy": "fixture-change-closes-with-directive",
+          "policy_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-1|chg-1/d1|chg-1",
+        "generated": [],
+        "transition_acts": [
+          "chg-1|chg-1/b1|chg-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-lacquer",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-lacquer|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "minutes",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "chg-1",
+            "context": "chg-1/d1",
+            "source": "chg-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-tue",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-05T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "change_required",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@establishes": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-lacquer",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "rv-1|rv-1-at|minutes",
+        "generated": [],
+        "transition_acts": [
+          "chg-1|chg-1/e1|chg-1",
+          "chg-1|chg-1/exp:door-101/e-lacquer/a-601/finish/b1|chg-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "adopt-1",
+      "context": "adopt-1-at",
+      "source": "adopt-1",
+      "values": {
+        "@action": "reconcile",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "chg-1",
+            "context": "chg-1/d1",
+            "source": "chg-1"
+          }
+        ],
+        "@outcome": "adopt_policy",
+        "@basis": [],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-08T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null,
+          "policy": "app-holds-open",
+          "policy_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "adopt-1|adopt-1-at|adopt-1",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue9",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-tue9|a-601",
+        "generated": [],
+        "transition_acts": [
+          "chg-1|chg-1/e2|chg-1",
+          "chg-1|chg-1/exp:door-101/e-lacquer/a-601/finish/e1|chg-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-09T12:00-07:00"
+        }
+      },
+      "expect": {
+        "policy": {
+          "name": "app-holds-open",
+          "version": "1"
+        },
+        "standing": {
+          "open": "open",
+          "review": "reviewed"
+        },
+        "ending": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "adopt-2",
+      "context": "adopt-2-at",
+      "source": "adopt-2",
+      "values": {
+        "@action": "reconcile",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "chg-1",
+            "context": "chg-1/d1",
+            "source": "chg-1"
+          }
+        ],
+        "@outcome": "adopt_policy",
+        "@basis": [],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-10T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null,
+          "policy": "fixture-change-closes-with-directive",
+          "policy_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "adopt-2|adopt-2-at|adopt-2",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-10T12:00-07:00"
+        }
+      },
+      "expect": {
+        "policy": {
+          "name": "fixture-change-closes-with-directive",
+          "version": "1"
+        },
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "directive_closed",
+          "record": "door-101|ev-tue9|a-601",
+          "at": "2026-06-10T09:00-07:00"
+        },
+        "baseline_ending": {
+          "kind": "review",
+          "record": "rv-1|rv-1-at|minutes",
+          "at": "2026-06-05T10:00-07:00"
+        },
+        "periods": [
+          {
+            "begin": {
+              "act": "chg-1|chg-1/b1|chg-1"
+            },
+            "end": {
+              "act": "chg-1|chg-1/e1|chg-1"
+            },
+            "policy_end": {
+              "act": "chg-1|chg-1/e2|chg-1",
+              "at": "2026-06-10T09:00-07:00",
+              "record": "door-101|ev-tue9|a-601",
+              "cause": "directive_closed",
+              "policy": {
+                "name": "fixture-change-closes-with-directive",
+                "version": "1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-09T12:00-07:00"
+        }
+      },
+      "expect": {
+        "policy": {
+          "name": "app-holds-open",
+          "version": "1"
+        },
+        "standing": {
+          "open": "open"
+        },
+        "ending": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-1|chg-1/e2|chg-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-06-09T09:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-tue9",
+              "source": "a-601",
+              "property": "~absent"
+            },
+            "cause": "directive_closed",
+            "policy": {
+              "name": "fixture-change-closes-with-directive",
+              "version": "1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-09T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-10T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

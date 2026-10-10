@@ -1,0 +1,156 @@
+{
+  "id": "T09_32_unordered_evidence_and_establishment_qualify_at_the_later_ending_instant",
+  "family": "T09",
+  "rules": [
+    "6.5.1",
+    "4.2.5",
+    "4.5.3",
+    "6.2.2",
+    "4.6.1"
+  ],
+  "description": "For a non-fresh expectation established at 10:00 on 2 June, A-601 evidence dated only 2 June is unordered with the establishment, but every condition holds under either order, so the property is fulfilled, not ambiguous, at the instant whose interval ends later: the date. A cutoff at 12:00 that day is itself unordered with that date, so there the standing is ambiguous.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-nf",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-dated-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-nf",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-nf",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-dated-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-nf|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-dated-0602|a-601",
+            "qualifying_moment": "2026-06-02-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-nf|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "qualifying_moment": "2026-06-02-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-nf|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "ambiguous"
+          }
+        }
+      }
+    }
+  ]
+}

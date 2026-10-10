@@ -1,0 +1,211 @@
+{
+  "id": "T09_28_standing_carries_timing_interpretation_deadline_and_suggested",
+  "family": "T09",
+  "rules": [
+    "9.3.1",
+    "6.6.1",
+    "6.4.1",
+    "6.4.5",
+    "6.6.2",
+    "5.5.4",
+    "6.2.1"
+  ],
+  "description": "Every property standing carries the expectation context's timing as recorded and the interpretation applied (null, or the frame's interpretation); a by standing carries the resolved deadline; an information request with a suggestion carries the suggested value. Overall is open while a property is outstanding and fulfilled once every property is.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-mix",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-05-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0604",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-mix",
+      "source": "a-601",
+      "values": {
+        "fire_rating": {
+          "@ask": true,
+          "@suggested": 90
+        },
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-mix",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 60
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-mix|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "overall": "open",
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "timeliness": "on_time",
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-05-07:00"
+            },
+            "interpretation": null,
+            "deadline": "2026-06-05-07:00",
+            "suggested": 90
+          },
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-05-07:00"
+            },
+            "interpretation": null,
+            "deadline": "2026-06-05-07:00",
+            "suggested": "~absent",
+            "source_current": {
+              "classification": "never_asserted"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0604",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-mix|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "overall": "fulfilled",
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled"
+          },
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0604|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-mix|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "frame": {
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        },
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "interpretation": "fixture-fire-rating"
+          }
+        }
+      }
+    }
+  ]
+}

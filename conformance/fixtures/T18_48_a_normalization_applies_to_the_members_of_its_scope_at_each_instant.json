@@ -1,0 +1,636 @@
+{
+  "id": "T18_48_a_normalization_applies_to_the_members_of_its_scope_at_each_instant",
+  "family": "T18",
+  "rules": [
+    "7.3.8",
+    "2.1.5",
+    "4.6.1",
+    "7.2.8",
+    "7.6.4",
+    "7.6.9",
+    "8.6.4",
+    "9.10.1"
+  ],
+  "description": "A normalization of the project names the fixture fire-rating interpretation from Wednesday. Door 101 is a member through building A, and its fire-rating story ends on Wednesday; Door 120 sits in an annex outside the project, and its story is untouched. A read scoped to building A applies the project's normalization, even though the project is not in that scope: its frame resolves to the fire-rating interpretation and names the normalization. A read scoped to the annex resolves to literal comparison, and an explicit list naming both doors resolves to an ambiguous interpretation in force. When the annex is connected to the project on Friday, Door 120 comes under the normalization: the Connection write records its story's end act at Friday, cause normalization. When Door 101 is disconnected from building A on Saturday, it leaves the normalized scope and its sides differ literally again: the disconnect act's write records a related story whose beginning cites the normalization in force until then.",
+  "note": "2.1.5: \"a read applies ... every normalization that applies to an in-scope Item, even when the scope Item it targets is not itself in the read's scope (7.3.8).\" 7.3.8: \"A normalization *applies to* an Item at an instant when the Item is a member of the normalization's scope at that instant (2.1.5, with the Connections active then)\"; T is \"its effective time, or a later instant at which the subject comes under it, by joining its scope\". 7.6.4: \"where none is in force from then because the subject left the normalized scope, the normalization in force until then.\" 7.2.8: maintenance applies to \"a Connection created, disconnected, reconnected or corrected that changes which normalizations apply to the subject\". README section 2: a created Connection that changes which normalizations apply \"also carries `generated` and `transition_acts`\"; section 5, Frame: for a list, \"ambiguous when they differ\", with `normalization` `{\"ambiguous\": [refs]}`.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "building-a",
+          "kind": "building"
+        },
+        {
+          "id": "annex",
+          "kind": "building"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-120",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "norm-1",
+          "kind": "normalization"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "story-20",
+          "kind": "story"
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-20/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-wed",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-06T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "building-a",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "building-a",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "annex",
+      "to": "door-120",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-spec|spec-09-91",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "fire_rating"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "fire_rating"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "fire_rating"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-1|story-1/d1|story-1",
+        "generated": [],
+        "transition_acts": [
+          "story-1|story-1/b1|story-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-120",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-120|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-120",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-120|ev-mon-spec|spec-09-91",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-20",
+      "context": "story-20/d1",
+      "source": "story-20",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-120"
+          },
+          "property": "fire_rating"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-120",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "fire_rating"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-120",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "fire_rating"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "annex"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-20|story-20/d1|story-20",
+        "generated": [],
+        "transition_acts": [
+          "story-20|story-20/b1|story-20"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "norm-1",
+      "context": "meeting-wed",
+      "source": "norm-1",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "norm-1|meeting-wed|norm-1",
+        "generated": [],
+        "transition_acts": [
+          "story-1|story-1/e1|story-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "building-a"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "frame": {
+          "scope": "building-a",
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1",
+          "normalization": "norm-1|meeting-wed|norm-1"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00",
+          "scope": "building-a"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "conflict",
+            "unit": "story-1",
+            "interpretation": null
+          }
+        ],
+        "counts": {
+          "conflict": 1,
+          "change": 0,
+          "expectation": 0
+        },
+        "frame": {
+          "interpretation": null,
+          "normalization": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "annex"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-20"
+        ],
+        "count": 1,
+        "frame": {
+          "scope": "annex",
+          "interpretation": null,
+          "interpretation_version": null,
+          "normalization": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-20",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        },
+        "interpretation": null,
+        "normalization": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": [
+            "door-101",
+            "door-120"
+          ]
+        }
+      },
+      "expect": {
+        "frame": {
+          "interpretation": null,
+          "interpretation_version": null,
+          "normalization": {
+            "ambiguous": [
+              "norm-1|meeting-wed|norm-1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "annex",
+      "at": "2026-06-05T10:00-07:00",
+      "expect": {
+        "status": "created",
+        "generated": [],
+        "transition_acts": [
+          "story-20|story-20/e1|story-20"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-20|story-20/e1|story-20"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-06-05T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "norm-1",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-20",
+        "frame": {
+          "cutoff": "2026-06-05T12:00-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "ended",
+          "disagreement": "aligned",
+          "matched_by": "norm-1|meeting-wed|norm-1"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|norm-1",
+          "at": "2026-06-05T10:00-07:00"
+        },
+        "interpretation": "fixture-fire-rating",
+        "normalization": "norm-1|meeting-wed|norm-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-20",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        },
+        "ending": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "building-a",
+            "to": "door-101"
+          }
+        ],
+        "reason": "door moved"
+      },
+      "expect": {
+        "status": "inserted",
+        "generated": [
+          "story-1+1|story-1+1/d1|story-1+1"
+        ],
+        "transition_acts": [
+          "story-1+1|story-1+1/b1|story-1+1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-1+1|story-1+1/b1|story-1+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-06-06T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "norm-1",
+              "property": "~absent"
+            },
+            "cause": "disagreement"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1+1",
+        "frame": {
+          "cutoff": "2026-06-07-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        },
+        "interpretation": null,
+        "normalization": null,
+        "related": [
+          "story-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-07-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|norm-1",
+          "at": "2026-06-03T10:00-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

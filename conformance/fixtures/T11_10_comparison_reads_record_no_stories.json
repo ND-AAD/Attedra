@@ -1,0 +1,237 @@
+{
+  "id": "T11_10_comparison_reads_record_no_stories",
+  "family": "T11",
+  "rules": [
+    "9.4.3",
+    "7.2.8"
+  ],
+  "description": "Conflict and change reads compute their answers without recording stories: afterwards no story is open or pending review.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "cons-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "c-201",
+          "kind": "schedule",
+          "label": "Consultant door schedule"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Architect door schedule"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "cons-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "cons-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "cons-50cd",
+      "context": "cons-50cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-12T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cons-100cd",
+      "context": "cons-100cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-14T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-50cd",
+      "source": "c-201",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-100cd",
+      "source": "c-201",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-14T18:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "stain",
+                "origin": "door-101|arch-100dd|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": "lacquer",
+                "origin": "door-101|cons-100cd|c-201"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "c-201",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-05-12T18:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-05-14T18:00-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|cons-50cd|c-201",
+            "new": "door-101|cons-100cd|c-201"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "stories": [],
+        "count": 0
+      }
+    }
+  ]
+}

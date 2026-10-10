@@ -1,0 +1,381 @@
+{
+  "id": "T12_12_review_and_ignore_target_validation",
+  "family": "T12",
+  "rules": [
+    "10.2.6",
+    "10.2.2",
+    "9.5.6",
+    "7.4.1",
+    "2.4.1"
+  ],
+  "description": "A review or an ignore with an empty target list is rejected under 10.2.6; a review whose target does not resolve, or whose @targets is a single reference instead of a list, is rejected under 10.2.2. Each rejected write leaves the store unchanged.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-x",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-x",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-x",
+      "context": "rv-x-at",
+      "source": "rv-x",
+      "values": {
+        "@action": "review",
+        "@targets": [],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "ign-x",
+      "context": "ign-x-at",
+      "source": "ign-x",
+      "values": {
+        "@action": "ignore",
+        "@targets": [],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "rv-x",
+      "context": "rv-x-at",
+      "source": "rv-x",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d9",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "rv-x",
+      "context": "rv-x-at",
+      "source": "rv-x",
+      "values": {
+        "@action": "review",
+        "@targets": {
+          "@ref": "assertion",
+          "item": "story-1",
+          "context": "story-1/d1",
+          "source": "story-1"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rv-x|rv-x-at|rv-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "ign-x|ign-x-at|ign-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "acts": [],
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "stories": [
+          "story-1"
+        ],
+        "count": 1,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": "ignore"
+      }
+    }
+  ]
+}

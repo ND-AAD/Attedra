@@ -1,0 +1,171 @@
+{
+  "id": "T09_24_required_structured_value_must_be_complete",
+  "family": "T09",
+  "rules": [
+    "6.4.2",
+    "5.4.1",
+    "5.5.1"
+  ],
+  "description": "A required dimensions {width 900, height 2100} is not met by {height 2100}. It is met by a later complete value whose keys are in a different order.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-dim",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-dim",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-dim",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-dim|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": {
+                "height": 2100
+              },
+              "origin": "door-101|a601-0602|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "height": 2100,
+          "width": 900
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-dim|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0603|a-601",
+            "qualifying_moment": "2026-06-03T09:00-07:00"
+          }
+        }
+      }
+    }
+  ]
+}

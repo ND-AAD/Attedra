@@ -1,0 +1,222 @@
+{
+  "id": "T06_11_bulk_withdrawal_of_expectations_on_two_items",
+  "family": "T06",
+  "rules": [
+    "6.7.3",
+    "6.7.2",
+    "6.1.4",
+    "9.3.2",
+    "12.6"
+  ],
+  "description": "One act establishes finish requirements on Door 101 and Door 102, and one withdrawal lists both expectations as exact targets and ends both.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "door-102",
+          "kind": "door",
+          "label": "Door 102"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fin",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          "~unordered",
+          {
+            "expectation": "door-101|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          },
+          {
+            "expectation": "door-102|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    }
+  ]
+}

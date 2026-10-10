@@ -1,0 +1,193 @@
+{
+  "id": "T10_13_later_distribution_of_a_communication_issuance",
+  "family": "T10",
+  "rules": [
+    "4.4.1",
+    "4.4.2",
+    "9.7.1",
+    "2.4.7"
+  ],
+  "description": "A transmittal redistributes A-601's 14 May issuance (named in @issuance) to the MEP consultant on 20 May. The distribution history lists both dated distributions of that issuance; the consultant is covered from 20 May; the distribution's reserved members are not properties.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "consultant-mep",
+          "kind": "party"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "transmittal-22",
+          "kind": "transmittal"
+        },
+        {
+          "id": "a601-issued-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "dist-0520",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "dist-0520",
+      "source": "transmittal-22",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant-mep"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "a601-issued-0514"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "distribution",
+      "args": {
+        "item": "a-601"
+      },
+      "expect": {
+        "distributions": [
+          {
+            "record": "a-601|a601-issued-0514|a-601",
+            "at": "2026-05-14T09:00-07:00",
+            "issuance": "a601-issued-0514",
+            "recipients": [
+              "contractor"
+            ]
+          },
+          {
+            "record": "a-601|dist-0520|transmittal-22",
+            "at": "2026-05-20T10:00-07:00",
+            "issuance": "a601-issued-0514",
+            "recipients": [
+              "consultant-mep"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-18-07:00",
+          "perspective": "consultant-mep"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-21-07:00",
+          "perspective": "consultant-mep"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|a601-issued-0514|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "a-601",
+        "source": "transmittal-22",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "@distribution": "~absent",
+          "@issuance": "~absent"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "id": "T01_08_exact_reference_resolves_only_that_triple",
+  "family": "T01",
+  "rules": [
+    "2.4.1",
+    "2.4.5",
+    "9.2.1",
+    "8.5.2",
+    "8.5.3"
+  ],
+  "description": "An exact reference finds only its own triple, never a value-equal record of another source; a string that resembles an identifier is not a reference and creates no dependency.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "cites": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0514",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0515",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain",
+        "note": "door-101|ev-0514|a-601",
+        "see": "door-101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain"
+        },
+        "dependents": [
+          "door-102|ev-0515|a-601"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|spec-0991"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain"
+        },
+        "dependents": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0515|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-102|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-102|ev-0515|spec-0991"
+      },
+      "expect": {
+        "status": "found",
+        "dependents": []
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-0514|a-601",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "door-102|ev-0515|a-601"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+{
+  "id": "T08_12_connection_reachability_confers_no_qualification",
+  "family": "T08",
+  "rules": [
+    "3.3.5",
+    "2.1.5",
+    "2.4.6",
+    "6.1.3"
+  ],
+  "description": "An email connected under the architect but produced by the contractor does not qualify for the architect requirement; an architect-produced email with no Connection does.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "label": "Architect, any communication",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "email-90",
+          "kind": "email"
+        },
+        {
+          "id": "email-91",
+          "kind": "email"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-90-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-91-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "architect",
+      "to": "email-90",
+      "at": "2026-06-01T08:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-90",
+      "context": "email-90-sent",
+      "source": "email-90",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "contractor"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-90-sent",
+      "source": "email-90",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-91",
+      "context": "email-91-sent",
+      "source": "email-91",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-91-sent",
+      "source": "email-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|email-91-sent|email-91",
+            "qualifying_moment": "2026-06-04T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "architect",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "email-90"
+        ],
+        "incoming": []
+      }
+    }
+  ]
+}

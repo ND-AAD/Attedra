@@ -1,0 +1,183 @@
+{
+  "id": "T06_13_support_withdrawn_before_it_takes_effect_leaves_not_in_force",
+  "family": "T06",
+  "rules": [
+    "6.6.1",
+    "6.3.3",
+    "6.7.2",
+    "8.4.1",
+    "9.3.2"
+  ],
+  "description": "E's only support occurs on 1 June with @effective 10 June and is withdrawn on 3 June. E was never in force: each property reads not_in_force, the withdrawal is listed, and E is never open work.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-10T09:00-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "not_in_force"
+          },
+          "finish": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "d1",
+            "context": "d1-at",
+            "source": "d1",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fr",
+              "source": "a-601"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-12T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "not_in_force",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          },
+          "finish": {
+            "standing": "not_in_force",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-12T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    }
+  ]
+}

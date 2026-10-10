@@ -1,0 +1,208 @@
+{
+  "id": "T10_05_equal_instants_keep_distinct_contexts_and_after_orders_them",
+  "family": "T10",
+  "rules": [
+    "4.5.1",
+    "4.5.2",
+    "4.5.3",
+    "5.6.1",
+    "2.3.3",
+    "I-5",
+    "12.1"
+  ],
+  "description": "Two distinct events at the same instant are valid and keep distinct contexts. Without sequence evidence the source's current value is ambiguous (recorded_at does not break the tie); an @after reference orders the tied records in whichever direction it states.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "ev-a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "recorded_at": "2026-05-13T10:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-05-13T11:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-102",
+          "context": "ev-a",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-103",
+          "context": "ev-b",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "candidates": [
+              "~unordered",
+              {
+                "value": "paint",
+                "origin": "door-101|ev-a|a-601"
+              },
+              {
+                "value": "stain",
+                "origin": "door-101|ev-b|a-601"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-102|ev-b|a-601"
+          },
+          "@after": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-103",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-103|ev-a|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-102|ev-b|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain",
+          "@after": {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "ev-a",
+            "source": "a-601"
+          }
+        }
+      }
+    }
+  ]
+}

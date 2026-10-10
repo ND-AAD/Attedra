@@ -1,0 +1,432 @@
+{
+  "id": "T13_22_a_normalization_ends_a_story_from_its_effective_time",
+  "family": "T13",
+  "rules": [
+    "7.3.8",
+    "7.2.4",
+    "7.2.6",
+    "7.6.5",
+    "8.4.1",
+    "5.5.5",
+    "7.5.1",
+    "9.5.1",
+    "9.8.1",
+    "12.13"
+  ],
+  "description": "A fire-rating story is recorded under the literal comparison (\"60 min\" against \"1.5 h\"); Wednesday's \"90 min\" still differs literally and continues it. A Friday normalization of the project names the fixture fire-rating interpretation (version 1). It is an event in the work: the story ends on Friday, cause normalization, with the normalization as its ending record, while Tuesday and Thursday frames still show it open and disagreeing. A Thursday reader naming the interpretation is told the sides match, without changing the standing. The detections keep their recorded literal frame, and the normalization is not among the story's acts.",
+  "note": "7.3.8: \"It is an event in the work, not a recorded interpretation: it applies from its effective time, and the record's account before then is never rewritten by it.\" 7.2.6(d): a conflict story ends at \"*normalization*: the interpretation in force for the subject changes while the sides disagree (7.3.8), and under the interpretation in force from then their applicable values are equal, at the instant of that change.\" So the story ends at Friday's normalization, not on Wednesday, and the Thursday frame reads it open.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "reinterp-1",
+          "kind": "reconciliation"
+        },
+        {
+          "id": "reinterp-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "60 min"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "fire_rating": "1.5 h"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "fire_rating"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "fire_rating"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "fire_rating"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-wed-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-wed-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "detections": [
+          "story-1|story-1/d1|story-1",
+          "story-1|story-1/d2|story-1"
+        ],
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "reinterp-1",
+      "context": "reinterp-1-at",
+      "source": "reinterp-1",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-05.pdf",
+            "edition": "issued 2026-06-05"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "reinterp-1|reinterp-1-at|reinterp-1",
+        "generated": [],
+        "transition_acts": [
+          "story-1|story-1/e1|story-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "acts": [],
+        "interval": {
+          "start": "2026-06-01T11:00-07:00",
+          "end": "2026-06-05T10:00-07:00"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "reinterp-1|reinterp-1-at|reinterp-1",
+          "at": "2026-06-05T10:00-07:00",
+          "matched_by": "~absent"
+        },
+        "standing": {
+          "open": "ended",
+          "disagreement": "aligned",
+          "matched_by": "reinterp-1|reinterp-1-at|reinterp-1"
+        },
+        "match_under_read_interpretation": "~absent",
+        "interpretation": "fixture-fire-rating",
+        "normalization": "reinterp-1|reinterp-1-at|reinterp-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        },
+        "interpretation": null,
+        "normalization": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "open"
+        },
+        "match_under_read_interpretation": true
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1"
+        ],
+        "count": 1,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-1|story-1/d1|story-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@frame": {
+            "interpretation": null,
+            "interpretation_version": null
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "reinterp-1|reinterp-1-at|reinterp-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "reinterpret",
+          "@interpretation": {
+            "name": "fixture-fire-rating",
+            "version": "1"
+          }
+        },
+        "event_time": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-1|story-1/e1|story-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "story-1",
+              "context": "story-1/b1",
+              "source": "story-1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-05T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "reinterp-1",
+              "context": "reinterp-1-at",
+              "source": "reinterp-1",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null
+          }
+        }
+      }
+    }
+  ]
+}

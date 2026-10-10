@@ -1,0 +1,346 @@
+{
+  "id": "T18_16_milestone_publication_fulfils_an_at_milestone_expectation",
+  "family": "T18",
+  "rules": [
+    "7.6.9",
+    "7.6.5",
+    "7.6.3",
+    "6.2.1",
+    "6.5.1",
+    "4.4.1",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7"
+  ],
+  "description": "An expectation that A-601 show stain at the architect's 100% CD is in force from its support and not yet due while the milestone is planned, so what remains lists it as upcoming and does not count it. A-601's statement at the milestone, then the milestone's publication, fulfil it at the publication instant: after the publication the property's period has an end act, cause fulfillment, on time, citing the statement at the @published instant, and nothing remains.",
+  "note": "6.5.5: evidence that has no occurrence time, \"such as a statement at a milestone that is not yet published, satisfies no instant while it has none. Until then the property's standing is derived without it, `not_yet_due` or `outstanding` by its timing scope (6.2.1), and no ending is recorded for it (7.6.6). Once the milestone's publication gives the evidence an occurrence time, it qualifies under 6.5.1, and the property is fulfilled at its qualifying moment.\" So the statement's write records nothing, step 8 reads no ending, the publication's write records the end act, and that act has no revision.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "issue-schedule"
+        },
+        {
+          "id": "arch-issue-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "e-at",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-at",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-at|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-1-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-at",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-1|sup-1-at|sup-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-at|a-601#finish",
+            "began": {
+              "act": "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1",
+              "at": "2026-06-01T10:00-07:00",
+              "record": "sup-1|sup-1-at|sup-1",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "not_yet_due",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [
+          {
+            "expectation": "door-101|e-at|a-601",
+            "not_yet_due": [
+              "finish"
+            ]
+          }
+        ],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|arch-cd|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-at|a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "not_yet_due",
+            "overdue": false,
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1"
+                },
+                "end": null,
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-cd",
+      "context": "arch-cd",
+      "source": "arch-issue-log",
+      "values": {
+        "@published": "2026-06-03T10:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "owner"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "arch-cd|arch-cd|arch-issue-log",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-at/a-601/finish/e1|exp:door-101/e-at/a-601/finish/e1/at|exp:door-101/e-at/a-601/finish/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-at|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|arch-cd|a-601",
+            "qualifying_moment": "2026-06-03T10:00-07:00",
+            "timeliness": "on_time",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-at/a-601/finish/e1|exp:door-101/e-at/a-601/finish/e1/at|exp:door-101/e-at/a-601/finish/e1",
+                  "at": "2026-06-03T10:00-07:00",
+                  "record": "door-101|arch-cd|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null,
+                  "revised_by": "~absent"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

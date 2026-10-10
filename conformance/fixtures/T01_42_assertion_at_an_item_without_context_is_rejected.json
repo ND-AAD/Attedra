@@ -1,0 +1,119 @@
+{
+  "id": "T01_42_assertion_at_an_item_without_context_is_rejected",
+  "family": "T01",
+  "rules": [
+    "10.2.3",
+    "4.1.1",
+    "2.3.1",
+    "4.2.4"
+  ],
+  "description": "An Assertion whose context coordinate is an Item whose definition has no @context (no definition at all, a definition with other members, or the source communication itself) is rejected under 10.2.3 and nothing is recorded.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "note-1",
+          "kind": "event"
+        },
+        {
+          "id": "ctx-x",
+          "kind": "event",
+          "definition": {
+            "note": "no context declared"
+          }
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "note-1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ctx-x",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a-601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|note-1|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ctx-x|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|a-601|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

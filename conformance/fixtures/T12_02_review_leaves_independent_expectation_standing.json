@@ -1,0 +1,403 @@
+{
+  "id": "T12_02_review_leaves_independent_expectation_standing",
+  "family": "T12",
+  "rules": [
+    "7.4.3",
+    "7.4.1",
+    "6.3.1",
+    "6.6.1",
+    "6.2.1",
+    "9.3.1",
+    "12.12"
+  ],
+  "description": "An expectation that A-601 show stain by 10 June, established by the minutes, is independent of the finish story. A no_change review of the story neither fulfils it nor supports it: it stays outstanding with its single support and becomes overdue after the deadline.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain-by-10",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-10-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-mon",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-mon-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain-by-10",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "meeting-mon",
+      "source": "minutes-mon",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain-by-10",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-mon-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain-by-10|a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "instr-1|meeting-mon|minutes-mon",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "open",
+          "review": "reviewed",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain-by-10|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "instr-1|meeting-mon|minutes-mon",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|ev-mon-a601|a-601"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain-by-10|a-601",
+        "frame": {
+          "cutoff": "2026-06-12-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "instr-1|meeting-mon|minutes-mon",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Steps 8, 12, 13: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

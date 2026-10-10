@@ -1,0 +1,389 @@
+{
+  "id": "T13_08_backfill_after_review_opens_related_story_at_review_time",
+  "family": "T13",
+  "rules": [
+    "7.3.1",
+    "7.3.5",
+    "7.4.5",
+    "7.2.8",
+    "9.5.4",
+    "12.13"
+  ],
+  "description": "Story-1 is reviewed on Wednesday at 10:00 on Monday's evidence. On Friday a Tuesday A-601 brown-paint issuance is entered; it changes the current comparison evidence. A related story opens whose interval begins at the review's effective time, so no cutoff shows two unreviewed stories for one disagreement. The reviewed story keeps its review and gains no detection.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "brown-paint"
+      },
+      "recorded_at": "2026-06-05T09:00:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1+1",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "related": [
+          "story-1"
+        ],
+        "interval": {
+          "start": "2026-06-03T10:00-07:00",
+          "end": null
+        },
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "review": "unreviewed",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "detections": [
+          "story-1|story-1/d1|story-1"
+        ],
+        "acts": [
+          "rv-1|rv-1-at|rv-1"
+        ],
+        "standing": {
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rv-1|rv-1-at|rv-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@basis": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon-a601",
+              "source": "a-601",
+              "property": "finish"
+            },
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon-spec",
+              "source": "spec-09-91",
+              "property": "finish"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1"
+        ],
+        "count": 1,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03T09:59-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1+1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1+1"
+        ],
+        "count": 1
+      }
+    }
+  ]
+}

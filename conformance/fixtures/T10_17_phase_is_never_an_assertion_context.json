@@ -1,0 +1,82 @@
+{
+  "id": "T10_17_phase_is_never_an_assertion_context",
+  "family": "T10",
+  "rules": [
+    "4.1.1",
+    "10.2.3",
+    "9.2.1"
+  ],
+  "description": "A phase context is valid as an Item (used in expectation timing) but an Assertion whose context is a phase is rejected, leaving nothing recorded.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "ph-cd",
+          "kind": "phase",
+          "definition": {
+            "@context": {
+              "role": "phase",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "starts": {
+                "@ref": "item",
+                "id": "arch-50cd"
+              },
+              "ends": "2026-07-31-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ph-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ph-cd|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

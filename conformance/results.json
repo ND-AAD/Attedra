@@ -1,0 +1,5852 @@
+{
+ "counts": {
+  "PASS": 421,
+  "FAIL": 0,
+  "ERROR": 0,
+  "BLOCKED": 0
+ },
+ "total": 421,
+ "environment": {
+  "postgresql": "18.6 (Debian 18.6-1.pgdg13+2)",
+  "image": "postgres@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "python": "3.12.13",
+  "psycopg": "3.3.6",
+  "package_sha256": "6134730dffc62c66654c49ecd1d448f4afb0e1f3e92d052684e891a708c723ee"
+ },
+ "results": [
+  {
+   "id": "T01_01_identity_worked_example",
+   "family": "T01",
+   "rules": [
+    "2.1.4",
+    "2.3.2",
+    "4.5.1",
+    "8.1.2",
+    "8.1.3",
+    "10.2.1",
+    "9.2.3",
+    "9.4.2",
+    "12.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_02_identical_replay_after_normalization",
+   "family": "T01",
+   "rules": [
+    "8.1.1",
+    "8.1.2",
+    "5.3.2",
+    "5.5.1",
+    "2.3.1",
+    "4.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_03_occupied_rejects_changed_content",
+   "family": "T01",
+   "rules": [
+    "8.1.3",
+    "10.2.1",
+    "8.1.2",
+    "5.5.1",
+    "5.5.2",
+    "5.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_04_shared_coordinates_and_equal_instants",
+   "family": "T01",
+   "rules": [
+    "2.3.3",
+    "2.3.2",
+    "4.5.1",
+    "9.2.4",
+    "5.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_05_connections_directional_one_per_pair",
+   "family": "T01",
+   "rules": [
+    "2.2.1",
+    "2.2.2",
+    "2.2.3",
+    "8.6.1",
+    "9.9.1",
+    "I-4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_06_create_existing_disconnected_pair_is_noop",
+   "family": "T01",
+   "rules": [
+    "2.2.1",
+    "8.6.1",
+    "8.6.2",
+    "8.6.3",
+    "8.6.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_07_references_create_no_connections",
+   "family": "T01",
+   "rules": [
+    "2.4.6",
+    "2.4.5",
+    "9.9.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_08_exact_reference_resolves_only_that_triple",
+   "family": "T01",
+   "rules": [
+    "2.4.1",
+    "2.4.5",
+    "9.2.1",
+    "8.5.2",
+    "8.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_09_kind_never_changes_behaviour",
+   "family": "T01",
+   "rules": [
+    "2.1.2",
+    "2.1.6",
+    "4.1.1",
+    "3.3.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_10_unresolved_item_reference",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.4.2",
+    "2.4.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_11_unresolved_assertion_reference",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.4.1",
+    "2.4.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_12_unresolved_connection_reference",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.4.2",
+    "2.2.1",
+    "8.6.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_13_list_members_not_lists_of_references",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.4.4",
+    "6.3.1",
+    "7.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_14_single_reference_members_not_single",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.4.4",
+    "4.5.2",
+    "7.3.1",
+    "7.3.3",
+    "7.3.4",
+    "3.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_15_artifact_references_not_resolved",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.4.2",
+    "3.2.1",
+    "9.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_16_context_role_invalid",
+   "family": "T01",
+   "rules": [
+    "10.2.3",
+    "4.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_17_context_role_missing_members",
+   "family": "T01",
+   "rules": [
+    "10.2.3",
+    "4.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_18_milestone_schedule_and_ordinal",
+   "family": "T01",
+   "rules": [
+    "10.2.3",
+    "4.1.1",
+    "4.3.1",
+    "4.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_19_expectation_context_invalid_timing",
+   "family": "T01",
+   "rules": [
+    "10.2.3",
+    "4.1.1",
+    "6.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_20_assertion_at_phase_context",
+   "family": "T01",
+   "rules": [
+    "10.2.3",
+    "4.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_21_malformed_instants",
+   "family": "T01",
+   "rules": [
+    "10.2.4",
+    "4.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_22_duplicate_keys",
+   "family": "T01",
+   "rules": [
+    "5.1.1",
+    "10.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_23_number_outside_bound",
+   "family": "T01",
+   "rules": [
+    "5.1.2",
+    "10.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_24_reserved_member_not_allowed_here",
+   "family": "T01",
+   "rules": [
+    "10.2.4",
+    "2.4.4",
+    "2.4.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_25_reserved_member_wrong_shape",
+   "family": "T01",
+   "rules": [
+    "10.2.4",
+    "2.4.4",
+    "4.4.1",
+    "5.5.5",
+    "7.2.1",
+    "7.4.1",
+    "8.3.1",
+    "3.3.2",
+    "6.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_26_correction_target_not_exactly_one",
+   "family": "T01",
+   "rules": [
+    "10.2.5",
+    "8.3.1",
+    "8.3.8",
+    "8.3.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_27_correction_corrected_shape",
+   "family": "T01",
+   "rules": [
+    "10.2.5",
+    "8.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_28_corrected_item_fails_context_validation",
+   "family": "T01",
+   "rules": [
+    "10.2.5",
+    "8.3.8",
+    "10.2.3",
+    "4.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_29_empty_target_lists",
+   "family": "T01",
+   "rules": [
+    "10.2.6",
+    "6.7.1",
+    "7.4.1",
+    "7.3.3",
+    "9.5.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_30_withdrawal_of_never_withdrawn_acts",
+   "family": "T01",
+   "rules": [
+    "10.2.6",
+    "6.7.9",
+    "8.3.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_31_withdrawal_of_communication_records",
+   "family": "T01",
+   "rules": [
+    "10.2.6",
+    "6.7.9",
+    "4.4.1",
+    "3.1.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_32_change_story_directive_requires_expectation",
+   "family": "T01",
+   "rules": [
+    "10.2.6",
+    "7.2.7",
+    "7.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_33_effective_earlier_than_occurrence",
+   "family": "T01",
+   "rules": [
+    "10.2.7",
+    "8.4.1",
+    "4.2.5",
+    "4.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_34_effective_on_disallowed_acts",
+   "family": "T01",
+   "rules": [
+    "10.2.7",
+    "8.4.1",
+    "2.4.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_35_lifecycle_act_against_derived_state",
+   "family": "T01",
+   "rules": [
+    "10.2.8",
+    "8.6.2",
+    "8.6.3",
+    "8.6.4",
+    "8.6.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_36_lifecycle_validation_by_occurrence_not_arrival",
+   "family": "T01",
+   "rules": [
+    "10.2.8",
+    "8.6.6",
+    "4.2.2",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_37_one_defect_matching_several_rules_uses_the_readme_precedence",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "10.2.3",
+    "10.2.4",
+    "4.2.1",
+    "2.4.1",
+    "2.4.2",
+    "8.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_38_coordinates_naming_missing_items_are_unresolved_references",
+   "family": "T01",
+   "rules": [
+    "10.2.2",
+    "2.3.2",
+    "2.3.1",
+    "2.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_39_recreating_an_item_is_a_noop_only_when_identical",
+   "family": "T01",
+   "rules": [
+    "8.1.5",
+    "10.2.1",
+    "2.1.2",
+    "5.5.1",
+    "10.2.4",
+    "5.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_40_new_milestone_ordinal_checked_against_corrected_definitions",
+   "family": "T01",
+   "rules": [
+    "4.3.2",
+    "8.3.8",
+    "10.2.3",
+    "8.3.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_41_effective_unordered_with_occurrence_is_accepted",
+   "family": "T01",
+   "rules": [
+    "8.4.1",
+    "10.2.7",
+    "4.2.5",
+    "4.5.1",
+    "4.5.3",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_42_assertion_at_an_item_without_context_is_rejected",
+   "family": "T01",
+   "rules": [
+    "10.2.3",
+    "4.1.1",
+    "2.3.1",
+    "4.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_43_extension_act_members_and_withdrawal",
+   "family": "T01",
+   "rules": [
+    "10.4.1",
+    "10.4.2",
+    "10.2.4",
+    "10.2.7",
+    "2.4.4",
+    "6.7.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_44_communication_members_recognised_by_coordinates",
+   "family": "T01",
+   "rules": [
+    "2.4.4",
+    "10.2.4",
+    "3.1.2",
+    "3.2.1",
+    "4.4.1",
+    "2.1.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_45_definition_json_duplicate_keys_and_malformed_text",
+   "family": "T01",
+   "rules": [
+    "5.1.1",
+    "8.1.5",
+    "10.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_46_write_results_report_status_and_generated_records",
+   "family": "T01",
+   "rules": [
+    "8.1.1",
+    "8.1.2",
+    "8.1.5",
+    "2.2.1",
+    "8.5.3",
+    "8.5.4",
+    "7.2.5",
+    "7.2.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T01_47_change_detection_transitions_must_name_one_revised_assertion",
+   "family": "T01",
+   "rules": [
+    "7.2.3",
+    "10.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_01_sparse_carry_forward_worked_example",
+   "family": "T02",
+   "rules": [
+    "5.2.1",
+    "5.2.2",
+    "5.2.3",
+    "5.2.4",
+    "8.7.3",
+    "2.4.7",
+    "9.2.2",
+    "12.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_02_per_property_origins",
+   "family": "T02",
+   "rules": [
+    "5.2.1",
+    "5.2.2",
+    "I-13",
+    "9.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_03_cutoff_inclusion_by_interval",
+   "family": "T02",
+   "rules": [
+    "4.6.1",
+    "4.2.5",
+    "4.2.1",
+    "5.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_04_occurrence_order_not_recording_order",
+   "family": "T02",
+   "rules": [
+    "5.2.1",
+    "4.2.2",
+    "4.2.3",
+    "I-5",
+    "2.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_05_ordinal_orders_equal_or_unordered_publications",
+   "family": "T02",
+   "rules": [
+    "5.2.1",
+    "4.3.2",
+    "4.5.2",
+    "4.2.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_06_tied_assertions_ambiguous",
+   "family": "T02",
+   "rules": [
+    "5.6.1",
+    "4.5.1",
+    "4.5.3",
+    "4.2.5",
+    "5.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_07_after_orders_tied_assertions",
+   "family": "T02",
+   "rules": [
+    "4.5.2",
+    "5.2.1",
+    "5.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_08_expectations_and_acts_do_not_contribute",
+   "family": "T02",
+   "rules": [
+    "9.2.2",
+    "I-6",
+    "2.4.7",
+    "5.2.4",
+    "6.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_09_resolved_view_side_by_side",
+   "family": "T02",
+   "rules": [
+    "9.2.3",
+    "5.2.2",
+    "7.1.3",
+    "I-12",
+    "9.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_10_milestones_and_events_on_one_chronology",
+   "family": "T02",
+   "rules": [
+    "5.2.1",
+    "4.3.3",
+    "4.2.4",
+    "4.4.1",
+    "9.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_11_resolved_view_lists_never_asserted_sources",
+   "family": "T02",
+   "rules": [
+    "9.2.3",
+    "9.2.2",
+    "5.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_12_ambiguous_candidates_are_classifications",
+   "family": "T02",
+   "rules": [
+    "5.6.1",
+    "4.5.3",
+    "4.6.1",
+    "9.2.2",
+    "8.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T02_13_source_position_lists_properties_asserted_at_any_cutoff",
+   "family": "T02",
+   "rules": [
+    "9.2.2",
+    "5.6.1",
+    "4.6.1",
+    "4.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_01_structured_replacement_worked_example",
+   "family": "T03",
+   "rules": [
+    "5.4.1",
+    "5.4.4",
+    "5.6.2",
+    "9.4.1",
+    "12.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_02_omitted_structured_property_carries",
+   "family": "T03",
+   "rules": [
+    "5.4.2",
+    "5.2.1",
+    "5.2.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_03_separate_properties_carry_independently",
+   "family": "T03",
+   "rules": [
+    "5.4.3",
+    "5.2.1",
+    "5.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_04_lists_replace_as_whole",
+   "family": "T03",
+   "rules": [
+    "5.4.1",
+    "5.4.2",
+    "5.1.1",
+    "5.3.2",
+    "5.6.2",
+    "12.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_05_nested_and_empty_objects_replace",
+   "family": "T03",
+   "rules": [
+    "5.4.1",
+    "5.4.4",
+    "5.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_06_member_level_differences",
+   "family": "T03",
+   "rules": [
+    "5.6.2",
+    "9.4.1",
+    "5.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_07_required_structured_value_needs_complete_value",
+   "family": "T03",
+   "rules": [
+    "6.4.2",
+    "5.4.4",
+    "6.4.1",
+    "6.5.1",
+    "6.5.3",
+    "5.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T03_08_member_differences_only_for_objects_one_per_top_level_key",
+   "family": "T03",
+   "rules": [
+    "5.6.2",
+    "5.4.1",
+    "5.5.1",
+    "9.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_01_empty_equivalence_null_and_blank",
+   "family": "T04",
+   "rules": [
+    "5.3.1",
+    "5.3.2",
+    "5.5.1",
+    "I-14",
+    "12.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_02_empty_string_normalized_at_depth",
+   "family": "T04",
+   "rules": [
+    "5.3.2",
+    "5.1.3",
+    "5.3.1",
+    "I-14"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_03_null_versus_omission",
+   "family": "T04",
+   "rules": [
+    "7.1.4",
+    "9.4.2",
+    "5.2.3",
+    "5.3.1",
+    "12.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_04_ordinary_values_are_not_empty",
+   "family": "T04",
+   "rules": [
+    "5.3.2",
+    "5.5.1",
+    "7.1.4",
+    "12.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_05_typed_and_structured_equality",
+   "family": "T04",
+   "rules": [
+    "5.5.1",
+    "7.1.1",
+    "9.4.2",
+    "2.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_06_no_inferred_conversions",
+   "family": "T04",
+   "rules": [
+    "5.5.2",
+    "5.5.1",
+    "5.1.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_07_numeric_equality_and_precision",
+   "family": "T04",
+   "rules": [
+    "5.5.1",
+    "5.1.2",
+    "5.1.3",
+    "12.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_08_explicit_empty_is_a_change",
+   "family": "T04",
+   "rules": [
+    "5.3.3",
+    "5.6.2",
+    "5.3.1",
+    "5.3.2",
+    "9.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_09_declared_interpretation_fire_rating",
+   "family": "T04",
+   "rules": [
+    "5.5.3",
+    "5.5.4",
+    "5.5.1",
+    "4.6.1",
+    "9.4.2",
+    "9.4.3",
+    "I-15",
+    "12.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_10_set_interpretation_ignores_order_not_succession",
+   "family": "T04",
+   "rules": [
+    "5.5.3",
+    "5.5.1",
+    "5.4.1",
+    "5.5.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_11_required_null_met_by_explicit_null",
+   "family": "T04",
+   "rules": [
+    "6.4.1",
+    "6.4.4",
+    "5.2.3",
+    "5.3.2",
+    "6.5.1",
+    "6.5.3",
+    "9.3.1",
+    "12.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_12_unavailable_interpretation_is_a_limitation_with_a_literal_result",
+   "family": "T04",
+   "rules": [
+    "5.5.4",
+    "9.6.1",
+    "10.3",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T04_13_references_equal_only_when_they_identify_the_same_target",
+   "family": "T04",
+   "rules": [
+    "5.5.1",
+    "2.4.3",
+    "8.1.2",
+    "8.1.3",
+    "6.7.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_01_withdrawn_latest_value_has_no_current_value",
+   "family": "T05",
+   "rules": [
+    "6.7.1",
+    "6.7.4",
+    "6.7.5",
+    "6.7.6",
+    "6.7.8",
+    "5.6.1",
+    "9.2.1",
+    "9.2.2",
+    "3.2.1",
+    "I-8",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_02_reassertion_after_withdrawal_reads_new_value",
+   "family": "T05",
+   "rules": [
+    "6.7.4",
+    "6.7.9",
+    "5.2.1",
+    "5.6.2",
+    "9.4.1",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_03_withdrawn_differs_from_explicit_null_and_never_asserted",
+   "family": "T05",
+   "rules": [
+    "5.6.1",
+    "5.3.1",
+    "6.7.2",
+    "6.7.4",
+    "9.2.2",
+    "I-14",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_04_withdrawing_superseded_assertion_changes_no_current_value",
+   "family": "T05",
+   "rules": [
+    "6.7.4",
+    "5.2.1",
+    "5.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_05_withdrawal_ends_only_properties_whose_latest_carrier_it_targets",
+   "family": "T05",
+   "rules": [
+    "6.7.4",
+    "5.2.1",
+    "5.2.2",
+    "5.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_06_withdrawal_takes_effect_at_effective_time_not_recording_time",
+   "family": "T05",
+   "rules": [
+    "6.7.5",
+    "8.4.1",
+    "4.2.2",
+    "4.2.5",
+    "4.6.1",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_07_backfilled_older_assertion_does_not_revive_after_withdrawal",
+   "family": "T05",
+   "rules": [
+    "5.2.1",
+    "6.7.4",
+    "4.2.3",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_08_withdrawal_is_per_source_and_reads_as_absence_in_conflicts",
+   "family": "T05",
+   "rules": [
+    "6.7.4",
+    "9.2.3",
+    "9.4.2",
+    "7.1.3",
+    "7.1.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_09_unfulfilled_request_is_outstanding_after_source_withdraws_value",
+   "family": "T05",
+   "rules": [
+    "6.5.6",
+    "6.5.5",
+    "6.5.1",
+    "6.2.1",
+    "6.4.1",
+    "9.3.1",
+    "9.3.2",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_10_withdrawn_value_leaves_request_not_yet_due_before_scope",
+   "family": "T05",
+   "rules": [
+    "6.5.6",
+    "6.2.1",
+    "6.2.4",
+    "6.6.1",
+    "9.3.2",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_11_fulfilled_request_stays_fulfilled_after_evidence_is_withdrawn",
+   "family": "T05",
+   "rules": [
+    "6.5.2",
+    "6.5.6",
+    "6.2.2",
+    "6.6.1",
+    "9.3.1",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_12_superseded_value_is_not_revived_as_evidence_reassertion_fulfills",
+   "family": "T05",
+   "rules": [
+    "6.7.4",
+    "6.5.1",
+    "6.5.5",
+    "6.2.1",
+    "6.2.2",
+    "12.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_13_withdrawal_of_never_withdrawn_records_is_rejected",
+   "family": "T05",
+   "rules": [
+    "6.7.9",
+    "10.2.6",
+    "4.4.1",
+    "6.7.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T05_14_malformed_withdrawals_are_rejected_and_leave_store_unchanged",
+   "family": "T05",
+   "rules": [
+    "6.7.1",
+    "10.2.2",
+    "10.2.6",
+    "10.2.7",
+    "8.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_01_property_withdrawal_leaves_other_property_open_and_mixed_result",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "6.4.5",
+    "6.6.1",
+    "6.6.2",
+    "9.3.1",
+    "9.3.2",
+    "9.3.3",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_02_withdrawing_one_support_leaves_expectation_in_force",
+   "family": "T06",
+   "rules": [
+    "6.3.1",
+    "6.3.2",
+    "6.7.2",
+    "2.4.3",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_03_withdrawing_one_supports_coverage_of_one_property",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "6.3.2",
+    "2.4.3",
+    "6.6.1",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_04_expectation_property_withdrawal_ends_it_for_every_support",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "6.7.6",
+    "6.3.2",
+    "6.6.1",
+    "6.5.1",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_05_every_support_withdrawn_reads_withdrawn_not_not_in_force",
+   "family": "T06",
+   "rules": [
+    "6.6.1",
+    "6.7.2",
+    "6.3.3",
+    "9.3.2",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_06_fulfilled_property_survives_support_withdrawal_and_reaffirmation",
+   "family": "T06",
+   "rules": [
+    "6.5.1",
+    "6.5.2",
+    "6.3.3",
+    "6.6.1",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_07_withdrawal_effective_later_ends_supports_covering_at_effective_time",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "6.7.5",
+    "6.6.1",
+    "6.5.2",
+    "6.3.3",
+    "8.4.1",
+    "3.2.1",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_08_withdrawal_ends_earlier_support_with_later_effective_time",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "6.3.3",
+    "6.6.1",
+    "8.4.1",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_09_support_after_withdrawal_begins_new_period_and_resets_freshness",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "6.3.3",
+    "6.2.2",
+    "6.5.1",
+    "6.5.2",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_10_bulk_withdrawal_of_statements_on_two_items_with_fixed_targets",
+   "family": "T06",
+   "rules": [
+    "6.7.3",
+    "6.7.4",
+    "9.2.1",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_11_bulk_withdrawal_of_expectations_on_two_items",
+   "family": "T06",
+   "rules": [
+    "6.7.3",
+    "6.7.2",
+    "6.1.4",
+    "9.3.2",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_12_withdrawing_one_acts_support_of_one_of_two_expectations",
+   "family": "T06",
+   "rules": [
+    "6.7.2",
+    "2.4.3",
+    "6.1.4",
+    "6.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_13_support_withdrawn_before_it_takes_effect_leaves_not_in_force",
+   "family": "T06",
+   "rules": [
+    "6.6.1",
+    "6.3.3",
+    "6.7.2",
+    "8.4.1",
+    "9.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_14_supports_list_every_support_with_coverage_and_withdrawals",
+   "family": "T06",
+   "rules": [
+    "9.3.1",
+    "6.3.1",
+    "6.3.3",
+    "6.7.2",
+    "8.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_15_overall_standing_from_property_standings",
+   "family": "T06",
+   "rules": [
+    "6.4.5",
+    "6.6.2",
+    "9.3.1",
+    "6.3.1",
+    "2.4.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_16_standing_members_later_overdue_and_not_in_force",
+   "family": "T06",
+   "rules": [
+    "6.6.1",
+    "6.5.2",
+    "6.3.2",
+    "6.2.1",
+    "9.3.1",
+    "6.7.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_17_withdrawn_names_the_withdrawals_of_the_last_in_force_period",
+   "family": "T06",
+   "rules": [
+    "6.6.1",
+    "6.7.2",
+    "6.3.3",
+    "12.6"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_18_every_property_withdrawn_takes_expectation_out_of_force",
+   "family": "T06",
+   "rules": [
+    "6.3.1",
+    "6.7.2",
+    "6.6.1",
+    "6.3.3",
+    "9.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T06_19_overall_standing_leaves_out_properties_no_support_covered",
+   "family": "T06",
+   "rules": [
+    "6.4.5",
+    "6.6.2",
+    "6.6.1",
+    "6.3.1",
+    "6.7.2",
+    "9.3.1",
+    "9.3.3",
+    "2.4.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_01_expectation_and_statement_coexist_on_same_subject_and_source",
+   "family": "T07",
+   "rules": [
+    "6.1.1",
+    "6.1.2",
+    "2.3.2",
+    "9.2.2",
+    "9.2.3",
+    "9.3.1",
+    "7.1.5",
+    "I-6",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_02_reaffirmation_references_the_same_expectation",
+   "family": "T07",
+   "rules": [
+    "6.3.1",
+    "6.3.2",
+    "6.3.3",
+    "9.3.2",
+    "9.3.3",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_03_support_must_reference_an_existing_expectation_exactly",
+   "family": "T07",
+   "rules": [
+    "6.3.1",
+    "2.4.1",
+    "10.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_04_expectation_context_requires_a_valid_timing",
+   "family": "T07",
+   "rules": [
+    "4.1.1",
+    "6.2.1",
+    "10.2.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_05_competing_expectations_conflict_whatever_their_milestones",
+   "family": "T07",
+   "rules": [
+    "6.3.4",
+    "7.1.1",
+    "7.1.5",
+    "9.4.2",
+    "6.2.1",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_06_reversed_recording_order_changes_nothing",
+   "family": "T07",
+   "rules": [
+    "6.3.4",
+    "7.1.5",
+    "I-5",
+    "I-12",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_07_fulfilling_one_expectation_ends_the_conflict_story",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "7.2.4",
+    "7.2.6",
+    "6.2.1",
+    "6.5.1",
+    "9.3.2",
+    "9.5.1",
+    "9.5.2",
+    "9.5.3",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_08_withdrawing_the_paint_expectation_ends_the_conflict",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "7.2.6",
+    "6.7.2",
+    "9.4.2",
+    "9.5.2",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_09_withdrawing_the_stain_expectation_ends_the_conflict_at_effective_time",
+   "family": "T07",
+   "rules": [
+    "7.2.6",
+    "6.7.2",
+    "6.7.5",
+    "8.4.1",
+    "9.4.2",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_10_review_of_expectation_conflict_changes_no_standing",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "7.4.2",
+    "7.4.3",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_11_ignoring_expectation_conflict_changes_no_standing",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "6.7.7",
+    "9.5.3",
+    "9.5.4",
+    "9.5.5",
+    "9.5.6",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_12_two_obligated_sources_are_two_expectations",
+   "family": "T07",
+   "rules": [
+    "6.1.2",
+    "6.1.4",
+    "3.3.1",
+    "6.5.1",
+    "9.3.2",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_13_expectation_comparison_uses_required_values_across_sources",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "6.3.4",
+    "6.4.1",
+    "6.4.3",
+    "9.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_14_expectation_fulfilled_before_the_other_came_into_force_never_conflicts",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "6.5.1",
+    "6.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_15_expectation_conflict_begins_only_when_both_are_in_force",
+   "family": "T07",
+   "rules": [
+    "7.1.5",
+    "6.3.1",
+    "6.6.1",
+    "8.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_16_review_that_establishes_an_expectation_is_its_support",
+   "family": "T07",
+   "rules": [
+    "6.3.1",
+    "7.4.1",
+    "7.4.2",
+    "7.4.3",
+    "6.7.2",
+    "6.7.9",
+    "9.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_17_expectations_about_a_subject_lists_every_expectation_with_its_standing",
+   "family": "T07",
+   "rules": [
+    "9.3.3",
+    "6.1.5",
+    "6.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_18_in_force_period_lapse_and_new_period",
+   "family": "T07",
+   "rules": [
+    "6.3.3",
+    "6.5.1",
+    "6.2.2",
+    "6.7.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T07_19_review_of_either_outcome_supports_and_selectors_limit_coverage",
+   "family": "T07",
+   "rules": [
+    "7.4.1",
+    "6.3.1",
+    "2.4.3",
+    "6.6.1",
+    "9.3.1",
+    "7.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_01_named_communication_requirement",
+   "family": "T08",
+   "rules": [
+    "3.3.1",
+    "6.1.2",
+    "6.5.1",
+    "6.6.1",
+    "12.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_02_party_requirement_met_by_any_qualifying_communication",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "6.1.3",
+    "6.5.1",
+    "6.5.3",
+    "12.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_03_agent_criterion_matched_by_identity_only",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "3.1.2",
+    "6.1.3",
+    "12.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_04_missing_attribution_does_not_qualify",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "3.1.2",
+    "9.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_05_attribution_of_the_carrying_issuance",
+   "family": "T08",
+   "rules": [
+    "3.1.2",
+    "3.3.2",
+    "6.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_06_criteria_in_force_at_evidence_occurrence",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "6.1.3",
+    "6.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_07_withdrawn_criteria_end_without_revival",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "6.7.9",
+    "6.7.5",
+    "4.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_08_disagreeing_criteria_make_qualification_ambiguous",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "4.5.3",
+    "6.6.1",
+    "9.3.2",
+    "9.6.1",
+    "12.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_09_criteria_date_precision_makes_qualification_ambiguous",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "4.2.1",
+    "4.2.5",
+    "4.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_10_qualifying_email_does_not_outrank_the_schedule",
+   "family": "T08",
+   "rules": [
+    "3.3.3",
+    "I-12",
+    "9.2.3",
+    "9.4.2",
+    "6.5.1",
+    "12.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_11_new_communication_kind_participates_without_configuration",
+   "family": "T08",
+   "rules": [
+    "3.3.4",
+    "2.1.6",
+    "10.4.3",
+    "9.2.3",
+    "9.4.2",
+    "6.1.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_12_connection_reachability_confers_no_qualification",
+   "family": "T08",
+   "rules": [
+    "3.3.5",
+    "2.1.5",
+    "2.4.6",
+    "6.1.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_13_source_is_the_communication_not_the_party",
+   "family": "T08",
+   "rules": [
+    "3.1.1",
+    "3.1.2",
+    "2.4.7",
+    "9.2.2",
+    "9.2.3",
+    "12.2",
+    "12.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_14_by_party_and_by_source_reads",
+   "family": "T08",
+   "rules": [
+    "9.2.4",
+    "3.1.1",
+    "3.1.3",
+    "3.2.1",
+    "3.2.2",
+    "2.3.1",
+    "I-7",
+    "12.8",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_15_no_criteria_in_force_does_not_qualify",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "6.1.3",
+    "6.5.1",
+    "9.3.1",
+    "6.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_16_unqualified_evidence_names_the_unmet_criterion",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "9.3.1",
+    "6.1.3",
+    "3.1.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_17_disagreeing_criteria_ambiguity_lists_criteria_and_candidates",
+   "family": "T08",
+   "rules": [
+    "3.3.2",
+    "4.5.3",
+    "6.6.1",
+    "9.3.1",
+    "9.3.2",
+    "9.6.1",
+    "6.4.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T08_18_by_party_follows_issuance_party_and_party_sourced_records",
+   "family": "T08",
+   "rules": [
+    "9.2.4",
+    "3.1.2",
+    "3.1.3",
+    "3.1.4",
+    "3.2.1",
+    "4.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_01_existing_evidence_fulfills_at_establishment_unless_fresh",
+   "family": "T09",
+   "rules": [
+    "6.2.2",
+    "6.5.1",
+    "6.5.3",
+    "6.6.1",
+    "6.2.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_02_monday_evidence_imported_thursday_gives_same_tuesday_fulfillment",
+   "family": "T09",
+   "rules": [
+    "4.2.2",
+    "4.2.3",
+    "6.5.1",
+    "I-5",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_03_suggested_value_answered_differently_fulfills_required_does_not",
+   "family": "T09",
+   "rules": [
+    "6.4.1",
+    "6.4.3",
+    "6.5.1",
+    "9.3.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_04_empty_answers_and_required_null",
+   "family": "T09",
+   "rules": [
+    "6.4.1",
+    "6.4.4",
+    "5.3.1",
+    "5.3.2",
+    "5.2.3",
+    "12.4",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_05_ordinary_non_null_values_answer_information_requests",
+   "family": "T09",
+   "rules": [
+    "6.4.1",
+    "6.4.4",
+    "5.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_06_date_only_issue_on_establishment_day_is_ambiguous_for_fresh",
+   "family": "T09",
+   "rules": [
+    "4.2.5",
+    "4.5.3",
+    "6.2.2",
+    "6.5.1",
+    "6.6.1",
+    "9.3.2",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_07_at_milestone_evidence_is_fixed_by_target_despite_later_revision",
+   "family": "T09",
+   "rules": [
+    "6.2.1",
+    "6.2.2",
+    "6.5.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_08_at_milestone_evidence_withdrawn_before_establishment_does_not_fulfill",
+   "family": "T09",
+   "rules": [
+    "6.5.1",
+    "6.5.5",
+    "6.2.1",
+    "6.6.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_09_skipped_preferred_issuance_does_not_block_fulfillment",
+   "family": "T09",
+   "rules": [
+    "6.2.3",
+    "6.2.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_10_friday_submission_against_wednesday_deadline_is_late_by_two_days",
+   "family": "T09",
+   "rules": [
+    "6.2.1",
+    "6.5.3",
+    "6.5.4",
+    "6.6.1",
+    "4.2.5",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_11_evidence_at_exact_deadline_is_on_time_later_minutes_are_late",
+   "family": "T09",
+   "rules": [
+    "6.2.1",
+    "4.2.5",
+    "6.5.4",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_12_date_only_issue_on_deadline_day_fulfills_with_ambiguous_timeliness",
+   "family": "T09",
+   "rules": [
+    "4.2.5",
+    "4.5.3",
+    "6.5.4",
+    "6.6.1",
+    "9.3.2",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_13_by_is_outstanding_not_overdue_before_deadline_any_is_never_overdue",
+   "family": "T09",
+   "rules": [
+    "6.2.1",
+    "6.6.1",
+    "4.6.2",
+    "9.3.2",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_14_at_milestone_requirement_not_yet_due_until_published",
+   "family": "T09",
+   "rules": [
+    "6.2.1",
+    "6.2.4",
+    "6.6.1",
+    "4.4.1",
+    "9.3.2",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_15_later_contrary_value_leaves_fulfillment_intact",
+   "family": "T09",
+   "rules": [
+    "6.5.1",
+    "6.5.2",
+    "6.6.1",
+    "9.3.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_16_during_phase_timing_scope_evidence_and_overdue",
+   "family": "T09",
+   "rules": [
+    "6.2.1",
+    "4.1.1",
+    "6.6.1",
+    "6.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_17_phase_is_never_an_assertion_context",
+   "family": "T09",
+   "rules": [
+    "4.1.1",
+    "10.2.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_18_during_evidence_is_fixed_by_target_by_evidence_can_be_superseded",
+   "family": "T09",
+   "rules": [
+    "6.5.1",
+    "6.5.5",
+    "6.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_19_backfilled_earlier_evidence_moves_qualifying_moment_earlier",
+   "family": "T09",
+   "rules": [
+    "6.5.1",
+    "4.2.3",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_20_by_milestone_deadline_is_the_publication_instant",
+   "family": "T09",
+   "rules": [
+    "6.2.4",
+    "6.2.1",
+    "6.5.4",
+    "4.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_21_correction_of_fulfilling_evidence_removes_fulfillment_at_every_cutoff",
+   "family": "T09",
+   "rules": [
+    "6.5.2",
+    "8.3.2",
+    "8.3.3",
+    "8.4.1",
+    "9.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_22_required_value_compared_under_the_frames_interpretation",
+   "family": "T09",
+   "rules": [
+    "6.4.1",
+    "5.5.1",
+    "5.5.3",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_23_support_with_later_effective_time_sets_the_qualifying_moment",
+   "family": "T09",
+   "rules": [
+    "6.3.1",
+    "6.3.3",
+    "8.4.1",
+    "6.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_24_required_structured_value_must_be_complete",
+   "family": "T09",
+   "rules": [
+    "6.4.2",
+    "5.4.1",
+    "5.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_25_intervals_that_meet_are_ordered",
+   "family": "T09",
+   "rules": [
+    "4.2.1",
+    "4.2.5",
+    "6.2.1",
+    "6.5.4",
+    "6.6.1",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_26_fresh_is_optional_and_defaults_to_false",
+   "family": "T09",
+   "rules": [
+    "4.1.1",
+    "6.2.2",
+    "10.2.3",
+    "6.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_27_instants_in_results_are_returned_as_written",
+   "family": "T09",
+   "rules": [
+    "4.2.1",
+    "5.1.3",
+    "9.3.1",
+    "9.2.4",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_28_standing_carries_timing_interpretation_deadline_and_suggested",
+   "family": "T09",
+   "rules": [
+    "9.3.1",
+    "6.6.1",
+    "6.4.1",
+    "6.4.5",
+    "6.6.2",
+    "5.5.4",
+    "6.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_29_at_during_and_any_fulfillment_is_on_time",
+   "family": "T09",
+   "rules": [
+    "6.5.4",
+    "6.6.1",
+    "6.2.1",
+    "9.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_30_accept_empty_interpretation_lets_null_answer_a_request",
+   "family": "T09",
+   "rules": [
+    "6.4.4",
+    "5.3.3",
+    "5.5.3",
+    "5.5.4",
+    "12.9"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_31_open_work_entries_carry_overdue_candidates_and_records",
+   "family": "T09",
+   "rules": [
+    "9.3.2",
+    "6.6.1",
+    "4.5.3",
+    "9.6.1",
+    "6.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T09_32_unordered_evidence_and_establishment_qualify_at_the_later_ending_instant",
+   "family": "T09",
+   "rules": [
+    "6.5.1",
+    "4.2.5",
+    "4.5.3",
+    "6.2.2",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_01_cross_schedule_milestones_ordered_by_publication_instant",
+   "family": "T10",
+   "rules": [
+    "4.3.1",
+    "4.3.3",
+    "4.2.4",
+    "5.2.1",
+    "4.6.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_02_event_and_milestone_share_one_chronology",
+   "family": "T10",
+   "rules": [
+    "4.3.3",
+    "4.2.2",
+    "4.2.4",
+    "5.2.1",
+    "I-5",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_03_date_and_minute_instants_same_day_are_unordered",
+   "family": "T10",
+   "rules": [
+    "4.2.1",
+    "4.2.5",
+    "4.5.3",
+    "4.6.1",
+    "5.6.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_04_minute_evidence_against_date_deadlines",
+   "family": "T10",
+   "rules": [
+    "4.2.5",
+    "4.2.3",
+    "4.2.2",
+    "6.2.1",
+    "6.5.4",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_05_equal_instants_keep_distinct_contexts_and_after_orders_them",
+   "family": "T10",
+   "rules": [
+    "4.5.1",
+    "4.5.2",
+    "4.5.3",
+    "5.6.1",
+    "2.3.3",
+    "I-5",
+    "12.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_06_same_schedule_milestones_ordered_by_ordinal",
+   "family": "T10",
+   "rules": [
+    "4.3.2",
+    "4.5.2",
+    "5.2.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_07_instants_govern_when_ordinals_disagree",
+   "family": "T10",
+   "rules": [
+    "4.3.4",
+    "4.3.3",
+    "5.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_08_consistent_publication_instants_use_the_finer",
+   "family": "T10",
+   "rules": [
+    "4.4.1",
+    "4.2.5",
+    "4.2.4",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_09_competing_publication_instants_are_ambiguous",
+   "family": "T10",
+   "rules": [
+    "4.4.1",
+    "4.5.3",
+    "4.6.1",
+    "9.6.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_10_planned_milestone_has_no_chronological_position",
+   "family": "T10",
+   "rules": [
+    "4.2.4",
+    "4.3.2",
+    "4.3.3",
+    "4.6.1",
+    "9.6.1",
+    "10.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_11_publication_and_later_distribution_history",
+   "family": "T10",
+   "rules": [
+    "4.4.1",
+    "4.4.2",
+    "4.6.1",
+    "4.6.3",
+    "9.7.1",
+    "9.7.2",
+    "I-15",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_12_issuance_distribution_limited_to_that_issuance",
+   "family": "T10",
+   "rules": [
+    "4.4.2",
+    "3.1.2",
+    "4.6.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_13_later_distribution_of_a_communication_issuance",
+   "family": "T10",
+   "rules": [
+    "4.4.1",
+    "4.4.2",
+    "9.7.1",
+    "2.4.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_14_participant_view_of_a_withdrawal_recorded_from_later_minutes",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "4.6.3",
+    "4.4.2",
+    "3.2.1",
+    "6.7.5",
+    "4.2.2",
+    "6.6.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_15_later_distributed_withdrawal_applies_at_its_effective_time",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "6.5.1",
+    "6.6.1",
+    "6.7.5",
+    "4.4.2",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_16_participant_view_follows_distributed_supports",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "4.4.2",
+    "3.1.4",
+    "6.3.1",
+    "6.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_17_phase_is_never_an_assertion_context",
+   "family": "T10",
+   "rules": [
+    "4.1.1",
+    "10.2.3",
+    "9.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_18_instant_forms_and_retained_precision",
+   "family": "T10",
+   "rules": [
+    "4.2.1",
+    "10.2.4",
+    "5.1.3",
+    "4.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_19_ordinals_distinct_per_schedule_only",
+   "family": "T10",
+   "rules": [
+    "4.3.1",
+    "4.3.2",
+    "10.2.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_20_intervals_that_meet_are_ordered_against_cutoffs",
+   "family": "T10",
+   "rules": [
+    "4.2.1",
+    "4.2.5",
+    "4.6.1",
+    "4.5.3",
+    "5.2.1",
+    "12.10"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_21_perspective_restricts_evidence_not_chronology",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "4.4.2",
+    "4.2.4",
+    "3.1.2",
+    "4.6.3",
+    "9.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_22_distributed_to_lists_distribution_records",
+   "family": "T10",
+   "rules": [
+    "4.4.2",
+    "9.7.1",
+    "4.4.1",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_23_distribution_read_takes_a_frame",
+   "family": "T10",
+   "rules": [
+    "9.7.1",
+    "9.7.2",
+    "4.4.1",
+    "4.4.2",
+    "4.5.3",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_24_ordinal_publication_discrepancy_is_reported",
+   "family": "T10",
+   "rules": [
+    "4.3.4",
+    "4.3.3",
+    "5.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_25_act_without_issuance_counts_in_every_perspective",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "3.2.1",
+    "4.4.2",
+    "3.1.4",
+    "6.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_26_resolved_frame_echoes_scope_cutoff_and_interpretation",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "I-15",
+    "5.5.4",
+    "5.5.5",
+    "4.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_27_no_occurrence_time_is_a_per_property_limitation",
+   "family": "T10",
+   "rules": [
+    "9.2.2",
+    "9.2.3",
+    "4.2.4",
+    "4.3.3",
+    "9.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T10_28_cutoff_limitations_name_their_cause",
+   "family": "T10",
+   "rules": [
+    "4.6.1",
+    "9.6.1",
+    "10.3",
+    "4.4.1",
+    "4.3.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_01_wednesday_conflict_uses_each_sides_applicable_evidence",
+   "family": "T11",
+   "rules": [
+    "7.1.1",
+    "7.1.3",
+    "9.4.2",
+    "9.2.3",
+    "4.6.1",
+    "I-12",
+    "12.11"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_02_thursday_issue_answers_change_and_conflict_separately",
+   "family": "T11",
+   "rules": [
+    "7.1.1",
+    "7.1.2",
+    "9.4.1",
+    "9.4.2",
+    "5.6.2",
+    "12.11"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_03_each_property_keeps_its_own_origin",
+   "family": "T11",
+   "rules": [
+    "7.1.3",
+    "5.2.1",
+    "5.2.2",
+    "9.4.2",
+    "9.2.2",
+    "12.11"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_04_silence_explicit_empty_and_withdrawn_sides",
+   "family": "T11",
+   "rules": [
+    "7.1.4",
+    "9.4.2",
+    "5.3.1",
+    "6.7.4",
+    "5.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_05_expected_content_never_enters_submitted_comparison",
+   "family": "T11",
+   "rules": [
+    "7.1.5",
+    "9.2.2",
+    "9.2.3",
+    "9.4.2",
+    "I-6",
+    "2.4.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_06_due_work_is_visible_without_submissions",
+   "family": "T11",
+   "rules": [
+    "4.6.2",
+    "6.2.1",
+    "6.6.1",
+    "9.3.1",
+    "9.3.2",
+    "12.11"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_07_expectations_conflict_by_the_same_comparison",
+   "family": "T11",
+   "rules": [
+    "7.1.5",
+    "6.3.4",
+    "6.4.1",
+    "9.4.2",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_08_change_transitions_introduced_changed_cleared",
+   "family": "T11",
+   "rules": [
+    "5.6.2",
+    "9.4.1",
+    "5.3.1",
+    "5.3.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_09_change_transitions_withdrawn_and_reasserted",
+   "family": "T11",
+   "rules": [
+    "5.6.2",
+    "6.7.4",
+    "9.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_10_comparison_reads_record_no_stories",
+   "family": "T11",
+   "rules": [
+    "9.4.3",
+    "7.2.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_11_conflicts_apply_the_frame_interpretation",
+   "family": "T11",
+   "rules": [
+    "7.1.3",
+    "5.5.2",
+    "5.5.3",
+    "5.5.4",
+    "9.4.2",
+    "9.4.3",
+    "I-15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_12_unchanged_properties_in_the_changes_read_not_in_story_transitions",
+   "family": "T11",
+   "rules": [
+    "5.6.2",
+    "7.2.3",
+    "9.4.1",
+    "5.2.1",
+    "9.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_13_transitions_compare_classifications_not_what_happened_between",
+   "family": "T11",
+   "rules": [
+    "5.6.2",
+    "5.6.1",
+    "9.4.1",
+    "6.7.4",
+    "4.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_14_expectation_conflicts_are_pairs_in_force_and_unfulfilled_at_the_cutoff",
+   "family": "T11",
+   "rules": [
+    "9.4.2",
+    "7.1.5",
+    "7.2.6",
+    "4.5.3",
+    "6.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_15_changes_between_two_assertions_use_carry_forward_order",
+   "family": "T11",
+   "rules": [
+    "9.4.1",
+    "5.6.2",
+    "7.1.1",
+    "4.3.2",
+    "5.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_16_conflicts_are_pairwise_per_property",
+   "family": "T11",
+   "rules": [
+    "9.4.2",
+    "7.1.1",
+    "7.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_17_changes_read_with_unordered_cutoffs_returns_a_limitation",
+   "family": "T11",
+   "rules": [
+    "5.6.2",
+    "4.2.5",
+    "9.4.1",
+    "4.6.1",
+    "9.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T11_18_changes_between_two_assertions_evaluate_participant_coverage_at_the_frame_cutoff",
+   "family": "T11",
+   "rules": [
+    "9.4.1",
+    "4.4.2",
+    "4.6.1",
+    "9.7.2",
+    "5.6.2",
+    "7.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_01_no_change_review_keeps_conflict_open_and_disagreeing",
+   "family": "T12",
+   "rules": [
+    "7.4.1",
+    "7.4.2",
+    "7.4.4",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "9.4.2",
+    "3.1.3",
+    "I-11",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_02_review_leaves_independent_expectation_standing",
+   "family": "T12",
+   "rules": [
+    "7.4.3",
+    "7.4.1",
+    "6.3.1",
+    "6.6.1",
+    "6.2.1",
+    "9.3.1",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_03_ignored_story_counts_until_attention_filter_requested",
+   "family": "T12",
+   "rules": [
+    "9.5.3",
+    "9.5.5",
+    "9.5.6",
+    "9.5.2",
+    "9.5.4",
+    "6.7.7",
+    "8.4.1",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_04_withdrawn_ignore_ends_it",
+   "family": "T12",
+   "rules": [
+    "6.7.9",
+    "9.5.5",
+    "9.5.6",
+    "6.7.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_05_by_party_returns_statements_and_acts_of_party",
+   "family": "T12",
+   "rules": [
+    "9.2.4",
+    "3.1.2",
+    "3.1.3",
+    "3.2.1",
+    "3.2.2",
+    "4.6.1",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_06_reader_interpretation_reports_match_without_changing_story",
+   "family": "T12",
+   "rules": [
+    "7.2.4",
+    "9.5.1",
+    "9.5.2",
+    "5.5.3",
+    "5.5.4",
+    "9.4.2",
+    "9.4.3",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_07_change_required_review_supports_but_does_not_end_conflict",
+   "family": "T12",
+   "rules": [
+    "7.4.1",
+    "7.4.2",
+    "6.3.1",
+    "7.4.3",
+    "7.2.6",
+    "6.5.1",
+    "6.2.2",
+    "I-11",
+    "12.12"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_08_review_targeting_story_item_reviews_story",
+   "family": "T12",
+   "rules": [
+    "7.4.1",
+    "9.5.2",
+    "9.5.4",
+    "9.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_09_review_takes_effect_at_its_effective_time",
+   "family": "T12",
+   "rules": [
+    "8.4.1",
+    "9.5.2",
+    "9.5.4",
+    "7.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_10_withdrawn_conflict_review_returns_story_to_unreviewed",
+   "family": "T12",
+   "rules": [
+    "6.7.9",
+    "9.5.2",
+    "9.5.4",
+    "7.4.2",
+    "6.7.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_11_withdrawn_directive_review_ends_its_support",
+   "family": "T12",
+   "rules": [
+    "6.7.9",
+    "6.3.1",
+    "6.3.3",
+    "6.6.1",
+    "6.7.2",
+    "9.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_12_review_and_ignore_target_validation",
+   "family": "T12",
+   "rules": [
+    "10.2.6",
+    "10.2.2",
+    "9.5.6",
+    "7.4.1",
+    "2.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_13_review_and_ignore_effective_not_before_occurrence",
+   "family": "T12",
+   "rules": [
+    "10.2.7",
+    "8.4.1",
+    "9.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_14_change_required_on_change_story_requires_expectation",
+   "family": "T12",
+   "rules": [
+    "10.2.6",
+    "7.2.7",
+    "7.4.1",
+    "6.3.1",
+    "9.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_15_ignore_until_is_inclusive_and_unordered_attention_is_ambiguous",
+   "family": "T12",
+   "rules": [
+    "9.5.6",
+    "9.5.5",
+    "9.5.2",
+    "4.2.5",
+    "9.5.3",
+    "9.5.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_16_ignore_applies_to_the_story_it_targets_and_never_to_a_related_story",
+   "family": "T12",
+   "rules": [
+    "9.5.6",
+    "7.4.1",
+    "9.5.5",
+    "6.7.3",
+    "9.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_17_attention_filter_on_open_work",
+   "family": "T12",
+   "rules": [
+    "9.5.5",
+    "9.3.2",
+    "9.5.6",
+    "6.7.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T12_18_unordered_ignore_until_places_an_expectation_among_ambiguous_open_work",
+   "family": "T12",
+   "rules": [
+    "9.5.6",
+    "9.3.2",
+    "9.5.5",
+    "4.2.5",
+    "4.5.3",
+    "6.7.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_01_section_1_5_walkthrough_day_by_day",
+   "family": "T13",
+   "rules": [
+    "1.5",
+    "7.2.3",
+    "7.2.4",
+    "7.2.7",
+    "7.2.8",
+    "7.4.1",
+    "7.4.2",
+    "6.2.1",
+    "6.2.2",
+    "6.3.1",
+    "6.5.1",
+    "6.5.3",
+    "4.4.1",
+    "4.6.1",
+    "4.6.2",
+    "5.2.1",
+    "9.2.2",
+    "9.2.4",
+    "9.3.1",
+    "9.3.2",
+    "9.3.3",
+    "9.4.1",
+    "9.4.3",
+    "9.5.1",
+    "9.5.3",
+    "9.5.4",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_02_identical_replay_and_comparison_reads_open_no_story",
+   "family": "T13",
+   "rules": [
+    "8.1.2",
+    "7.2.5",
+    "7.2.8",
+    "9.4.3",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_03_unreviewed_evidence_change_adds_dated_detection",
+   "family": "T13",
+   "rules": [
+    "7.2.5",
+    "7.2.8",
+    "7.2.4",
+    "9.5.1",
+    "9.5.3",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_04_change_after_review_opens_related_story",
+   "family": "T13",
+   "rules": [
+    "7.3.1",
+    "7.2.8",
+    "7.4.5",
+    "7.5.2",
+    "9.5.1",
+    "9.5.4",
+    "I-10",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_05_backfilled_agreement_splits_story",
+   "family": "T13",
+   "rules": [
+    "7.3.3",
+    "7.3.2",
+    "7.2.6",
+    "7.2.4",
+    "7.2.8",
+    "4.2.3",
+    "8.4.1",
+    "I-5",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_06_backfilled_issuance_joins_unreviewed_stories",
+   "family": "T13",
+   "rules": [
+    "7.3.4",
+    "7.3.2",
+    "7.2.6",
+    "7.2.8",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_07_join_case_in_event_order_gives_same_account",
+   "family": "T13",
+   "rules": [
+    "7.3.4",
+    "7.2.5",
+    "7.2.8",
+    "I-5",
+    "4.2.2",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_08_backfill_after_review_opens_related_story_at_review_time",
+   "family": "T13",
+   "rules": [
+    "7.3.1",
+    "7.3.5",
+    "7.4.5",
+    "7.2.8",
+    "9.5.4",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_09_withdrawal_of_side_ends_story_and_return_opens_related",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "6.7.4",
+    "6.7.5",
+    "7.3.2",
+    "7.2.8",
+    "9.5.2",
+    "5.6.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_10_alignment_ends_story_and_return_opens_related",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "7.3.2",
+    "7.2.8",
+    "9.5.2",
+    "9.5.3",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_11_interval_from_evidence_not_detection_time",
+   "family": "T13",
+   "rules": [
+    "7.2.4",
+    "7.2.1",
+    "8.4.1",
+    "9.5.3",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_12_change_story_approval_ends_it_and_withdrawal_reopens",
+   "family": "T13",
+   "rules": [
+    "7.2.7",
+    "7.2.3",
+    "7.2.4",
+    "7.4.1",
+    "7.4.2",
+    "6.7.9",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_13_backfill_inside_reviewed_change_is_reconstructed",
+   "family": "T13",
+   "rules": [
+    "7.3.7",
+    "7.2.8",
+    "7.2.3",
+    "7.2.7",
+    "7.4.5",
+    "7.5.2",
+    "9.4.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_14_correction_shows_sides_never_disagreed",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "8.3.1",
+    "8.3.2",
+    "8.3.3",
+    "8.4.1",
+    "9.5.2",
+    "I-16",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_15_correction_aligns_later_assertion_ends_by_alignment",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "8.3.3",
+    "8.4.1",
+    "7.2.5",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_16_correction_leaving_sides_unequal_keeps_story_open",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "7.2.5",
+    "8.3.3",
+    "7.2.4",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_17_erroneous_continuation_basis_keeps_story_open",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "8.3.1",
+    "8.3.3",
+    "7.2.5",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_18_correction_leaving_side_without_value_ends_story_then",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "8.3.3",
+    "6.7.4",
+    "5.6.1",
+    "9.5.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_19_corrected_ending_of_reviewed_story_records_boundary",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "7.3.5",
+    "7.3.1",
+    "7.2.8",
+    "8.3.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_20_corrected_ending_of_unreviewed_story_joins_stories",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "7.3.4",
+    "7.2.8",
+    "9.5.2",
+    "9.5.3",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_21_withdrawn_review_then_change_continues_latest_story",
+   "family": "T13",
+   "rules": [
+    "6.7.9",
+    "7.3.1",
+    "7.2.5",
+    "7.2.8",
+    "9.5.2",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_22_a_normalization_ends_a_story_from_its_effective_time",
+   "family": "T13",
+   "rules": [
+    "7.3.8",
+    "7.2.4",
+    "7.2.6",
+    "7.6.5",
+    "8.4.1",
+    "5.5.5",
+    "7.5.1",
+    "9.5.1",
+    "9.8.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_23_tied_revision_after_review_by_after_opens_related_story",
+   "family": "T13",
+   "rules": [
+    "7.3.6",
+    "4.5.2",
+    "7.3.1",
+    "4.5.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_24_tied_review_after_revision_by_after_covers_revision",
+   "family": "T13",
+   "rules": [
+    "7.3.6",
+    "4.5.2",
+    "7.2.5",
+    "7.4.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_25_tied_revision_without_after_treated_as_after_review",
+   "family": "T13",
+   "rules": [
+    "7.3.1",
+    "7.3.6",
+    "4.5.3",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_26_expectation_conflict_story_ends_by_fulfillment",
+   "family": "T13",
+   "rules": [
+    "7.1.5",
+    "7.2.2",
+    "7.2.4",
+    "7.2.6",
+    "6.3.4",
+    "6.5.1",
+    "9.4.2",
+    "9.5.2",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_27_expectation_conflict_story_ends_when_side_withdrawn",
+   "family": "T13",
+   "rules": [
+    "7.1.5",
+    "7.2.6",
+    "6.7.2",
+    "6.6.1",
+    "9.5.2",
+    "12.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_28_detections_and_reconciliations_cannot_be_withdrawn",
+   "family": "T13",
+   "rules": [
+    "10.2.6",
+    "6.7.9",
+    "7.2.1",
+    "7.3.8",
+    "7.7.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_29_family_counted_once_superseded_story_keeps_its_standing",
+   "family": "T13",
+   "rules": [
+    "9.5.3",
+    "9.5.4",
+    "7.3.1",
+    "6.7.9",
+    "9.5.2",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_30_review_revision_tie_makes_the_related_story_ambiguous",
+   "family": "T13",
+   "rules": [
+    "7.3.6",
+    "7.3.1",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "4.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_31_generated_relates_to_cites_the_first_detection",
+   "family": "T13",
+   "rules": [
+    "7.3.1",
+    "7.2.1",
+    "7.2.5",
+    "7.4.1",
+    "7.2.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_32_story_before_its_interval_begins_is_not_started",
+   "family": "T13",
+   "rules": [
+    "9.5.2",
+    "7.2.4",
+    "4.6.1",
+    "9.5.3",
+    "9.5.4",
+    "4.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_33_stories_whose_sides_never_disagreed_have_an_empty_interval",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "7.3.8",
+    "9.5.2",
+    "8.3.3",
+    "8.4.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_34_correction_leaving_a_side_without_value_ends_the_story_by_correction",
+   "family": "T13",
+   "rules": [
+    "7.2.6",
+    "8.3.3",
+    "6.7.4",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_35_no_continuation_for_evidence_that_occurred_before_the_story_was_recorded",
+   "family": "T13",
+   "rules": [
+    "7.2.8",
+    "7.2.5",
+    "7.2.4",
+    "9.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_36_generated_split_records_and_related_stories_both_ways",
+   "family": "T13",
+   "rules": [
+    "7.3.3",
+    "7.2.8",
+    "7.3.1",
+    "9.5.1",
+    "8.4.1",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_37_join_reconciliation_content_and_continuation_on_the_representative",
+   "family": "T13",
+   "rules": [
+    "7.3.4",
+    "7.2.8",
+    "7.2.5",
+    "9.5.2",
+    "12.13"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_38_correcting_a_change_story_needs_no_reconciliation",
+   "family": "T13",
+   "rules": [
+    "7.2.7",
+    "7.3.7",
+    "7.2.8",
+    "9.5.1",
+    "8.3.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_39_story_reads_of_malformed_detections_are_limitations",
+   "family": "T13",
+   "rules": [
+    "9.6.1",
+    "7.2.2",
+    "7.1.5",
+    "9.5.3",
+    "10.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_40_every_open_change_story_is_listed_and_counted_including_a_related_change_story",
+   "family": "T13",
+   "rules": [
+    "9.5.3",
+    "9.5.4",
+    "7.3.7",
+    "7.2.7",
+    "7.2.8",
+    "7.2.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_41_tied_interval_starts_in_one_family_choose_no_latest_story",
+   "family": "T13",
+   "rules": [
+    "9.5.3",
+    "9.5.4",
+    "4.5.3",
+    "4.2.5",
+    "7.2.2",
+    "7.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T13_42_stories_tied_for_latest_are_ambiguous_and_earlier_stories_superseded",
+   "family": "T13",
+   "rules": [
+    "9.5.3",
+    "9.5.4",
+    "4.5.3",
+    "4.2.5",
+    "7.3.1",
+    "7.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_01_review_basis_kept_after_backfilled_agreement",
+   "family": "T14",
+   "rules": [
+    "7.4.5",
+    "7.5.1",
+    "7.5.2",
+    "7.3.5",
+    "7.2.6",
+    "8.4.1",
+    "9.8.1",
+    "12.14"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_02_participant_not_assumed_to_have_undistributed_evidence",
+   "family": "T14",
+   "rules": [
+    "7.5.3",
+    "4.6.1",
+    "4.6.3",
+    "4.4.2",
+    "9.7.2",
+    "6.5.1",
+    "12.14"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_03_instruction_reconstructable_from_minutes",
+   "family": "T14",
+   "rules": [
+    "3.2.1",
+    "3.2.3",
+    "3.1.3",
+    "3.1.1",
+    "9.2.4",
+    "7.5.1",
+    "6.3.1",
+    "2.3.1",
+    "12.14"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_04_a_story_is_compared_under_its_interpretation_not_the_readers",
+   "family": "T14",
+   "rules": [
+    "7.2.4",
+    "7.2.6",
+    "7.3.8",
+    "5.5.5",
+    "7.5.1",
+    "4.6.1",
+    "9.5.1",
+    "9.4.2",
+    "9.4.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_05_participant_results_list_what_the_perspective_excluded",
+   "family": "T14",
+   "rules": [
+    "4.6.1",
+    "9.7.2",
+    "4.4.2",
+    "9.2.2",
+    "7.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_06_backfilled_alignment_before_review_records_a_boundary_and_opens_no_story",
+   "family": "T14",
+   "rules": [
+    "7.3.5",
+    "7.3.1",
+    "7.2.8",
+    "7.4.5",
+    "12.14"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T14_07_exact_read_of_an_act_reports_later_changes_to_its_question",
+   "family": "T14",
+   "rules": [
+    "9.8.1",
+    "8.3.6",
+    "7.5.1",
+    "7.5.2",
+    "5.5.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_01_identical_reimport_is_noop",
+   "family": "T15",
+   "rules": [
+    "8.1.2",
+    "5.3.2",
+    "5.5.1",
+    "5.1.3",
+    "I-8",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_02_changed_content_at_occupied_triple_rejected",
+   "family": "T15",
+   "rules": [
+    "8.1.3",
+    "10.2.1",
+    "8.1.2",
+    "5.5.3",
+    "I-8",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_03_genuine_revision_is_new_assertion_at_new_context",
+   "family": "T15",
+   "rules": [
+    "8.1.4",
+    "8.2.1",
+    "5.2.1",
+    "9.4.1",
+    "9.2.4",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_04_replace_correction_restores_dropped_member_at_every_cutoff",
+   "family": "T15",
+   "rules": [
+    "8.3.1",
+    "8.3.2",
+    "8.3.3",
+    "8.3.5",
+    "8.3.6",
+    "8.2.2",
+    "9.2.1",
+    "9.2.3",
+    "7.2.6",
+    "I-16",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_05_erroneous_correction_exposes_earlier_assertion",
+   "family": "T15",
+   "rules": [
+    "8.3.1",
+    "8.3.3",
+    "8.3.2",
+    "9.2.1",
+    "I-16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_06_latest_correction_applies_and_corrections_are_correctable",
+   "family": "T15",
+   "rules": [
+    "8.3.4",
+    "8.3.3",
+    "8.3.1",
+    "9.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_07_tied_corrections_ambiguous_unless_ordered_by_after",
+   "family": "T15",
+   "rules": [
+    "8.3.4",
+    "4.5.2",
+    "4.5.3",
+    "5.6.1",
+    "9.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_08_relocated_instruction_limits_standing_until_support_corrected",
+   "family": "T15",
+   "rules": [
+    "8.3.1",
+    "8.3.7",
+    "9.6.1",
+    "9.3.1",
+    "9.3.2",
+    "9.3.3",
+    "8.3.3",
+    "2.4.1",
+    "3.3.1",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_09_correction_validation_and_never_withdrawn_records",
+   "family": "T15",
+   "rules": [
+    "10.2.5",
+    "10.2.2",
+    "10.2.6",
+    "6.7.9",
+    "8.3.1",
+    "8.3.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_10_duplicate_without_dependents_removed_and_triple_freed",
+   "family": "T15",
+   "rules": [
+    "8.5.1",
+    "8.5.3",
+    "8.5.4",
+    "8.5.5",
+    "8.5.6",
+    "9.2.1",
+    "I-8",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_11_wrong_value_removed_and_true_value_rewritten",
+   "family": "T15",
+   "rules": [
+    "8.5.1",
+    "8.5.3",
+    "8.5.4",
+    "8.5.5",
+    "8.2.1",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_12_entry_cited_by_review_refused_then_corrected",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.3.1",
+    "8.3.6",
+    "9.2.1",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_13_fulfilling_evidence_refused_then_corrected",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "6.5.1",
+    "6.5.2",
+    "8.3.3",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_14_sole_support_of_fulfilled_expectation_refused",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.1",
+    "6.3.1",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_15_publication_with_assertions_at_milestone_refused",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.6",
+    "4.2.4",
+    "4.4.1",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_16_withdrawal_ending_a_story_refused",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.1",
+    "7.2.6",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_17_confirm_after_intervening_change_is_stale",
+   "family": "T15",
+   "rules": [
+    "8.5.4",
+    "8.5.3",
+    "8.5.2",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_18_cancelled_plan_leaves_record_and_unknown_plan_rejected",
+   "family": "T15",
+   "rules": [
+    "8.5.4",
+    "8.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_19_item_removal_requires_no_involvement",
+   "family": "T15",
+   "rules": [
+    "8.5.6",
+    "8.5.2",
+    "8.5.3",
+    "8.5.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_20_item_definition_corrected_and_validated",
+   "family": "T15",
+   "rules": [
+    "8.3.8",
+    "8.1.5",
+    "4.1.2",
+    "10.2.5",
+    "10.2.3",
+    "8.3.3",
+    "4.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_21_reference_to_erroneous_original_has_no_effect",
+   "family": "T15",
+   "rules": [
+    "8.3.7",
+    "8.3.3",
+    "2.4.1",
+    "6.7.4",
+    "5.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_22_plan_lifecycle_ends_on_confirm_or_cancel_and_revalidates_examined_records",
+   "family": "T15",
+   "rules": [
+    "8.5.4",
+    "8.5.3",
+    "8.5.2",
+    "8.5.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_23_context_corrected_to_no_context_leaves_its_statements_without_occurrence_time",
+   "family": "T15",
+   "rules": [
+    "4.2.4",
+    "8.3.8",
+    "9.2.2",
+    "9.6.1",
+    "10.2.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_24_item_read_returns_recorded_and_corrected_item",
+   "family": "T15",
+   "rules": [
+    "8.3.8",
+    "9.2.1",
+    "8.3.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_25_exact_read_lists_corrections_and_the_applicable_one",
+   "family": "T15",
+   "rules": [
+    "9.2.1",
+    "8.3.2",
+    "8.3.3",
+    "8.3.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_26_relocation_limitations_name_correction_and_record",
+   "family": "T15",
+   "rules": [
+    "8.3.7",
+    "9.6.1",
+    "9.3.1",
+    "9.3.2",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_27_dependents_are_a_sorted_set_of_every_kind",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.6",
+    "7.6.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T15_28_impact_test_covers_unnamed_participants_and_sole_detections",
+   "family": "T15",
+   "rules": [
+    "8.5.2",
+    "8.5.3",
+    "4.6.1",
+    "4.4.2",
+    "7.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_01_disconnect_and_reconnect_one_connection",
+   "family": "T16",
+   "rules": [
+    "8.6.1",
+    "8.6.2",
+    "8.6.3",
+    "8.6.4",
+    "2.2.1",
+    "2.2.3",
+    "2.2.4",
+    "9.9.1",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_02_second_cycle_history_reconstructed_from_acts",
+   "family": "T16",
+   "rules": [
+    "8.6.3",
+    "8.6.4",
+    "2.2.4",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_03_erroneous_disconnect_correction_rederives_state",
+   "family": "T16",
+   "rules": [
+    "8.6.6",
+    "8.3.1",
+    "8.3.2",
+    "8.3.3",
+    "9.2.1",
+    "10.2.8",
+    "6.7.9",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_04_lifecycle_acts_validated_against_derived_state_at_occurrence",
+   "family": "T16",
+   "rules": [
+    "10.2.8",
+    "10.2.2",
+    "8.6.6",
+    "8.6.2",
+    "8.6.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_05_backfilled_lifecycle_acts_rederive_history",
+   "family": "T16",
+   "rules": [
+    "8.6.6",
+    "8.6.4",
+    "4.2.2",
+    "I-5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_06_existing_pair_create_is_a_noop",
+   "family": "T16",
+   "rules": [
+    "2.2.1",
+    "8.6.1",
+    "8.6.3",
+    "I-4",
+    "10.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_07_misrecorded_connected_at_is_corrected",
+   "family": "T16",
+   "rules": [
+    "8.3.9",
+    "8.6.6",
+    "8.3.3",
+    "8.6.1",
+    "10.2.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_08_scope_follows_connections_forward",
+   "family": "T16",
+   "rules": [
+    "2.1.5",
+    "2.2.3",
+    "9.1.1",
+    "9.3.2",
+    "9.9.1",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_09_scope_cycle_adds_nothing_further",
+   "family": "T16",
+   "rules": [
+    "2.1.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_10_disconnection_leaves_later_scope_and_ends_no_expectation",
+   "family": "T16",
+   "rules": [
+    "2.1.5",
+    "8.6.2",
+    "8.6.4",
+    "8.6.5",
+    "8.7.2",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_11_connection_created_later_is_not_in_earlier_scope",
+   "family": "T16",
+   "rules": [
+    "2.1.5",
+    "8.6.1",
+    "8.6.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_12_unrelated_scopes_never_compare",
+   "family": "T16",
+   "rules": [
+    "2.1.4",
+    "2.1.5",
+    "9.1.1",
+    "12.1",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_13_renumbering_keeps_identity",
+   "family": "T16",
+   "rules": [
+    "2.1.4",
+    "8.7.1",
+    "7.1.1",
+    "9.4.1",
+    "9.4.2",
+    "12.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_14_retirement_omission_and_disconnection_withdraw_nothing",
+   "family": "T16",
+   "rules": [
+    "8.7.2",
+    "8.7.3",
+    "8.6.5",
+    "6.7.4",
+    "5.2.1",
+    "5.2.3",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_15_references_in_values_create_no_connections",
+   "family": "T16",
+   "rules": [
+    "2.4.6",
+    "9.9.1",
+    "2.1.5",
+    "5.1.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_16_scope_item_is_a_member_of_its_own_scope",
+   "family": "T16",
+   "rules": [
+    "2.1.5",
+    "9.1.1",
+    "9.3.2",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_17_exact_read_of_a_connection_returns_materialized_and_derived_state",
+   "family": "T16",
+   "rules": [
+    "9.2.1",
+    "2.2.4",
+    "8.6.2",
+    "8.6.3",
+    "8.6.6",
+    "8.3.9",
+    "12.16"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T16_18_adjacency_history_at_a_past_cutoff",
+   "family": "T16",
+   "rules": [
+    "9.9.1",
+    "8.6.4",
+    "8.6.6",
+    "9.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_01_round_trip_values",
+   "family": "T17",
+   "rules": [
+    "5.1.1",
+    "5.1.3",
+    "2.4.1",
+    "2.4.2",
+    "2.4.3",
+    "2.4.5",
+    "10.4.2",
+    "9.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_02_round_trip_instants_every_precision",
+   "family": "T17",
+   "rules": [
+    "4.2.1",
+    "5.1.3",
+    "8.1.5",
+    "4.4.1",
+    "8.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_03_exact_numbers",
+   "family": "T17",
+   "rules": [
+    "5.1.2",
+    "5.1.3",
+    "5.5.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_04_unknown_action_counts_as_nothing",
+   "family": "T17",
+   "rules": [
+    "10.4.1",
+    "10.4.2",
+    "10.2.4",
+    "9.2.2",
+    "6.3.1",
+    "6.7.4",
+    "8.1.2",
+    "12.17"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_05_undefined_reserved_members_are_not_properties",
+   "family": "T17",
+   "rules": [
+    "10.4.1",
+    "10.4.2",
+    "10.2.4",
+    "2.4.4",
+    "2.4.7",
+    "5.2.4",
+    "9.2.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_06_extension_members_in_definition_preserved",
+   "family": "T17",
+   "rules": [
+    "10.4.1",
+    "10.4.2",
+    "8.1.5",
+    "2.1.2",
+    "4.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_07_new_kinds_properties_and_shapes_supported",
+   "family": "T17",
+   "rules": [
+    "10.4.3",
+    "3.3.4",
+    "2.1.6",
+    "5.1.1",
+    "9.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_08_unknown_action_is_not_a_review_or_ending",
+   "family": "T17",
+   "rules": [
+    "10.4.2",
+    "7.2.7",
+    "7.4.1",
+    "9.5.1",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_09_reads_report_extension_records_as_unsupported",
+   "family": "T17",
+   "rules": [
+    "10.4.2",
+    "9.6.1",
+    "10.4.1",
+    "12.17"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_10_declared_reference_extension_refuses_removal",
+   "family": "T17",
+   "rules": [
+    "10.4.4",
+    "8.5.2",
+    "8.5.3",
+    "10.3",
+    "10.5.3",
+    "12.17"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_11_number_bound_measures_the_value_not_the_spelling",
+   "family": "T17",
+   "rules": [
+    "5.1.2",
+    "5.1.3",
+    "5.5.1",
+    "10.2.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T17_12_declared_reference_extension_refuses_item_removal_while_any_record_carries_it",
+   "family": "T17",
+   "rules": [
+    "10.4.4",
+    "10.3",
+    "8.5.3",
+    "8.5.2",
+    "8.5.6",
+    "12.17"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_01_conflict_story_begin_and_end_acts",
+   "family": "T18",
+   "rules": [
+    "7.6.1",
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "7.6.6",
+    "7.6.7",
+    "7.6.8",
+    "7.6.9",
+    "7.6.14",
+    "9.5.1",
+    "9.5.7",
+    "9.5.8",
+    "I-17",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_02_change_story_begin_and_end_acts",
+   "family": "T18",
+   "rules": [
+    "7.6.1",
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "7.6.7",
+    "7.6.9",
+    "7.2.7",
+    "7.6.14",
+    "9.5.1",
+    "9.5.7",
+    "9.2.1",
+    "8.5.2",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_03_expectation_property_begin_and_end_acts",
+   "family": "T18",
+   "rules": [
+    "7.6.1",
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "7.6.6",
+    "7.6.7",
+    "7.6.9",
+    "6.3.3",
+    "6.5.1",
+    "9.3.1",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_04_expectation_act_names_escape_reserved_characters",
+   "family": "T18",
+   "rules": [
+    "7.6.7",
+    "7.6.5",
+    "6.5.4",
+    "9.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_05_conflict_story_ends_by_withdrawal_and_by_fulfillment_of_an_expectation_side",
+   "family": "T18",
+   "rules": [
+    "7.6.4",
+    "7.6.5",
+    "7.2.6",
+    "7.2.4",
+    "7.6.9",
+    "7.1.5",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_06_expectation_property_ends_by_withdrawal",
+   "family": "T18",
+   "rules": [
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "6.3.2",
+    "6.7.2",
+    "6.6.1",
+    "9.3.1",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_07_split_revises_the_ending_and_records_the_successors_transitions",
+   "family": "T18",
+   "rules": [
+    "7.6.11",
+    "7.6.10",
+    "7.6.9",
+    "7.3.3",
+    "7.6.6",
+    "7.6.14",
+    "9.5.1",
+    "9.5.7",
+    "9.5.8",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_08_join_revises_the_apparent_ending_and_the_continued_story_to_null",
+   "family": "T18",
+   "rules": [
+    "7.6.11",
+    "7.6.10",
+    "7.6.6",
+    "7.6.14",
+    "7.3.4",
+    "9.5.2",
+    "9.5.3",
+    "9.5.7",
+    "9.5.8",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_09_boundary_revises_the_reviewed_storys_end_act",
+   "family": "T18",
+   "rules": [
+    "7.6.11",
+    "7.6.10",
+    "7.3.5",
+    "7.2.6",
+    "7.6.9",
+    "9.5.3",
+    "9.5.7",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_10_correction_showing_no_disagreement_revises_the_begin_act_to_null",
+   "family": "T18",
+   "rules": [
+    "7.6.12",
+    "7.6.10",
+    "7.6.6",
+    "7.6.5",
+    "7.2.6",
+    "8.3.3",
+    "9.5.2",
+    "9.5.8",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_11_a_normalization_revises_recorded_transitions",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "7.6.10",
+    "7.6.5",
+    "7.2.6",
+    "7.2.4",
+    "8.4.1",
+    "9.5.2",
+    "9.5.7",
+    "9.5.8",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_12_withdrawn_approval_reopens_a_change_story_with_a_new_period",
+   "family": "T18",
+   "rules": [
+    "7.6.2",
+    "7.6.4",
+    "7.6.9",
+    "7.2.7",
+    "6.7.9",
+    "7.6.14",
+    "9.5.1",
+    "9.5.4",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_13_new_period_after_withdrawal_terminal_fulfillment_and_an_ending_revised_ahead_of_its_time",
+   "family": "T18",
+   "rules": [
+    "7.6.2",
+    "7.6.3",
+    "7.6.5",
+    "7.6.9",
+    "7.6.10",
+    "6.3.3",
+    "6.5.2",
+    "6.6.1",
+    "6.7.2",
+    "9.3.1",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_14_withdrawal_with_a_later_effective_time_records_its_end_now",
+   "family": "T18",
+   "rules": [
+    "7.6.3",
+    "7.6.5",
+    "7.6.8",
+    "7.6.9",
+    "6.7.5",
+    "8.4.1",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_15_milestone_publication_revises_a_limitation_beginning_of_a_story",
+   "family": "T18",
+   "rules": [
+    "7.6.6",
+    "7.6.9",
+    "7.6.10",
+    "4.2.4",
+    "4.4.1",
+    "9.5.3",
+    "9.5.7",
+    "9.6.1",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_16_milestone_publication_fulfils_an_at_milestone_expectation",
+   "family": "T18",
+   "rules": [
+    "7.6.9",
+    "7.6.5",
+    "7.6.3",
+    "6.2.1",
+    "6.5.1",
+    "4.4.1",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_17_eligibility_sourced_expectation_and_a_criteria_change",
+   "family": "T18",
+   "rules": [
+    "7.6.1",
+    "7.6.7",
+    "7.6.9",
+    "6.1.3",
+    "3.3.2",
+    "6.5.1",
+    "9.3.1",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_18_what_remains_on_the_section_1_5_example_at_each_rows_cutoff",
+   "family": "T18",
+   "rules": [
+    "1.5",
+    "9.5.7",
+    "7.6.4",
+    "7.6.5",
+    "7.6.9",
+    "7.6.15",
+    "7.6.14",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_19_what_remains_nesting_parents_children_and_succession",
+   "family": "T18",
+   "rules": [
+    "7.6.15",
+    "9.5.7",
+    "7.7.4",
+    "7.4.1",
+    "7.3.1",
+    "6.3.3",
+    "9.3.2",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_20_what_remains_counts_by_kind_and_counts_a_family_once",
+   "family": "T18",
+   "rules": [
+    "9.5.7",
+    "9.5.3",
+    "9.3.2",
+    "7.6.1",
+    "7.6.14",
+    "7.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_21_what_remains_returns_a_family_tie_among_ambiguous_entries",
+   "family": "T18",
+   "rules": [
+    "9.5.7",
+    "9.5.3",
+    "4.5.3",
+    "7.6.1",
+    "7.6.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_22_relocated_expectation_is_a_limitation_entry_until_its_support_is_corrected",
+   "family": "T18",
+   "rules": [
+    "7.6.2",
+    "7.6.6",
+    "7.6.10",
+    "8.3.7",
+    "8.3.1",
+    "9.5.7",
+    "9.6.1",
+    "12.15"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_23_what_remains_applies_the_attention_filter_only_when_requested",
+   "family": "T18",
+   "rules": [
+    "9.5.7",
+    "9.5.5",
+    "9.5.6",
+    "6.7.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_24_fixture_policy_approval_and_mirrored_endings",
+   "family": "T18",
+   "rules": [
+    "7.7.1",
+    "7.7.2",
+    "7.7.5",
+    "7.6.5",
+    "7.6.9",
+    "7.6.14",
+    "9.5.1",
+    "9.3.1",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_25_fixture_policy_keeps_a_directed_change_open_until_its_expectation_is_fulfilled",
+   "family": "T18",
+   "rules": [
+    "7.7.4",
+    "7.7.5",
+    "7.6.5",
+    "7.6.14",
+    "9.5.1",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_26_fixture_policy_closes_a_directed_change_when_its_expectation_is_withdrawn",
+   "family": "T18",
+   "rules": [
+    "7.7.4",
+    "7.7.5",
+    "7.6.5",
+    "6.7.2",
+    "9.5.1",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_27_fixture_policy_withdrawn_directive_ends_the_period_by_withdrawal_and_reopens_the_story",
+   "family": "T18",
+   "rules": [
+    "7.7.5",
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "6.7.9",
+    "7.2.7",
+    "9.5.2",
+    "9.5.4",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_28_adopt_policy_takes_effect_when_made",
+   "family": "T18",
+   "rules": [
+    "7.7.2",
+    "7.7.3",
+    "7.7.4",
+    "7.6.9",
+    "7.6.14",
+    "8.4.1",
+    "9.5.1",
+    "9.5.7",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_29_unimplemented_policy_ends_a_conflict_story_that_still_disagrees",
+   "family": "T18",
+   "rules": [
+    "7.7.1",
+    "7.7.2",
+    "7.7.4",
+    "7.7.5",
+    "7.6.7",
+    "7.6.14",
+    "10.2.9",
+    "10.2.7",
+    "9.5.2",
+    "9.5.8",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_30_a_fulfilled_property_stays_open_work_while_its_policy_keeps_it_open",
+   "family": "T18",
+   "rules": [
+    "7.7.4",
+    "7.7.5",
+    "7.6.13",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_31_an_expectations_own_interpretation_governs_its_recorded_fulfillment",
+   "family": "T18",
+   "rules": [
+    "7.6.13",
+    "7.6.14",
+    "7.6.5",
+    "7.3.8",
+    "6.5.1",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "4.1.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_32_explicit_baseline_begin_and_end_acts_are_validated_against_the_derivation",
+   "family": "T18",
+   "rules": [
+    "10.2.9",
+    "7.6.4",
+    "7.6.5",
+    "7.6.6",
+    "8.1.2",
+    "10.2.4",
+    "I-17",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_33_revise_adopt_policy_and_policy_keys_are_validated",
+   "family": "T18",
+   "rules": [
+    "10.2.9",
+    "7.6.10",
+    "7.7.2",
+    "7.7.3",
+    "7.7.5",
+    "10.2.4",
+    "10.2.3",
+    "4.1.1",
+    "5.5.5",
+    "2.4.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_34_begin_end_and_revise_records_are_never_withdrawn_corrected_or_removed",
+   "family": "T18",
+   "rules": [
+    "6.7.9",
+    "7.6.8",
+    "10.2.6",
+    "10.2.9",
+    "8.5.2",
+    "8.5.3",
+    "9.2.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_35_exact_reads_list_begin_and_end_acts_as_dependents",
+   "family": "T18",
+   "rules": [
+    "9.2.1",
+    "8.5.2",
+    "8.5.3",
+    "7.6.4",
+    "7.6.5",
+    "2.4.5"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_36_a_beginning_tied_with_a_review_carries_tied",
+   "family": "T18",
+   "rules": [
+    "7.6.6",
+    "7.6.3",
+    "7.3.6",
+    "7.3.1",
+    "9.5.3",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_37_an_ignore_ends_nothing_under_any_policy_and_a_policy_end_act_citing_one_is_rejected",
+   "family": "T18",
+   "rules": [
+    "7.7.4",
+    "7.7.5",
+    "10.2.9",
+    "9.5.6",
+    "9.5.5",
+    "6.7.7",
+    "7.6.10",
+    "7.6.14",
+    "9.5.7",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_38_backfill_that_leaves_a_change_story_changing_no_property_ends_it_reconstructed_with_no_period",
+   "family": "T18",
+   "rules": [
+    "7.3.7",
+    "7.2.7",
+    "7.6.2",
+    "7.6.5",
+    "7.6.6",
+    "7.6.11",
+    "7.6.12",
+    "7.2.8",
+    "9.5.1",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "9.5.7",
+    "4.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_39_a_reviewed_change_story_left_changing_no_property_keeps_its_review_and_never_reopens",
+   "family": "T18",
+   "rules": [
+    "7.3.7",
+    "7.6.12",
+    "7.6.10",
+    "7.6.2",
+    "7.6.5",
+    "7.2.7",
+    "6.7.9",
+    "7.4.5",
+    "9.5.2",
+    "9.5.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_40_a_change_story_reopens_only_when_no_other_review_remains_in_effect",
+   "family": "T18",
+   "rules": [
+    "6.7.9",
+    "7.2.7",
+    "7.6.2",
+    "7.6.4",
+    "7.6.9",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "9.5.7"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_41_a_storys_transitions_under_an_unavailable_interpretation_are_read_as_recorded_and_unverified",
+   "family": "T18",
+   "rules": [
+    "7.6.14",
+    "7.6.9",
+    "9.5.8",
+    "I-17",
+    "10.2.9",
+    "7.3.8",
+    "8.5.2",
+    "9.5.1",
+    "9.5.2",
+    "5.5.3"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_42_an_expectations_transitions_under_an_unavailable_interpretation_are_read_as_recorded_and_unverified",
+   "family": "T18",
+   "rules": [
+    "7.6.14",
+    "7.6.13",
+    "7.6.9",
+    "9.5.8",
+    "I-17",
+    "10.2.9",
+    "9.3.1",
+    "9.5.7",
+    "7.6.10",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_43_a_normalization_ends_the_open_stories_whose_sides_it_matches_at_its_effective_time",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "7.2.6",
+    "7.2.4",
+    "7.6.5",
+    "4.6.1",
+    "4.6.3",
+    "5.5.4",
+    "8.4.1",
+    "9.4.2",
+    "9.5.1",
+    "9.5.2",
+    "9.5.7",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_44_after_a_normalization_values_equal_under_it_are_neither_a_conflict_nor_a_change",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "5.5.4",
+    "9.4.1",
+    "9.4.2",
+    "7.2.6",
+    "7.2.7",
+    "7.6.12",
+    "9.5.2",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_45_a_change_story_whose_revision_a_normalization_leaves_changing_nothing_ends_and_does_not_reopen",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "7.2.7",
+    "7.6.2",
+    "7.6.5",
+    "6.7.9",
+    "9.5.2",
+    "9.5.4",
+    "9.5.7",
+    "9.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_46_evidence_that_meets_a_requirement_only_under_a_normalization_fulfils_it_from_then",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "6.5.1",
+    "6.6.1",
+    "7.6.5",
+    "7.6.13",
+    "7.6.14",
+    "9.3.1",
+    "9.3.2",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_47_a_later_normalization_supersedes_an_earlier_one_from_its_own_effective_time",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "7.2.6",
+    "7.3.2",
+    "7.6.4",
+    "6.5.2",
+    "4.6.1",
+    "9.5.7",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_48_a_normalization_applies_to_the_members_of_its_scope_at_each_instant",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "2.1.5",
+    "4.6.1",
+    "7.2.8",
+    "7.6.4",
+    "7.6.9",
+    "8.6.4",
+    "9.10.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_49_the_interpretation_in_force_is_ambiguous_only_when_normalizations_that_apply_differ",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "4.6.1",
+    "4.5.3",
+    "7.6.6",
+    "9.6.1",
+    "5.5.4",
+    "9.4.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_50_a_requirement_begun_by_the_review_of_one_story_has_its_records_on_that_story",
+   "family": "T18",
+   "rules": [
+    "7.6.7",
+    "7.6.15",
+    "7.6.9",
+    "7.6.10",
+    "9.5.7",
+    "9.3.1",
+    "1.5",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_51_adopt_policy_takes_effect_when_made_and_earlier_endings_stand",
+   "family": "T18",
+   "rules": [
+    "7.7.2",
+    "7.7.3",
+    "7.6.14",
+    "8.4.1",
+    "9.5.1",
+    "9.5.3",
+    "9.5.7",
+    "2.4.4",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_52_evidence_at_an_unpublished_milestone_records_no_ending_until_the_milestone_is_published",
+   "family": "T18",
+   "rules": [
+    "6.5.5",
+    "7.6.6",
+    "4.2.4",
+    "6.2.1",
+    "6.5.4",
+    "7.6.9",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_53_a_beginning_tied_with_a_review_cites_the_disagreeing_document",
+   "family": "T18",
+   "rules": [
+    "7.6.4",
+    "7.6.6",
+    "7.3.1",
+    "7.3.6",
+    "9.5.1",
+    "9.5.7",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_54_a_transition_caused_by_several_records_at_one_instant_cites_every_one",
+   "family": "T18",
+   "rules": [
+    "7.6.6",
+    "7.6.4",
+    "7.6.5",
+    "6.5.1",
+    "7.2.6",
+    "9.3.1",
+    "9.5.1",
+    "12.19"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_55_an_explicit_end_act_naming_the_fixture_policy_is_checked_against_its_derivation",
+   "family": "T18",
+   "rules": [
+    "7.7.5",
+    "10.2.9",
+    "7.6.5",
+    "7.6.10",
+    "8.1.2",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_56_withdrawing_one_of_two_reviews_leaves_a_conflict_story_reviewed_and_closed_to_continuation",
+   "family": "T18",
+   "rules": [
+    "7.3.1",
+    "6.7.9",
+    "7.2.5",
+    "7.2.8",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_57_a_normalization_is_validated_on_write_and_never_withdrawn",
+   "family": "T18",
+   "rules": [
+    "10.2.4",
+    "10.2.6",
+    "10.2.7",
+    "7.3.8",
+    "8.4.1",
+    "2.4.4",
+    "6.7.9",
+    "8.3.1",
+    "10.4.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_58_in_a_participant_perspective_a_normalization_counts_once_its_issuance_is_distributed",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "4.6.1",
+    "4.4.2",
+    "7.6.14",
+    "9.4.2",
+    "9.7.2"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_59_a_policy_that_governs_again_ends_a_period_from_the_start_of_its_latest_governance",
+   "family": "T18",
+   "rules": [
+    "7.7.2",
+    "7.7.3",
+    "7.6.14",
+    "7.7.5",
+    "9.5.1",
+    "9.5.8"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_60_a_requirement_keeps_its_own_interpretation_under_a_project_normalization",
+   "family": "T18",
+   "rules": [
+    "7.6.13",
+    "7.6.14",
+    "7.3.8",
+    "5.5.3",
+    "9.3.1",
+    "9.3.2",
+    "9.3.3",
+    "9.5.7",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_61_two_expectations_are_compared_under_their_own_interpretations",
+   "family": "T18",
+   "rules": [
+    "7.2.4",
+    "7.1.5",
+    "7.3.8",
+    "9.4.2",
+    "7.6.12",
+    "7.6.5",
+    "7.6.6",
+    "9.5.1",
+    "9.5.2",
+    "9.6.1",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_62_a_reversal_of_the_interpretation_in_force_reopens_review_as_a_related_change_story",
+   "family": "T18",
+   "rules": [
+    "7.3.8",
+    "7.2.7",
+    "7.2.3",
+    "7.2.8",
+    "7.6.2",
+    "7.6.4",
+    "7.6.12",
+    "7.6.15",
+    "9.5.1",
+    "9.5.3",
+    "9.5.4",
+    "9.5.7",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_63_a_normalization_naming_an_interpretation_the_reference_lacks_is_refused",
+   "family": "T18",
+   "rules": [
+    "10.2.9",
+    "7.3.8",
+    "10.3",
+    "12.17",
+    "8.1.2",
+    "10.2.2",
+    "8.3.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_64_a_frame_requesting_literal_comparison_computes_literally_after_a_normalization",
+   "family": "T18",
+   "rules": [
+    "4.6.1",
+    "7.3.8",
+    "5.5.3",
+    "5.5.4",
+    "7.6.14",
+    "9.3.1",
+    "9.3.2",
+    "9.4.1",
+    "9.4.2",
+    "9.5.1",
+    "9.5.7",
+    "I-15",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_65_a_story_with_no_period_through_a_normalization_reads_not_started_before_its_since",
+   "family": "T18",
+   "rules": [
+    "7.6.12",
+    "7.6.5",
+    "7.6.6",
+    "7.6.14",
+    "7.2.6",
+    "7.2.7",
+    "9.5.2",
+    "9.5.3",
+    "9.5.8",
+    "4.2.5",
+    "12.19",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_66_a_review_withdrawn_while_the_revision_changes_nothing_leaves_a_period_of_no_length",
+   "family": "T18",
+   "rules": [
+    "7.6.2",
+    "7.2.7",
+    "6.7.9",
+    "7.6.4",
+    "7.6.5",
+    "7.6.14",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "9.5.7",
+    "7.3.8",
+    "12.20"
+   ],
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "id": "T18_67_a_generated_frame_under_an_ambiguous_interpretation_lists_the_normalizations",
+   "family": "T18",
+   "rules": [
+    "5.5.5",
+    "2.4.4",
+    "7.2.8",
+    "7.2.5",
+    "7.3.8",
+    "10.2.4",
+    "4.6.1"
+   ],
+   "status": "PASS",
+   "detail": ""
+  }
+ ]
+}

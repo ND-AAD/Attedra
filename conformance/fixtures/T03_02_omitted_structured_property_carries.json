@@ -1,0 +1,95 @@
+{
+  "id": "T03_02_omitted_structured_property_carries",
+  "family": "T03",
+  "rules": [
+    "5.4.2",
+    "5.2.1",
+    "5.2.3"
+  ],
+  "description": "Omitting a structured property entirely is silence: the earlier complete value carries forward with its origin.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        },
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "classification": "asserted",
+            "value": {
+              "width": 900,
+              "height": 2100
+            },
+            "origin": "door-101|ev-dd|a-601"
+          },
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-cd|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "id": "T02_01_sparse_carry_forward_worked_example",
+  "family": "T02",
+  "rules": [
+    "5.2.1",
+    "5.2.2",
+    "5.2.3",
+    "5.2.4",
+    "8.7.3",
+    "2.4.7",
+    "9.2.2",
+    "12.2"
+  ],
+  "description": "A-601 asserts finish and hardware at DD and only finish at CD: the CD position takes finish from CD and hardware from DD; a door missing from the CD sheet keeps its DD values; a never-submitted property reads never_asserted; self-description and publication members never appear in any position.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "arch-cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 400
+            }
+          }
+        },
+        {
+          "id": "issue-log",
+          "kind": "log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "a-601-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-dd",
+      "context": "arch-dd",
+      "source": "issue-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-cd",
+      "context": "arch-cd",
+      "source": "issue-log",
+      "values": {
+        "@published": "2026-06-16T11:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a-601-issued",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ],
+        "edition": "rev 3"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-dd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "arch-dd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-3"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "fire_rating"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-cd|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|arch-dd|a-601"
+          },
+          "fire_rating": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          },
+          "@producer": "~absent",
+          "@distribution": "~absent",
+          "edition": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-102|arch-dd|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-3",
+            "origin": "door-102|arch-dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-01-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|arch-dd|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|arch-dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "a-601",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "edition": {
+            "classification": "asserted",
+            "value": "rev 3",
+            "origin": "a-601|a-601-issued|a-601"
+          },
+          "@producer": "~absent",
+          "@distribution": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "arch-dd",
+        "source": "issue-log",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "@published": "~absent",
+          "@distribution": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|arch-cd|a-601"
+            }
+          },
+          "hardware": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "HW-1",
+              "origin": "door-101|arch-dd|a-601"
+            }
+          },
+          "@producer": "~absent",
+          "@distribution": "~absent"
+        }
+      }
+    }
+  ]
+}

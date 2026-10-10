@@ -1,0 +1,152 @@
+{
+  "id": "T17_12_declared_reference_extension_refuses_item_removal_while_any_record_carries_it",
+  "family": "T17",
+  "rules": [
+    "10.4.4",
+    "10.3",
+    "8.5.3",
+    "8.5.2",
+    "8.5.6",
+    "12.17"
+  ],
+  "description": "While any record in the store carries the declared non-standard-reference extension @x-fixture-refs, a removal plan for an Item is refused naming the extension, because such a record may reference the Item in a form discovery does not find. An Item that nothing involves is planned before the extension record is written and refused after it, with no other dependents, although the extension names another door. An Item with an ordinary dependent lists it as well. A removal plan for an Assertion that does not carry the extension is still planned.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "spare-door",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "spare-door",
+      "as": "p1",
+      "expect": {
+        "status": "planned",
+        "plan": "~any",
+        "extension": "~absent"
+      }
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p1",
+      "expect": {
+        "status": "cancelled"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@x-fixture-refs": [
+          "door-102"
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "spare-door",
+      "as": "p2",
+      "expect": {
+        "status": "refused",
+        "dependents": [],
+        "extension": "@x-fixture-refs",
+        "plan": "~absent"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-103",
+      "as": "p3",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "door-103|ev-0514|a-601"
+        ],
+        "extension": "@x-fixture-refs",
+        "plan": "~absent"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-103|ev-0514|a-601",
+      "as": "p4",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p4",
+      "expect": {
+        "status": "cancelled"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "spare-door"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "door"
+      }
+    }
+  ]
+}

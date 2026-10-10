@@ -1,0 +1,207 @@
+{
+  "id": "T02_10_milestones_and_events_on_one_chronology",
+  "family": "T02",
+  "rules": [
+    "5.2.1",
+    "4.3.3",
+    "4.2.4",
+    "4.4.1",
+    "9.2.2"
+  ],
+  "description": "Milestone publications and dated events lie on one chronology: A-601 re-issued on its own after the CD publication carries its new finish forward from the re-issue event, while hardware still comes from DD.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "arch-cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 400
+            }
+          }
+        },
+        {
+          "id": "issue-log",
+          "kind": "log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "a-601-reissue-0620",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-20T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-dd",
+      "context": "arch-dd",
+      "source": "issue-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-cd",
+      "context": "arch-cd",
+      "source": "issue-log",
+      "values": {
+        "@published": "2026-06-16T11:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a-601-reissue-0620",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-dd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "lacquer",
+            "origin": "door-101|a-601-reissue-0620|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|arch-dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-18-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-cd|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|arch-dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "arch-cd"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-cd|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "id": "T10_07_instants_govern_when_ordinals_disagree",
+  "family": "T10",
+  "rules": [
+    "4.3.4",
+    "4.3.3",
+    "5.2.1"
+  ],
+  "description": "When a schedule's declared ordinals and its publication instants disagree, chronology uses the instants: the ordinal-60 milestone published after the ordinal-70 one supplies the current value.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-60cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "60% CD",
+              "ordinal": 60
+            }
+          }
+        },
+        {
+          "id": "arch-70cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "70% CD",
+              "ordinal": 70
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-60cd",
+      "context": "arch-60cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-10T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-70cd",
+      "context": "arch-70cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-03T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-60cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-70cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|arch-60cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-70cd|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

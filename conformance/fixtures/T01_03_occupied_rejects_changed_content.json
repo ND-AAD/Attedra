@@ -1,0 +1,234 @@
+{
+  "id": "T01_03_occupied_rejects_changed_content",
+  "family": "T01",
+  "rules": [
+    "8.1.3",
+    "10.2.1",
+    "8.1.2",
+    "5.5.1",
+    "5.5.2",
+    "5.5.3"
+  ],
+  "description": "Changed content at an occupied triple fails occupied: omitting properties is not a merge, and an added property, a domain-equivalent value, a reordered list, a case change, a reserved member or an extension member each change content. The stored record is untouched.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0513",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0513",
+      "source": "a-601",
+      "values": {
+        "finish": "primer"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": "90 min",
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": "90 min",
+        "tags": [
+          "a",
+          "b"
+        ],
+        "closer": "C-1"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": "1.5 h",
+        "tags": [
+          "a",
+          "b"
+        ]
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": "90 min",
+        "tags": [
+          "b",
+          "a"
+        ]
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "Paint",
+        "hardware": "HW-1",
+        "fire_rating": "90 min",
+        "tags": [
+          "a",
+          "b"
+        ]
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": "90 min",
+        "tags": [
+          "a",
+          "b"
+        ],
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0513",
+          "source": "a-601"
+        }
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": "90 min",
+        "tags": [
+          "a",
+          "b"
+        ],
+        "@x-confidence": "high"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint",
+          "hardware": "HW-1",
+          "fire_rating": "90 min",
+          "tags": [
+            "a",
+            "b"
+          ],
+          "closer": "~absent",
+          "@after": "~absent",
+          "@x-confidence": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "closer": "~absent"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "id": "T15_23_context_corrected_to_no_context_leaves_its_statements_without_occurrence_time",
+  "family": "T15",
+  "rules": [
+    "4.2.4",
+    "8.3.8",
+    "9.2.2",
+    "9.6.1",
+    "10.2.3"
+  ],
+  "description": "An Item correction may give a context Item a definition with no @context (it is valid as a non-context Item). The Assertions at that context then have no occurrence time: source_position reports each property they carry as the limitation no_occurrence_time, naming them, while the source's other properties are classified as usual.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "ev-x",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-y",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-x",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-y",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "ev-x"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "note",
+          "label": "misfiled sheet note",
+          "definition": {
+            "sheet": "A-601"
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "~absent",
+        "properties": {
+          "finish": {
+            "limitation": "no_occurrence_time",
+            "records": [
+              "door-101|ev-x|a-601"
+            ]
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|ev-y|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-x"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "event",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-01T09:00-07:00"
+          }
+        },
+        "corrected": {
+          "kind": "note",
+          "label": "misfiled sheet note",
+          "definition": {
+            "sheet": "A-601"
+          }
+        }
+      }
+    }
+  ]
+}

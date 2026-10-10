@@ -1,0 +1,1558 @@
+{
+  "id": "T18_62_a_reversal_of_the_interpretation_in_force_reopens_review_as_a_related_change_story",
+  "family": "T18",
+  "rules": [
+    "7.3.8",
+    "7.2.7",
+    "7.2.3",
+    "7.2.8",
+    "7.6.2",
+    "7.6.4",
+    "7.6.12",
+    "7.6.15",
+    "9.5.1",
+    "9.5.3",
+    "9.5.4",
+    "9.5.7",
+    "12.20"
+  ],
+  "description": "A-601 revises four doors' fire ratings. Tuesday's revisions of Door 106 and Door 107 from \"1.5 h\" to \"90 min\" are recorded as change stories, and Door 109's, also recorded, is approved on Tuesday evening. A Wednesday normalization of the project names the fixture fire-rating interpretation: chg-6 and chg-7 end on Wednesday by normalization, and chg-9, ended by its approval, is untouched. Door 108's Thursday revision, recorded after the normalization, has no period. On Thursday at noon Door 106 leaves the project, so its revision changes a property again: the disconnect act's write records the related change story chg-6+1, beginning then and citing the normalization in force until then. A Friday normalization of the project names literal comparison: its write records the related change stories chg-7+1 and chg-8+1, which begin on Friday citing the Friday normalization, list the revision's transitions, relate to the closed stories and await review. The closed stories stay ended, and chg-9, whose ending is a review, gets no related story. Pending review, open stories and what remains count each related change story.",
+  "note": "7.3.8 *After it*: \"take the latest change story recorded for a revision (7.2.8), whose baseline ending is a normalization, as a period ending (7.2.7, 7.6.2) or as its no-period ending (7.6.12). When, at a later instant, the interpretation in force for its subject changes, through a later normalization, including one that returns to literal comparison, or through the subject joining or leaving a normalized scope, and the revision changes a property under the interpretation in force from then, maintenance records a related change story. Its detection carries `@relates_to` with an exact reference to the closed story's detection, and lists in `@transitions` the revision's transitions under the interpretation in force from that instant. Its period begins at that instant, it awaits review until an approval or a directive (7.2.7), and its beginning cites the normalization (7.6.4).\" 7.6.4: for `revision`, \"For a related change story of 7.3.8, the record is the normalization whose interpretation is in force from its beginning, or, where none is in force from then because the subject left the normalized scope, the normalization in force until then.\" README section 7 names the story `<prior story>+<n>` and dates its detection's context at the triggering record. chg-6+1 is outside the project from Thursday noon, so the project-scoped reads omit it.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "building-a",
+          "kind": "building"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "minutes-wed",
+          "kind": "minutes"
+        },
+        {
+          "id": "minutes-fri",
+          "kind": "minutes"
+        },
+        {
+          "id": "norm-1",
+          "kind": "normalization"
+        },
+        {
+          "id": "norm-2",
+          "kind": "normalization"
+        },
+        {
+          "id": "door-106",
+          "kind": "door"
+        },
+        {
+          "id": "door-107",
+          "kind": "door"
+        },
+        {
+          "id": "door-108",
+          "kind": "door"
+        },
+        {
+          "id": "door-109",
+          "kind": "door"
+        },
+        {
+          "id": "chg-6",
+          "kind": "story"
+        },
+        {
+          "id": "chg-7",
+          "kind": "story"
+        },
+        {
+          "id": "chg-8",
+          "kind": "story"
+        },
+        {
+          "id": "chg-9",
+          "kind": "story"
+        },
+        {
+          "id": "rv-9",
+          "kind": "decision"
+        },
+        {
+          "id": "disc-6",
+          "kind": "disconnection"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-6/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-7/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-9/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-8/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-9-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T18:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-wed",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-6-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T12:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-fri",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "building-a",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "building-a",
+      "to": "door-106",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-107",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-108",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-109",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-106",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-106|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-106",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-106|ev-tue-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-107",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-107|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-107",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-107|ev-tue-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-109",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-109|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-109",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-109|ev-tue-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-6",
+      "context": "chg-6/d1",
+      "source": "chg-6",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-106"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-106",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-106",
+              "context": "ev-tue-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-106",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-106",
+            "context": "ev-tue-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-6|chg-6/d1|chg-6",
+        "generated": [],
+        "transition_acts": [
+          "chg-6|chg-6/b1|chg-6"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-7",
+      "context": "chg-7/d1",
+      "source": "chg-7",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-107"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-107",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-107",
+              "context": "ev-tue-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-107",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-107",
+            "context": "ev-tue-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-7|chg-7/d1|chg-7",
+        "generated": [],
+        "transition_acts": [
+          "chg-7|chg-7/b1|chg-7"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-9",
+      "context": "chg-9/d1",
+      "source": "chg-9",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-109"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-109",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-109",
+              "context": "ev-tue-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-109",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-109",
+            "context": "ev-tue-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-9|chg-9/d1|chg-9",
+        "generated": [],
+        "transition_acts": [
+          "chg-9|chg-9/b1|chg-9"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-9",
+      "context": "rv-9-at",
+      "source": "rv-9",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "chg-9",
+            "context": "chg-9/d1",
+            "source": "chg-9"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-109",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-109",
+            "context": "ev-tue-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T18:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "rv-9|rv-9-at|rv-9",
+        "generated": [],
+        "transition_acts": [
+          "chg-9|chg-9/e1|chg-9"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-108",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-108|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "norm-1",
+      "context": "meeting-wed",
+      "source": "minutes-wed",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-03.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "norm-1|meeting-wed|minutes-wed",
+        "generated": [],
+        "transition_acts": [
+          "chg-6|chg-6/e1|chg-6",
+          "chg-7|chg-7/e1|chg-7"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-7|chg-7/e1|chg-7"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-06-03T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null,
+            "since": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-108",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-108|ev-thu-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-8",
+      "context": "chg-8/d1",
+      "source": "chg-8",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-108"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-108",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-108",
+              "context": "ev-thu-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-108",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-108",
+            "context": "ev-thu-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-8|chg-8/d1|chg-8",
+        "generated": [],
+        "transition_acts": [
+          "chg-8|chg-8/b1|chg-8",
+          "chg-8|chg-8/e1|chg-8"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-8|chg-8/e1|chg-8"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": null,
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null,
+            "since": "2026-06-04T09:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-6",
+      "context": "disc-6-at",
+      "source": "disc-6",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "building-a",
+            "to": "door-106"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "disc-6|disc-6-at|disc-6",
+        "generated": [
+          "chg-6+1|chg-6+1/d1|chg-6+1"
+        ],
+        "transition_acts": [
+          "chg-6+1|chg-6+1/b1|chg-6+1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-6+1|chg-6+1/d1|chg-6+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "detect",
+          "@story": {
+            "kind": "change",
+            "subject": {
+              "@ref": "item",
+              "id": "door-106"
+            }
+          },
+          "@transitions": [
+            {
+              "property": "fire_rating",
+              "transition": "changed",
+              "prior": {
+                "@ref": "assertion",
+                "item": "door-106",
+                "context": "ev-mon-a601",
+                "source": "a-601"
+              },
+              "new": {
+                "@ref": "assertion",
+                "item": "door-106",
+                "context": "ev-tue-a601",
+                "source": "a-601"
+              }
+            }
+          ],
+          "@basis": [
+            {
+              "@ref": "assertion",
+              "item": "door-106",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            {
+              "@ref": "assertion",
+              "item": "door-106",
+              "context": "ev-tue-a601",
+              "source": "a-601"
+            }
+          ],
+          "@relates_to": {
+            "@ref": "assertion",
+            "item": "chg-6",
+            "context": "chg-6/d1",
+            "source": "chg-6",
+            "property": "~absent"
+          },
+          "@frame": {
+            "scope": {
+              "@ref": "item",
+              "id": "project"
+            },
+            "cutoff": "2026-06-04T12:00-07:00",
+            "perspective": "record",
+            "interpretation": null,
+            "interpretation_version": null,
+            "normalization": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-6+1|chg-6+1/b1|chg-6+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "begin",
+          "@targets": [
+            {
+              "@ref": "item",
+              "id": "chg-6+1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-04T12:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "revision"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-6+1",
+        "frame": {
+          "cutoff": "2026-06-04T13:00-07:00"
+        }
+      },
+      "expect": {
+        "kind": "change",
+        "related": [
+          "chg-6"
+        ],
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        },
+        "interpretation": null,
+        "normalization": null,
+        "transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": "door-106|ev-mon-a601|a-601",
+            "new": "door-106|ev-tue-a601|a-601"
+          }
+        ],
+        "periods": [
+          {
+            "begin": {
+              "act": "chg-6+1|chg-6+1/b1|chg-6+1",
+              "at": "2026-06-04T12:00-07:00",
+              "record": "norm-1|meeting-wed|minutes-wed",
+              "cause": "revision"
+            },
+            "end": null,
+            "policy_end": "~absent"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T13:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-6+1"
+        ],
+        "count": 1,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "norm-2",
+      "context": "meeting-fri",
+      "source": "minutes-fri",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": null,
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-05.pdf",
+            "edition": "issued 2026-06-05"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "norm-2|meeting-fri|minutes-fri",
+        "generated": [
+          "~unordered",
+          "chg-7+1|chg-7+1/d1|chg-7+1",
+          "chg-8+1|chg-8+1/d1|chg-8+1"
+        ],
+        "transition_acts": [
+          "chg-7+1|chg-7+1/b1|chg-7+1",
+          "chg-8+1|chg-8+1/b1|chg-8+1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-7+1|chg-7+1/d1|chg-7+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "detect",
+          "@story": {
+            "kind": "change",
+            "subject": {
+              "@ref": "item",
+              "id": "door-107"
+            }
+          },
+          "@transitions": [
+            {
+              "property": "fire_rating",
+              "transition": "changed",
+              "prior": {
+                "@ref": "assertion",
+                "item": "door-107",
+                "context": "ev-mon-a601",
+                "source": "a-601"
+              },
+              "new": {
+                "@ref": "assertion",
+                "item": "door-107",
+                "context": "ev-tue-a601",
+                "source": "a-601"
+              }
+            }
+          ],
+          "@basis": [
+            {
+              "@ref": "assertion",
+              "item": "door-107",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            {
+              "@ref": "assertion",
+              "item": "door-107",
+              "context": "ev-tue-a601",
+              "source": "a-601"
+            }
+          ],
+          "@relates_to": {
+            "@ref": "assertion",
+            "item": "chg-7",
+            "context": "chg-7/d1",
+            "source": "chg-7",
+            "property": "~absent"
+          },
+          "@frame": {
+            "scope": {
+              "@ref": "item",
+              "id": "project"
+            },
+            "cutoff": "2026-06-05T10:00-07:00",
+            "perspective": "record",
+            "interpretation": null,
+            "interpretation_version": null,
+            "normalization": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-7+1|chg-7+1/b1|chg-7+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "begin",
+          "@targets": [
+            {
+              "@ref": "item",
+              "id": "chg-7+1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-05T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-2",
+              "context": "meeting-fri",
+              "source": "minutes-fri",
+              "property": "~absent"
+            },
+            "cause": "revision"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-8+1|chg-8+1/d1|chg-8+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "detect",
+          "@story": {
+            "kind": "change",
+            "subject": {
+              "@ref": "item",
+              "id": "door-108"
+            }
+          },
+          "@transitions": [
+            {
+              "property": "fire_rating",
+              "transition": "changed",
+              "prior": {
+                "@ref": "assertion",
+                "item": "door-108",
+                "context": "ev-mon-a601",
+                "source": "a-601"
+              },
+              "new": {
+                "@ref": "assertion",
+                "item": "door-108",
+                "context": "ev-thu-a601",
+                "source": "a-601"
+              }
+            }
+          ],
+          "@basis": [
+            {
+              "@ref": "assertion",
+              "item": "door-108",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            {
+              "@ref": "assertion",
+              "item": "door-108",
+              "context": "ev-thu-a601",
+              "source": "a-601"
+            }
+          ],
+          "@relates_to": {
+            "@ref": "assertion",
+            "item": "chg-8",
+            "context": "chg-8/d1",
+            "source": "chg-8",
+            "property": "~absent"
+          },
+          "@frame": {
+            "scope": {
+              "@ref": "item",
+              "id": "project"
+            },
+            "cutoff": "2026-06-05T10:00-07:00",
+            "perspective": "record",
+            "interpretation": null,
+            "interpretation_version": null,
+            "normalization": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-8+1|chg-8+1/b1|chg-8+1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-06-05T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-2",
+              "context": "meeting-fri",
+              "source": "minutes-fri",
+              "property": "~absent"
+            },
+            "cause": "revision"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-7+1",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "kind": "change",
+        "related": [
+          "chg-7"
+        ],
+        "ending": null,
+        "baseline_ending": null,
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        },
+        "interpretation": null,
+        "normalization": "norm-2|meeting-fri|minutes-fri",
+        "transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": "door-107|ev-mon-a601|a-601",
+            "new": "door-107|ev-tue-a601|a-601"
+          }
+        ],
+        "periods": [
+          {
+            "begin": {
+              "act": "chg-7+1|chg-7+1/b1|chg-7+1",
+              "at": "2026-06-05T10:00-07:00",
+              "record": "norm-2|meeting-fri|minutes-fri",
+              "cause": "revision"
+            },
+            "end": null,
+            "policy_end": "~absent"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-7+1",
+        "frame": {
+          "cutoff": "2026-06-04T13:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "not_started"
+        },
+        "ending": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-7",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "related": [
+          "chg-7+1"
+        ],
+        "standing": {
+          "open": "ended",
+          "review": "unreviewed"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": "2026-06-03T10:00-07:00"
+        },
+        "periods": [
+          {
+            "begin": {
+              "act": "chg-7|chg-7/b1|chg-7",
+              "at": "2026-06-02T09:00-07:00",
+              "record": "door-107|ev-tue-a601|a-601",
+              "cause": "revision"
+            },
+            "end": {
+              "act": "chg-7|chg-7/e1|chg-7",
+              "at": "2026-06-03T10:00-07:00",
+              "record": "norm-1|meeting-wed|minutes-wed",
+              "cause": "normalization"
+            },
+            "policy_end": "~absent"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-8",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "related": [
+          "chg-8+1"
+        ],
+        "standing": {
+          "open": "ended"
+        },
+        "periods": [],
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-8",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "not_started"
+        },
+        "ending": null,
+        "baseline_ending": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-8+1",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "related": [
+          "chg-8"
+        ],
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        },
+        "transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": "door-108|ev-mon-a601|a-601",
+            "new": "door-108|ev-thu-a601|a-601"
+          }
+        ],
+        "periods": [
+          {
+            "begin": {
+              "act": "chg-8+1|chg-8+1/b1|chg-8+1",
+              "at": "2026-06-05T10:00-07:00",
+              "record": "norm-2|meeting-fri|minutes-fri",
+              "cause": "revision"
+            },
+            "end": null,
+            "policy_end": "~absent"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-9",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "related": [],
+        "standing": {
+          "open": "ended",
+          "review": "reviewed"
+        },
+        "ending": {
+          "kind": "review",
+          "record": "rv-9|rv-9-at|rv-9",
+          "at": "2026-06-02T18:00-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-7+1",
+          "chg-8+1"
+        ],
+        "count": 2,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-6+1",
+          "chg-7+1",
+          "chg-8+1"
+        ],
+        "count": 3,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05T09:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-7+1",
+          "chg-8+1"
+        ],
+        "count": 2,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "change",
+            "unit": "chg-7+1",
+            "began": {
+              "act": "chg-7+1|chg-7+1/b1|chg-7+1",
+              "at": "2026-06-05T10:00-07:00",
+              "record": "norm-2|meeting-fri|minutes-fri",
+              "cause": "revision"
+            },
+            "policy": null,
+            "standing": {
+              "review": "unreviewed",
+              "disagreement": "~absent"
+            },
+            "parents": [],
+            "succeeds": [
+              "chg-7"
+            ],
+            "children": [],
+            "interpretation": null
+          },
+          {
+            "kind": "change",
+            "unit": "chg-8+1",
+            "began": {
+              "act": "chg-8+1|chg-8+1/b1|chg-8+1",
+              "at": "2026-06-05T10:00-07:00",
+              "record": "norm-2|meeting-fri|minutes-fri",
+              "cause": "revision"
+            },
+            "policy": null,
+            "standing": {
+              "review": "unreviewed",
+              "disagreement": "~absent"
+            },
+            "parents": [],
+            "succeeds": [
+              "chg-8"
+            ],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 2,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

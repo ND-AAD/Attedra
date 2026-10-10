@@ -1,0 +1,116 @@
+{
+  "id": "T10_19_ordinals_distinct_per_schedule_only",
+  "family": "T10",
+  "rules": [
+    "4.3.1",
+    "4.3.2",
+    "10.2.3"
+  ],
+  "description": "Two participants may both have a '50% CD' with the same ordinal on their own schedules; a second milestone with the same ordinal on one schedule, or a milestone with no schedule, is rejected.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "cons-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "arch-50cd-b",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD reissue",
+          "ordinal": 50
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "loose-50cd",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "stage": "50% CD",
+          "ordinal": 51
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "cons-50cd"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "milestone"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "arch-50cd-b"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "loose-50cd"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

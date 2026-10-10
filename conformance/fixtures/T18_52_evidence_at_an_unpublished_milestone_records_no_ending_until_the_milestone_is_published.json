@@ -1,0 +1,569 @@
+{
+  "id": "T18_52_evidence_at_an_unpublished_milestone_records_no_ending_until_the_milestone_is_published",
+  "family": "T18",
+  "rules": [
+    "6.5.5",
+    "7.6.6",
+    "4.2.4",
+    "6.2.1",
+    "6.5.4",
+    "7.6.9",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "12.19"
+  ],
+  "description": "Two expectations on A-601 are in force from Monday: Door 101's at the architect's 100% CD, and Door 102's by Friday 5 June. A-601's only evidence for each is a statement at the still-planned 100% CD, which has no occurrence time. No ending is recorded for either property, and neither is a limitation: on 8 June Door 101's property reads not_yet_due and is upcoming work, Door 102's reads outstanding and overdue, and what remains lists no limitation. When 100% CD is published on 9 June, that write records both end acts at the publication instant, by fulfillment: on time for Door 101 and late for Door 102. The earlier frame still shows Door 102 outstanding.",
+  "note": "6.5.5: \"Evidence that has no occurrence time (4.2.4), such as a statement at a milestone that is not yet published, satisfies no instant while it has none. Until then the property's standing is derived without it, `not_yet_due` or `outstanding` by its timing scope (6.2.1), and no ending is recorded for it (7.6.6). Once the milestone's publication gives the evidence an occurrence time, it qualifies under 6.5.1\". 7.6.6: \"An expectation property's ending is never a `no_occurrence_time` limitation\". late_by is computed between the ends of the deadline's interval (the end of 5 June) and the evidence's (09:01 on 9 June), README section 5.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "issue-schedule"
+        },
+        {
+          "id": "arch-issue-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "e-at",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-cd"
+                }
+              },
+              "fresh": false,
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              }
+            }
+          }
+        },
+        {
+          "id": "e-by",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-05-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "decision"
+        },
+        {
+          "id": "sup-2",
+          "kind": "decision"
+        },
+        {
+          "id": "sup-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-102",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-at",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-at|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-at",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-1|sup-at|sup-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-by",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-102|e-by|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-2",
+      "context": "sup-at",
+      "source": "sup-2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-by",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-2|sup-at|sup-2",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-102/e-by/a-601/finish/b1|exp:door-102/e-by/a-601/finish/b1/at|exp:door-102/e-by/a-601/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|arch-cd|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "arch-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-102|arch-cd|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-at|a-601",
+        "frame": {
+          "cutoff": "2026-06-08-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "not_yet_due",
+            "overdue": false,
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": null,
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-by|a-601",
+        "frame": {
+          "cutoff": "2026-06-08-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true,
+            "deadline": "2026-06-05-07:00",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-102/e-by/a-601/finish/b1|exp:door-102/e-by/a-601/finish/b1/at|exp:door-102/e-by/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-2|sup-at|sup-2",
+                  "cause": "in_force"
+                },
+                "end": null,
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-08-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-102|e-by|a-601#finish",
+            "began": {
+              "act": "exp:door-102/e-by/a-601/finish/b1|exp:door-102/e-by/a-601/finish/b1/at|exp:door-102/e-by/a-601/finish/b1"
+            },
+            "standing": {
+              "standing": "outstanding",
+              "overdue": true
+            }
+          }
+        ],
+        "upcoming": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-at|a-601#finish",
+            "began": {
+              "act": "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1"
+            },
+            "standing": {
+              "standing": "not_yet_due",
+              "overdue": false
+            }
+          }
+        ],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 1
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-08-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-102|e-by|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "overdue": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": [
+          {
+            "expectation": "door-101|e-at|a-601",
+            "not_yet_due": [
+              "finish"
+            ]
+          }
+        ],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-cd",
+      "context": "arch-cd",
+      "source": "arch-issue-log",
+      "values": {
+        "@published": "2026-06-09T10:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "owner"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "arch-cd|arch-cd|arch-issue-log",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-at/a-601/finish/e1|exp:door-101/e-at/a-601/finish/e1/at|exp:door-101/e-at/a-601/finish/e1",
+          "exp:door-102/e-by/a-601/finish/e1|exp:door-102/e-by/a-601/finish/e1/at|exp:door-102/e-by/a-601/finish/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-101/e-at/a-601/finish/e1|exp:door-101/e-at/a-601/finish/e1/at|exp:door-101/e-at/a-601/finish/e1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@period": {
+            "at": "2026-06-09T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "arch-cd",
+              "source": "a-601",
+              "property": "~absent"
+            },
+            "cause": "fulfillment",
+            "policy": null,
+            "timeliness": "on_time",
+            "interpretation": null
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-at|a-601",
+        "frame": {
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "timeliness": "on_time",
+            "fulfilled_by": "door-101|arch-cd|a-601",
+            "qualifying_moment": "2026-06-09T10:00-07:00",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-at/a-601/finish/b1|exp:door-101/e-at/a-601/finish/b1/at|exp:door-101/e-at/a-601/finish/b1"
+                },
+                "end": {
+                  "act": "exp:door-101/e-at/a-601/finish/e1|exp:door-101/e-at/a-601/finish/e1/at|exp:door-101/e-at/a-601/finish/e1",
+                  "revised_by": "~absent",
+                  "at": "2026-06-09T10:00-07:00",
+                  "cause": "fulfillment"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-by|a-601",
+        "frame": {
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "timeliness": "late",
+            "late_by": "PT295260S",
+            "fulfilled_by": "door-102|arch-cd|a-601",
+            "qualifying_moment": "2026-06-09T10:00-07:00",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-102/e-by/a-601/finish/b1|exp:door-102/e-by/a-601/finish/b1/at|exp:door-102/e-by/a-601/finish/b1"
+                },
+                "end": {
+                  "act": "exp:door-102/e-by/a-601/finish/e1|exp:door-102/e-by/a-601/finish/e1/at|exp:door-102/e-by/a-601/finish/e1",
+                  "revised_by": "~absent",
+                  "at": "2026-06-09T10:00-07:00",
+                  "record": "door-102|arch-cd|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "late"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-by|a-601",
+        "frame": {
+          "cutoff": "2026-06-08-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-10-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+{
+  "id": "T06_17_withdrawn_names_the_withdrawals_of_the_last_in_force_period",
+  "family": "T06",
+  "rules": [
+    "6.6.1",
+    "6.7.2",
+    "6.3.3",
+    "12.6"
+  ],
+  "description": "A withdrawn standing carries, for each support that covered the property during its last in-force period, the withdrawal that ended that coverage: one support withdrawn and then the expectation withdrawn gives both withdrawals. When the property lapsed and was reaffirmed, only the withdrawals of the last period are named.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-fin",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d2",
+          "kind": "decision"
+        },
+        {
+          "id": "d2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "we",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "we-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d5",
+          "kind": "decision"
+        },
+        {
+          "id": "d5-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w5",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w5-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "r5",
+          "kind": "decision"
+        },
+        {
+          "id": "r5-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w6",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w6-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d2",
+      "context": "d2-at",
+      "source": "d2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "d1",
+            "context": "d1-at",
+            "source": "d1",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fin",
+              "source": "a-601"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "we",
+      "context": "we-at",
+      "source": "we",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "~unordered",
+              "w1|w1-at|w1",
+              "we|we-at|we"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d5",
+      "context": "d5-at",
+      "source": "d5",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w5",
+      "context": "w5-at",
+      "source": "w5",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "d5",
+            "context": "d5-at",
+            "source": "d5",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-102",
+              "context": "e-fin",
+              "source": "a-601"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "r5",
+      "context": "r5-at",
+      "source": "r5",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w6",
+      "context": "w6-at",
+      "source": "w6",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "r5",
+            "context": "r5-at",
+            "source": "r5",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-102",
+              "context": "e-fin",
+              "source": "a-601"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w5|w5-at|w5"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w6|w6-at|w6"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

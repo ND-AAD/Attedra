@@ -1,0 +1,262 @@
+{
+  "id": "T07_01_expectation_and_statement_coexist_on_same_subject_and_source",
+  "family": "T07",
+  "rules": [
+    "6.1.1",
+    "6.1.2",
+    "2.3.2",
+    "9.2.2",
+    "9.2.3",
+    "9.3.1",
+    "7.1.5",
+    "I-6",
+    "12.7"
+  ],
+  "description": "(Door 101, E1, A-601) and (Door 101, CD, A-601) coexist as distinct triples. The expected content never appears in A-601's submitted position or in the resolved view, and never conflicts with the statement. The expectation read shows expected against actual.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "arch-cd",
+          "kind": "milestone",
+          "label": "Architect CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "arch-log",
+          "kind": "log",
+          "label": "Architect issue log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party",
+          "label": "Contractor"
+        },
+        {
+          "id": "e1",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T14:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-cd",
+      "context": "arch-cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-01T11:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e1",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e1",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|arch-cd|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|e1|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain",
+          "hardware": "HW-2"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|arch-cd|a-601",
+            "withdrawn_by": "~absent"
+          },
+          "hardware": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|arch-cd|a-601",
+              "withdrawn_by": "~absent"
+            }
+          },
+          "hardware": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e1|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|arch-cd|a-601",
+              "withdrawn_by": "~absent"
+            }
+          },
+          "hardware": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "never_asserted",
+              "value": "~absent",
+              "origin": "~absent"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

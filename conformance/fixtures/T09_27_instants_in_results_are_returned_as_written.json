@@ -1,0 +1,147 @@
+{
+  "id": "T09_27_instants_in_results_are_returned_as_written",
+  "family": "T09",
+  "rules": [
+    "4.2.1",
+    "5.1.3",
+    "9.3.1",
+    "9.2.4",
+    "4.6.1"
+  ],
+  "description": "Instants in results are returned as written in the record or argument that supplies them, at the same precision and offset, never normalized: the frame's cutoff echoes a +05:30 argument, the qualifying moment is the evidence's second-precision +02:00 instant, the deadline is the context's date, and by-source details carry the occurrence as written.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00:30+02:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00+05:30"
+        }
+      },
+      "expect": {
+        "frame": {
+          "cutoff": "2026-06-03T12:00+05:30",
+          "cutoff_input": "~absent"
+        },
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00:30+02:00",
+            "deadline": "2026-06-30-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "statements": [
+          "door-101|a601-0602|a-601"
+        ],
+        "acts": [],
+        "details": [
+          {
+            "record": "door-101|a601-0602|a-601",
+            "occurrence": "2026-06-02T09:00:30+02:00"
+          }
+        ]
+      }
+    }
+  ]
+}

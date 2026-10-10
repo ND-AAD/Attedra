@@ -1,0 +1,188 @@
+{
+  "id": "T10_08_consistent_publication_instants_use_the_finer",
+  "family": "T10",
+  "rules": [
+    "4.4.1",
+    "4.2.5",
+    "4.2.4",
+    "4.6.1"
+  ],
+  "description": "Two sources assert a milestone's publication as 13 May (date) and 13 May 11:45 (minute). They are consistent and the milestone's instant is 11:45: a statement at it is included by a 12:00 cutoff (not ambiguous) and excluded by an 11:00 cutoff, and the milestone as cutoff resolves to 11:45.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "cons-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "cons-transmittal-4",
+          "kind": "transmittal"
+        },
+        {
+          "id": "c-201",
+          "kind": "schedule"
+        },
+        {
+          "id": "s-90",
+          "kind": "memo"
+        },
+        {
+          "id": "m-cons",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "s90-1100",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "s90-1200",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T12:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "m-cons",
+      "context": "m-cons",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-13-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m-cons",
+      "context": "m-cons",
+      "source": "cons-transmittal-4",
+      "values": {
+        "@published": "2026-05-13T11:45-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "m-cons",
+      "source": "c-201",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "s90-1100",
+      "source": "s-90",
+      "values": {
+        "finish": "oak"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "s90-1200",
+      "source": "s-90",
+      "values": {
+        "finish": "ash"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "c-201",
+        "frame": {
+          "cutoff": "2026-05-13T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|m-cons|c-201"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "c-201",
+        "frame": {
+          "cutoff": "2026-05-13T11:00-07:00"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "s-90",
+        "frame": {
+          "cutoff": "m-cons"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "oak",
+            "origin": "door-102|s90-1100|s-90"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,437 @@
+{
+  "id": "T18_30_a_fulfilled_property_stays_open_work_while_its_policy_keeps_it_open",
+  "family": "T18",
+  "rules": [
+    "7.7.4",
+    "7.7.5",
+    "7.6.13",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "9.5.8"
+  ],
+  "description": "An expectation whose context names an application policy the reference does not implement is fulfilled on Wednesday: the baseline end act is recorded and the property reads fulfilled with its evidence, yet no end act names its policy, so the period is open under it. Open work lists the expectation in the main list with the property under fulfilled, and what remains lists the unit with standing fulfilled. When the application records its policy end act after an inspection, the property is no longer open work from that instant. The transition check lists that act as unverified.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "insp-report",
+          "kind": "report"
+        },
+        {
+          "id": "e-insp",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false,
+              "policy": {
+                "name": "app-closes-on-inspection",
+                "version": "1"
+              }
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-wed-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-insp",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "insp-end-1",
+          "kind": "end"
+        },
+        {
+          "id": "insp-end-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-insp",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-insp|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-1-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-insp",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-1|sup-1-at|sup-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-insp/a-601/finish/b1|exp:door-101/e-insp/a-601/finish/b1/at|exp:door-101/e-insp/a-601/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-wed-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-wed-a601|a-601",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-insp/a-601/finish/e1|exp:door-101/e-insp/a-601/finish/e1/at|exp:door-101/e-insp/a-601/finish/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-insp|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "policy": {
+          "name": "app-closes-on-inspection",
+          "version": "1"
+        },
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-wed-a601|a-601",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-insp/a-601/finish/b1|exp:door-101/e-insp/a-601/finish/b1/at|exp:door-101/e-insp/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-insp/a-601/finish/e1|exp:door-101/e-insp/a-601/finish/e1/at|exp:door-101/e-insp/a-601/finish/e1",
+                  "at": "2026-06-03T09:00-07:00",
+                  "record": "door-101|ev-wed-a601|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-insp|a-601",
+            "outstanding": [],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-insp|a-601#finish",
+            "began": {
+              "act": "exp:door-101/e-insp/a-601/finish/b1|exp:door-101/e-insp/a-601/finish/b1/at|exp:door-101/e-insp/a-601/finish/b1",
+              "at": "2026-06-01T10:00-07:00",
+              "record": "sup-1|sup-1-at|sup-1",
+              "cause": "in_force"
+            },
+            "policy": {
+              "name": "app-closes-on-inspection",
+              "version": "1"
+            },
+            "standing": {
+              "standing": "fulfilled",
+              "overdue": "~absent"
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 1
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-insp",
+      "source": "insp-report",
+      "values": {
+        "inspected": true
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-insp|insp-report",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "insp-end-1",
+      "context": "insp-end-1-at",
+      "source": "insp-end-1",
+      "values": {
+        "@action": "end",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "exp:door-101/e-insp/a-601/finish/b1",
+            "context": "exp:door-101/e-insp/a-601/finish/b1/at",
+            "source": "exp:door-101/e-insp/a-601/finish/b1"
+          }
+        ],
+        "@period": {
+          "at": "2026-06-05T09:00-07:00",
+          "record": {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-insp",
+            "source": "insp-report"
+          },
+          "cause": "inspected",
+          "policy": {
+            "name": "app-closes-on-inspection",
+            "version": "1"
+          }
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "insp-end-1|insp-end-1-at|insp-end-1",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-insp|a-601",
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-insp/a-601/finish/b1|exp:door-101/e-insp/a-601/finish/b1/at|exp:door-101/e-insp/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-insp/a-601/finish/e1|exp:door-101/e-insp/a-601/finish/e1/at|exp:door-101/e-insp/a-601/finish/e1",
+                  "at": "2026-06-03T09:00-07:00",
+                  "record": "door-101|ev-wed-a601|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": {
+                  "act": "insp-end-1|insp-end-1-at|insp-end-1",
+                  "at": "2026-06-05T09:00-07:00",
+                  "record": "door-101|ev-insp|insp-report",
+                  "cause": "inspected"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-insp|a-601",
+            "fulfilled": [
+              "finish"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": [
+          "insp-end-1|insp-end-1-at|insp-end-1"
+        ]
+      }
+    }
+  ]
+}

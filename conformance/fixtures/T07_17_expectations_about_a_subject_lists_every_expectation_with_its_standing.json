@@ -1,0 +1,282 @@
+{
+  "id": "T07_17_expectations_about_a_subject_lists_every_expectation_with_its_standing",
+  "family": "T07",
+  "rules": [
+    "9.3.3",
+    "6.1.5",
+    "6.6.1"
+  ],
+  "description": "Expectations about Door 101 are listed whether fulfilled, never in force, withdrawn or outstanding, each with its standing at the frame. A withdrawn expectation stays readable by its exact triple.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-a",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-b",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-c",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-d",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-b",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-c",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-d",
+      "source": "a-601",
+      "values": {
+        "closer": "CL-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-a",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-c",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-d",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-c",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectations_about",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "expectations": [
+          "~unordered",
+          {
+            "expectation": "door-101|e-a|a-601",
+            "in_force": true,
+            "properties": {
+              "finish": {
+                "standing": "fulfilled",
+                "fulfilled_by": "door-101|a601-0602|a-601",
+                "qualifying_moment": "2026-06-02T09:00-07:00"
+              }
+            }
+          },
+          {
+            "expectation": "door-101|e-b|a-601",
+            "in_force": false,
+            "properties": {
+              "hardware": {
+                "standing": "not_in_force"
+              }
+            }
+          },
+          {
+            "expectation": "door-101|e-c|a-601",
+            "in_force": false,
+            "properties": {
+              "fire_rating": {
+                "standing": "withdrawn",
+                "withdrawn_by": [
+                  "w1|w1-at|w1"
+                ]
+              }
+            }
+          },
+          {
+            "expectation": "door-101|e-d|a-601",
+            "in_force": true,
+            "properties": {
+              "closer": {
+                "standing": "outstanding",
+                "overdue": false
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|e-c|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 90
+        },
+        "withdrawals": [
+          "w1|w1-at|w1"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "id": "T03_05_nested_and_empty_objects_replace",
+  "family": "T03",
+  "rules": [
+    "5.4.1",
+    "5.4.4",
+    "5.3.2"
+  ],
+  "description": "Replacement is of the whole value at every depth: a nested object loses members the new value omits, and an empty object replaces a populated one as an ordinary value, not an empty or a withdrawal.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "hardware_set": {
+          "hinges": {
+            "type": "butt",
+            "count": 3
+          },
+          "closer": "C-1"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "hardware_set": {
+          "hinges": {
+            "type": "butt"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {}
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "hardware_set": {
+            "classification": "asserted",
+            "value": {
+              "hinges": {
+                "type": "butt",
+                "count": "~absent"
+              },
+              "closer": "~absent"
+            },
+            "origin": "door-101|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "classification": "asserted",
+            "value": {
+              "width": "~absent",
+              "height": "~absent"
+            },
+            "origin": "door-102|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-102",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "dimensions",
+            "transition": "changed",
+            "prior": "door-102|ev-dd|a-601",
+            "new": "door-102|ev-cd|a-601",
+            "members": [
+              "~unordered",
+              {
+                "member": "width",
+                "difference": "member_removed"
+              },
+              {
+                "member": "height",
+                "difference": "member_removed"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

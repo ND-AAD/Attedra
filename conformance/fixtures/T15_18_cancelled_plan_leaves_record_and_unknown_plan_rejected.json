@@ -1,0 +1,132 @@
+{
+  "id": "T15_18_cancelled_plan_leaves_record_and_unknown_plan_rejected",
+  "family": "T15",
+  "rules": [
+    "8.5.4",
+    "8.5.3"
+  ],
+  "description": "Cancelling a plan leaves the record untouched. Confirming or cancelling a plan identifier the store never issued fails with plan_unknown. A fresh plan for the same entry can still be confirmed.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stian"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-mon-a601|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p1",
+      "expect": {
+        "status": "cancelled"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stian"
+        }
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "no-such-plan",
+      "expect_error": "plan_unknown"
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "no-such-plan",
+      "expect_error": "plan_unknown"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-mon-a601|a-601",
+      "as": "p2",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p2",
+      "expect": {
+        "status": "removed"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

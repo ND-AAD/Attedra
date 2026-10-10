@@ -1,0 +1,609 @@
+{
+  "id": "T18_57_a_normalization_is_validated_on_write_and_never_withdrawn",
+  "family": "T18",
+  "rules": [
+    "10.2.4",
+    "10.2.6",
+    "10.2.7",
+    "7.3.8",
+    "8.4.1",
+    "2.4.4",
+    "6.7.9",
+    "8.3.1",
+    "10.4.1"
+  ],
+  "description": "A normalization must have exactly one target that is an Item reference (two Items, or an Assertion reference, fail 10.2.6) and must carry @interpretation, null or {name, version} (missing, a string, or an object without a version fails 10.2.4). Its @effective may be later than its occurrence time but not earlier (10.2.7). A well-formed normalization with a later @effective is accepted and applies from that instant. A reconciliation with @outcome reinterpret, and @interpretation on a review, fail 10.2.4. A withdrawal of the normalization fails 10.2.6. A correction that replaces it with another interpretation is accepted, and reads use the corrected normalization.",
+  "note": "7.3.8: a normalization is an act whose values carry `@action: \"reinterpret\"`; \"exactly one target in `@targets`, an Item reference naming a scope Item (2.1.5); and `@interpretation`, naming the interpretation as `{ \"name\", \"version\" }`, or `null` for literal comparison\". \"It is never withdrawn (6.7.9) ... a misrecorded one is corrected (8.3).\" README section 6, item 8: \"a `@targets` that is a list of references but not exactly one Item reference is `10.2.6`; an `@interpretation` that is missing, or that is neither `null` nor `{\\\"name\\\": <string>, \\\"version\\\": <string>}`, is `10.2.4`. A reconciliation with `\\\"@outcome\\\": \\\"reinterpret\\\"` is an undefined value of a defined member and fails `10.2.4` (10.4.1). `@effective` is allowed on a normalization and on an `adopt_policy` (8.4.1).\"",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "log",
+          "kind": "log"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "nz-x",
+          "kind": "normalization"
+        },
+        {
+          "id": "nz-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "nz-ok",
+          "kind": "normalization"
+        },
+        {
+          "id": "nz-ok-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rc-x",
+          "kind": "reconciliation"
+        },
+        {
+          "id": "rc-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-x",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T12:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-x",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "nz-x",
+      "context": "nz-x-at",
+      "source": "nz-x",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          },
+          {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        }
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "nz-x",
+      "context": "nz-x-at",
+      "source": "nz-x",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        }
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "nz-x",
+      "context": "nz-x-at",
+      "source": "nz-x",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ]
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "nz-x",
+      "context": "nz-x-at",
+      "source": "nz-x",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": "fixture-fire-rating"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "nz-x",
+      "context": "nz-x-at",
+      "source": "nz-x",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "nz-x",
+      "context": "nz-x-at",
+      "source": "nz-x",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@effective": "2026-06-01T10:00-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "nz-x|nz-x-at|nz-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "nz-ok",
+      "context": "nz-ok-at",
+      "source": "nz-ok",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@effective": "2026-06-04T10:00-07:00",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "nz-ok|nz-ok-at|nz-ok",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "frame": {
+          "interpretation": null,
+          "normalization": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1"
+        ],
+        "frame": {
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1",
+          "normalization": "nz-ok|nz-ok-at|nz-ok"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rc-x",
+      "context": "rc-x-at",
+      "source": "rc-x",
+      "values": {
+        "@action": "reconcile",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@outcome": "reinterpret",
+        "@basis": [],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T11:00-07:00",
+          "perspective": "record",
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "rv-x",
+      "context": "rv-x-at",
+      "source": "rv-x",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-03T12:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "nz-ok",
+            "context": "nz-ok-at",
+            "source": "nz-ok"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "nz-ok",
+            "context": "nz-ok-at",
+            "source": "nz-ok"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "@action": "reinterpret",
+          "@targets": [
+            {
+              "@ref": "item",
+              "id": "project"
+            }
+          ],
+          "@interpretation": {
+            "name": "fixture-set:finish",
+            "version": "1"
+          },
+          "@effective": "2026-06-04T10:00-07:00",
+          "@party": {
+            "@ref": "item",
+            "id": "owner"
+          }
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "frame": {
+          "interpretation": "fixture-set:finish",
+          "interpretation_version": "1",
+          "normalization": "nz-ok|nz-ok-at|nz-ok"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "nz-ok|nz-ok-at|nz-ok"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@interpretation": {
+            "name": "fixture-fire-rating",
+            "version": "1"
+          }
+        },
+        "corrections": [
+          "cor-1|cor-1-at|log"
+        ],
+        "applicable_correction": "cor-1|cor-1-at|log",
+        "withdrawals": [],
+        "event_time": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

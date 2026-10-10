@@ -1,0 +1,179 @@
+{
+  "id": "T09_10_friday_submission_against_wednesday_deadline_is_late_by_two_days",
+  "family": "T09",
+  "rules": [
+    "6.2.1",
+    "6.5.3",
+    "6.5.4",
+    "6.6.1",
+    "4.2.5",
+    "12.9"
+  ],
+  "description": "Against a deadline of Wednesday 10 June, a Wednesday-noon frame shows the requirement outstanding and not overdue, and a Thursday frame shows it outstanding and overdue. A-601's Friday submission fulfills it late, with the two-day difference derived, and the Thursday frame still shows it overdue.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-wed",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-10-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-fri",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-12-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-wed",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-wed",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-wed|a-601",
+        "frame": {
+          "cutoff": "2026-06-10T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-wed|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-fri",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-wed|a-601",
+        "frame": {
+          "cutoff": "2026-06-13T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-fri|a-601",
+            "qualifying_moment": "2026-06-12-07:00",
+            "timeliness": "late",
+            "late_by": "P2D"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-wed|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    }
+  ]
+}

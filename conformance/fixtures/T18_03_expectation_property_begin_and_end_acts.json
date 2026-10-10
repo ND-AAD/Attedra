@@ -1,0 +1,437 @@
+{
+  "id": "T18_03_expectation_property_begin_and_end_acts",
+  "family": "T18",
+  "rules": [
+    "7.6.1",
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "7.6.6",
+    "7.6.7",
+    "7.6.9",
+    "6.3.3",
+    "6.5.1",
+    "9.3.1",
+    "9.5.7",
+    "12.19"
+  ],
+  "description": "An expectation property is a unit from its first support, not from the expectation's write. The support records the begin act exp:door-101/e-stain/a-601/finish/b1, its own self-attributed Item of kind begin at an event context named <Item>/at, targeting the expectation with the property selector, cause in_force, citing the support. Wednesday's stain fulfils the property and records the end act .../e1 (kind end), cause fulfillment, with timeliness and the expectation's interpretation (null). The expectation read reports the policy and the property's periods; what remains lists the property while it is open.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-10-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-wed-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-stain|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-1-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-1|sup-1-at|sup-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "begin",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-stain",
+              "source": "a-601",
+              "property": "finish"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-01T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "sup-1",
+              "context": "sup-1-at",
+              "source": "sup-1",
+              "property": "~absent"
+            },
+            "cause": "in_force"
+          }
+        },
+        "event_time": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-stain/a-601/finish/b1"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "begin",
+        "definition": {}
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-stain/a-601/finish/b1/at"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-01T10:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-stain|a-601#finish",
+            "began": {
+              "act": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1",
+              "at": "2026-06-01T10:00-07:00",
+              "record": "sup-1|sup-1-at|sup-1",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "outstanding",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 1
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-wed-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-wed-a601|a-601",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "exp:door-101/e-stain/a-601/finish/b1",
+              "context": "exp:door-101/e-stain/a-601/finish/b1/at",
+              "source": "exp:door-101/e-stain/a-601/finish/b1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-03T09:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-wed-a601",
+              "source": "a-601",
+              "property": "~absent"
+            },
+            "cause": "fulfillment",
+            "policy": null,
+            "timeliness": "on_time",
+            "interpretation": null
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-stain/a-601/finish/e1"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "end",
+        "definition": {}
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-stain/a-601/finish/e1/at"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-03T09:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "policy": null,
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-wed-a601|a-601",
+            "qualifying_moment": "2026-06-03T09:00-07:00",
+            "timeliness": "on_time",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1",
+                  "at": "2026-06-03T09:00-07:00",
+                  "record": "door-101|ev-wed-a601|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1",
+                  "at": "2026-06-03T09:00-07:00",
+                  "record": "door-101|ev-wed-a601|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

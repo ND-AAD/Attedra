@@ -1,0 +1,215 @@
+{
+  "id": "T10_06_same_schedule_milestones_ordered_by_ordinal",
+  "family": "T10",
+  "rules": [
+    "4.3.2",
+    "4.5.2",
+    "5.2.1",
+    "12.10"
+  ],
+  "description": "Two milestones of one schedule published the same day (date against minute: unordered) or at equal instants are ordered by ordinal, whatever the import order.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "arch-75cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "75% CD",
+              "ordinal": 75
+            }
+          }
+        },
+        {
+          "id": "arch-90cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "90% CD",
+              "ordinal": 90
+            }
+          }
+        },
+        {
+          "id": "arch-95cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "95% CD",
+              "ordinal": 95
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-50cd",
+      "context": "arch-50cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-75cd",
+      "context": "arch-75cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02T15:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-90cd",
+      "context": "arch-90cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-04T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-95cd",
+      "context": "arch-95cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-04T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-75cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-50cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "arch-95cd",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "arch-90cd",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-75cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-2",
+            "origin": "door-102|arch-95cd|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

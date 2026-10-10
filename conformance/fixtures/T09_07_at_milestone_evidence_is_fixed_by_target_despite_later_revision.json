@@ -1,0 +1,210 @@
+{
+  "id": "T09_07_at_milestone_evidence_is_fixed_by_target_despite_later_revision",
+  "family": "T09",
+  "rules": [
+    "6.2.1",
+    "6.2.2",
+    "6.5.1",
+    "12.9"
+  ],
+  "description": "An at 50% CD expectation is established after A-601 revised the value at 75% CD. It is still fulfilled at its establishment by the 50% CD issue, because the target fixes the evidence, while A-601's current position reads the 75% CD value.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "label": "Architect 50% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "arch-75cd",
+          "kind": "milestone",
+          "label": "Architect 75% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "75% CD",
+              "ordinal": 75
+            }
+          }
+        },
+        {
+          "id": "arch-log",
+          "kind": "log",
+          "label": "Architect issue log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party",
+          "label": "Contractor"
+        },
+        {
+          "id": "e-50cd",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-50cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-50cd",
+      "context": "arch-50cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02T11:45-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-75cd",
+      "context": "arch-75cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-09T11:45-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-50cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-75cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 60
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-50cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-50cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-50cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-10T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|arch-50cd|a-601",
+            "qualifying_moment": "2026-06-10T09:00-07:00",
+            "source_current": {
+              "classification": "asserted",
+              "value": 60,
+              "origin": "door-101|arch-75cd|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

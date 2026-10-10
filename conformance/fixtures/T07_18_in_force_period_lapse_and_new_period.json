@@ -1,0 +1,298 @@
+{
+  "id": "T07_18_in_force_period_lapse_and_new_period",
+  "family": "T07",
+  "rules": [
+    "6.3.3",
+    "6.5.1",
+    "6.2.2",
+    "6.7.2"
+  ],
+  "description": "Two expectations, one fresh and one not, lose their only support on 2 June and are reaffirmed on 5 June, with A-601's 90 issued on 3 June during the lapse. Neither is fulfilled during the lapse. In the new in-force period the non-fresh expectation is fulfilled at the reaffirmation, and the fresh one stays outstanding.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-nf",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-f",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "r1",
+          "kind": "decision"
+        },
+        {
+          "id": "r1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-nf",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-f",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-nf",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-f",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "d1",
+            "context": "d1-at",
+            "source": "d1",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-nf",
+              "source": "a-601"
+            }
+          },
+          {
+            "@ref": "assertion",
+            "item": "d1",
+            "context": "d1-at",
+            "source": "d1",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-f",
+              "source": "a-601"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "r1",
+      "context": "r1-at",
+      "source": "r1",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-nf",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-f",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-nf|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-f|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-nf|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0603|a-601",
+            "qualifying_moment": "2026-06-05T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-f|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    }
+  ]
+}

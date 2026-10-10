@@ -1,0 +1,239 @@
+{
+  "id": "T10_02_event_and_milestone_share_one_chronology",
+  "family": "T10",
+  "rules": [
+    "4.3.3",
+    "4.2.2",
+    "4.2.4",
+    "5.2.1",
+    "I-5",
+    "12.10"
+  ],
+  "description": "A Tuesday 09:45 issue of A-601 precedes its Wednesday 11:45:12 milestone publication whatever the import order and whatever recorded_at says: two doors are imported in opposite orders and read the same.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0512",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00"
+      },
+      "recorded_at": "2026-05-14T08:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-05-14T08:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0512",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "recorded_at": "2026-05-15T08:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-issued-0512",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "recorded_at": "2026-05-17T08:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-05-16T08:00:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-100dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-102|arch-100dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-13T10:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|a601-issued-0512|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-13T10:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-102|a601-issued-0512|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-12T09:00-07:00"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-12T09:00-07:00"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

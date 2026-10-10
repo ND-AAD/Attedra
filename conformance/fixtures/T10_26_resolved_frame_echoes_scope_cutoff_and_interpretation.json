@@ -1,0 +1,224 @@
+{
+  "id": "T10_26_resolved_frame_echoes_scope_cutoff_and_interpretation",
+  "family": "T10",
+  "rules": [
+    "4.6.1",
+    "I-15",
+    "5.5.4",
+    "5.5.5",
+    "4.2.1"
+  ],
+  "description": "Every result carries the resolved frame. A milestone cutoff resolves to the publication instant and echoes the milestone id as cutoff_input; an instant cutoff has no cutoff_input; a now cutoff echoes now. The scope echoes the input (null when omitted, a list as given), the perspective defaults to record, and a fixture interpretation is reported at version 1 (null for none).",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "arch-dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "arch-dd",
+      "context": "arch-dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-dd",
+      "source": "spec-0991",
+      "values": {
+        "tags": [
+          "b",
+          "a"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "arch-dd"
+        }
+      },
+      "expect": {
+        "frame": {
+          "scope": null,
+          "cutoff": "2026-05-13T11:45:12-07:00",
+          "cutoff_input": "arch-dd",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "scope": "project",
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "frame": {
+          "scope": "project",
+          "cutoff": "2026-05-20-07:00",
+          "cutoff_input": "~absent",
+          "perspective": "record"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "scope": [
+            "door-101"
+          ],
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "frame": {
+          "scope": [
+            "door-101"
+          ],
+          "cutoff": "2026-05-20-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "frame": {
+          "cutoff": "~any",
+          "cutoff_input": "now",
+          "perspective": "record"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-20-07:00",
+          "interpretation": "fixture-set:tags"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": "fixture-set:tags",
+        "frame": {
+          "interpretation": "fixture-set:tags",
+          "interpretation_version": "1"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "interpretation": null,
+        "frame": {
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    }
+  ]
+}

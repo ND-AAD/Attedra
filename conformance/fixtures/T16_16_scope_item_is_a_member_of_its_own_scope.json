@@ -1,0 +1,207 @@
+{
+  "id": "T16_16_scope_item_is_a_member_of_its_own_scope",
+  "family": "T16",
+  "rules": [
+    "2.1.5",
+    "9.1.1",
+    "9.3.2",
+    "12.16"
+  ],
+  "description": "A scope Item's members are the scope Item itself and the Items reached from it by following Connections forward. An expectation about the project Item is therefore in the project scope's open work with no Connection cycle. A scope given as a list names its members directly, and a door's own scope does not reach the project that points at it.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "pm-plan",
+          "kind": "management-plan"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "e-req",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-04T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "project",
+      "context": "e-req",
+      "source": "pm-plan",
+      "values": {
+        "closeout_manual": {
+          "@ask": true
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "project",
+            "context": "e-req",
+            "source": "pm-plan"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-req",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "scope": "project",
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-req|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          },
+          {
+            "expectation": "project|e-req|pm-plan",
+            "outstanding": [
+              "closeout_manual"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "scope": [
+            "door-101"
+          ],
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-req|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "scope": "door-101",
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-req|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "scope": [
+            "project"
+          ],
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "project|e-req|pm-plan",
+            "outstanding": [
+              "closeout_manual"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "id": "T08_06_criteria_in_force_at_evidence_occurrence",
+  "family": "T08",
+  "rules": [
+    "3.3.2",
+    "6.1.3",
+    "6.5.1"
+  ],
+  "description": "Criteria are applied as they stood at the evidence's occurrence time: an SPM email sent under principal-only criteria does not qualify after the criteria are later amended to name the SPM role; a later SPM email does.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "role-principal",
+          "kind": "role"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "label": "Architect, any communication",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "email-40",
+          "kind": "email"
+        },
+        {
+          "id": "email-41",
+          "kind": "email"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "crit-0610",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-11T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-40-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-41-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-15T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-07-31-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-principal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0610",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-spm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-40",
+      "context": "email-40-sent",
+      "source": "email-40",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-40-sent",
+      "source": "email-40",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-12-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-41",
+      "context": "email-41-sent",
+      "source": "email-41",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-41-sent",
+      "source": "email-41",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-16-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|email-41-sent|email-41",
+            "qualifying_moment": "2026-06-15T10:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    }
+  ]
+}

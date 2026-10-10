@@ -1,0 +1,229 @@
+{
+  "id": "T04_12_unavailable_interpretation_is_a_limitation_with_a_literal_result",
+  "family": "T04",
+  "rules": [
+    "5.5.4",
+    "9.6.1",
+    "10.3",
+    "4.6.1"
+  ],
+  "description": "A comparison read whose requested interpretation is unavailable returns the limitation interpretation_unavailable in place of the interpreted result, naming the interpretation, together with the result of the same read under the literal comparison, labelled as literal. It never silently substitutes one for the other. A fixture interpretation is available at version 1.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T12:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": "1.5 h"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "1.5 h"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00",
+          "interpretation": "no-such-interpretation"
+        }
+      },
+      "expect": {
+        "limitation": "interpretation_unavailable",
+        "interpretation": "no-such-interpretation",
+        "literal": {
+          "conflicts": [
+            {
+              "property": "fire_rating",
+              "sides": [
+                {
+                  "source": "a-601",
+                  "value": "90 min",
+                  "origin": "door-101|ev-1|a-601"
+                },
+                {
+                  "source": "spec-0991",
+                  "value": "1.5 h",
+                  "origin": "door-101|ev-2|spec-0991"
+                }
+              ]
+            }
+          ],
+          "interpretation": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00",
+          "interpretation": "no-such-interpretation"
+        }
+      },
+      "expect": {
+        "limitation": "interpretation_unavailable",
+        "interpretation": "no-such-interpretation",
+        "literal": {
+          "properties": {
+            "fire_rating": {
+              "standing": "outstanding",
+              "overdue": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-05-31-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-02-07:00",
+          "interpretation": "no-such-interpretation"
+        }
+      },
+      "expect": {
+        "limitation": "interpretation_unavailable",
+        "interpretation": "no-such-interpretation",
+        "literal": {
+          "transitions": [
+            {
+              "property": "fire_rating",
+              "transition": "introduced",
+              "prior": null,
+              "new": "door-101|ev-1|a-601"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": "fixture-fire-rating",
+        "limitation": "~absent",
+        "frame": {
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        }
+      }
+    }
+  ]
+}

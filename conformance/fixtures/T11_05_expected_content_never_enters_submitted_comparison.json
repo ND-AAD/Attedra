@@ -1,0 +1,302 @@
+{
+  "id": "T11_05_expected_content_never_enters_submitted_comparison",
+  "family": "T11",
+  "rules": [
+    "7.1.5",
+    "9.2.2",
+    "9.2.3",
+    "9.4.2",
+    "I-6",
+    "2.4.7"
+  ],
+  "description": "An expectation on A-601 requiring lacquer does not advance A-601's observed value, is not a side of a submitted-value conflict, and alone is no expectation conflict; it is ordinary outstanding work.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "cons-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "c-201",
+          "kind": "schedule",
+          "label": "Consultant door schedule"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Architect door schedule"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "cons-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "cons-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "cons-50cd",
+      "context": "cons-50cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-12T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cons-100cd",
+      "context": "cons-100cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-14T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-50cd",
+      "source": "c-201",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-100cd",
+      "source": "c-201",
+      "values": {
+        "remarks": "no change to finish"
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-lacquer",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-lacquer",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-lacquer",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-100dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|arch-100dd|a-601"
+            },
+            "c-201": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|cons-50cd|c-201"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-lacquer|a-601",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    }
+  ]
+}

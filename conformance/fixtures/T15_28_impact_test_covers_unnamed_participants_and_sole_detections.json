@@ -1,0 +1,320 @@
+{
+  "id": "T15_28_impact_test_covers_unnamed_participants_and_sole_detections",
+  "family": "T15",
+  "rules": [
+    "8.5.2",
+    "8.5.3",
+    "4.6.1",
+    "4.4.2",
+    "7.2.1"
+  ],
+  "description": "The impact test considers the record perspective, every Item named as @producer or in a @distribution of the examined records, and a participant named in none of them. A self-attributed reaffirmation that changes nothing in the record, producer or recipient views, but is the only support a participant outside the minutes' distribution sees, has downstream impact, so its removal is refused naming the expectation. A story's only detection cannot be removed: the story would cease to exist, and the story is listed as the dependent.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "minutes-0601",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-0601-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-2",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "story-1|story-1/d1|story-1",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "story-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "minutes-0601",
+      "context": "minutes-0601-issued",
+      "source": "minutes-0601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "architect"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "meeting-0601",
+      "source": "minutes-0601",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-0601-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-2",
+      "context": "sup-2-at",
+      "source": "sup-2",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "sup-2|sup-2-at|sup-2",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "door-102|e-stain|a-601"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "sup-2|sup-2-at|sup-2"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-1|story-1/d1|story-1"
+      },
+      "expect": {
+        "status": "found"
+      }
+    }
+  ]
+}

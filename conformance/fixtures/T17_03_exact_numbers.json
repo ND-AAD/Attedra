@@ -1,0 +1,103 @@
+{
+  "id": "T17_03_exact_numbers",
+  "family": "T17",
+  "rules": [
+    "5.1.2",
+    "5.1.3",
+    "5.5.1"
+  ],
+  "description": "Numbers of 34 significant digits and exponents of plus and minus 999 are stored and read back exactly, and a difference in the 34th digit is a real difference.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"n34\": 1234567890123456789012345678901234, \"f34\": 0.1234567890123456789012345678901234, \"big\": 1E+999, \"tiny\": 1E-999, \"neg34\": -9.999999999999999999999999999999999E+998, \"half\": 0.5, \"negative_fraction\": -12.75}",
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values_json": "{\"n34\": 1234567890123456789012345678901234, \"f34\": 0.1234567890123456789012345678901235}"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "n34": 1234567890123456789012345678901234,
+          "f34": 0.1234567890123456789012345678901234,
+          "big": 1E+999,
+          "tiny": 1E-999,
+          "neg34": -9.999999999999999999999999999999999E+998,
+          "half": 0.5,
+          "negative_fraction": -12.75
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "f34",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    }
+  ]
+}

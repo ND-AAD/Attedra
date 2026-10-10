@@ -1,0 +1,274 @@
+{
+  "id": "T09_16_during_phase_timing_scope_evidence_and_overdue",
+  "family": "T09",
+  "rules": [
+    "6.2.1",
+    "4.1.1",
+    "6.6.1",
+    "6.5.1"
+  ],
+  "description": "Requirements due during the phase 8 to 15 June are not yet due before the phase starts and outstanding within it. Evidence issued before the phase does not qualify. Door 101's in-phase issue fulfills it, and Door 102, with none, is overdue from the phase's end.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "door-102",
+          "kind": "door",
+          "label": "Door 102"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "phase-cd",
+          "kind": "phase",
+          "label": "CD phase",
+          "definition": {
+            "@context": {
+              "role": "phase",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "starts": "2026-06-08-07:00",
+              "ends": "2026-06-15-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-cd",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "during",
+                "phase": {
+                  "@ref": "item",
+                  "id": "phase-cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0605",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0610",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-cd",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0605",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-0605",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "not_yet_due"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-09T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": 90,
+              "origin": "door-101|a601-0605|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0610",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0610|a-601",
+            "qualifying_moment": "2026-06-10T09:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    }
+  ]
+}

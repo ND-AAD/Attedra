@@ -1,0 +1,258 @@
+{
+  "id": "T01_47_change_detection_transitions_must_name_one_revised_assertion",
+  "family": "T01",
+  "rules": [
+    "7.2.3",
+    "10.2.4"
+  ],
+  "description": "Every @transitions entry of a change-story detection names the same revised Assertion as new. A detection whose entries name different new Assertions is rejected under 10.2.4 and not recorded; the same story detected with one revised Assertion is accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "chg-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-thu",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-fri",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T17:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-thu",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-fri",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-1",
+      "context": "chg-1/d1",
+      "source": "chg-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-thu",
+              "source": "a-601"
+            }
+          },
+          {
+            "property": "hardware",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-fri",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-thu",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-fri",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-05T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-1|chg-1/d1|chg-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-1",
+      "context": "chg-1/d1",
+      "source": "chg-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-thu",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-thu",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-05T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

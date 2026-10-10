@@ -1,0 +1,238 @@
+{
+  "id": "T01_26_correction_target_not_exactly_one",
+  "family": "T01",
+  "rules": [
+    "10.2.5",
+    "8.3.1",
+    "8.3.8",
+    "8.3.9"
+  ],
+  "description": "A correction must target exactly one Assertion, one Item or one Connection: two targets, no target or an artifact target are rejected with 10.2.5. A single Assertion target and a single Connection target are accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-2",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "review-log",
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-05-11T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0515",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "erroneous"
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [],
+        "@outcome": "erroneous"
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ],
+        "@outcome": "erroneous"
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "cor-1|cor-1-at|review-log"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0515",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "erroneous",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "connected_at": "2026-05-10T09:00-07:00"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0515|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        },
+        "corrections": [
+          "cor-1|cor-1-at|review-log"
+        ]
+      }
+    }
+  ]
+}

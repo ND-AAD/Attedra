@@ -1,0 +1,63 @@
+{
+  "id": "T01_20_assertion_at_phase_context",
+  "family": "T01",
+  "rules": [
+    "10.2.3",
+    "4.1.1"
+  ],
+  "description": "A phase is never an Assertion's context: writing an Assertion whose context is a phase is rejected with 10.2.3.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ph-cd",
+          "kind": "phase",
+          "definition": {
+            "@context": {
+              "role": "phase",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "starts": "2026-06-01-07:00",
+              "ends": "2026-06-30-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ph-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ph-cd|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

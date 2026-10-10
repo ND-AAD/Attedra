@@ -1,0 +1,359 @@
+{
+  "id": "T04_05_typed_and_structured_equality",
+  "family": "T04",
+  "rules": [
+    "5.5.1",
+    "7.1.1",
+    "9.4.2",
+    "2.4.1"
+  ],
+  "description": "Default comparison is literal and typed: objects are equal in any key order, lists are equal only element by element with duplicates counted, references are equal when they identify the same record, and values of different types are never equal.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0513",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0513",
+      "source": "a-601",
+      "values": {
+        "primer": "grey"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0513",
+      "source": "spec-0991",
+      "values": {
+        "primer": "grey"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "obj_key_order": {
+          "w": 900,
+          "h": 2100
+        },
+        "nested": {
+          "frame": {
+            "gauge": 16,
+            "material": "steel"
+          }
+        },
+        "list_order": [
+          "a",
+          "b"
+        ],
+        "list_dups": [
+          "a",
+          "a",
+          "b"
+        ],
+        "list_equal": [
+          "a",
+          "b"
+        ],
+        "obj_extra_key": {
+          "w": 900
+        },
+        "bool_vs_string": true,
+        "number_vs_string": 900,
+        "ref_same": {
+          "@ref": "item",
+          "id": "spec-0991"
+        },
+        "ref_diff": {
+          "@ref": "item",
+          "id": "spec-0991"
+        },
+        "ref_vs_string": {
+          "@ref": "item",
+          "id": "spec-0991"
+        },
+        "assertion_ref_same": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0513",
+          "source": "a-601"
+        },
+        "assertion_ref_diff": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0513",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "obj_key_order": {
+          "h": 2100,
+          "w": 900
+        },
+        "nested": {
+          "frame": {
+            "material": "steel",
+            "gauge": 16
+          }
+        },
+        "list_order": [
+          "b",
+          "a"
+        ],
+        "list_dups": [
+          "a",
+          "b"
+        ],
+        "list_equal": [
+          "a",
+          "b"
+        ],
+        "obj_extra_key": {
+          "w": 900,
+          "h": null
+        },
+        "bool_vs_string": "true",
+        "number_vs_string": "900",
+        "ref_same": {
+          "id": "spec-0991",
+          "@ref": "item"
+        },
+        "ref_diff": {
+          "@ref": "item",
+          "id": "a-601"
+        },
+        "ref_vs_string": "spec-0991",
+        "assertion_ref_same": {
+          "source": "a-601",
+          "context": "ev-0513",
+          "item": "door-101",
+          "@ref": "assertion"
+        },
+        "assertion_ref_diff": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0513",
+          "source": "spec-0991"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          "~unordered",
+          {
+            "property": "list_order",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": [
+                  "a",
+                  "b"
+                ]
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": [
+                  "b",
+                  "a"
+                ]
+              }
+            ]
+          },
+          {
+            "property": "list_dups",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": [
+                  "a",
+                  "a",
+                  "b"
+                ]
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": [
+                  "a",
+                  "b"
+                ]
+              }
+            ]
+          },
+          {
+            "property": "obj_extra_key",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": {
+                  "w": 900,
+                  "h": "~absent"
+                }
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": {
+                  "w": 900,
+                  "h": null
+                }
+              }
+            ]
+          },
+          {
+            "property": "bool_vs_string",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": true
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "property": "number_vs_string",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": 900
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "900"
+              }
+            ]
+          },
+          {
+            "property": "ref_diff",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": {
+                  "@ref": "item",
+                  "id": "spec-0991"
+                }
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": {
+                  "@ref": "item",
+                  "id": "a-601"
+                }
+              }
+            ]
+          },
+          {
+            "property": "ref_vs_string",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": {
+                  "@ref": "item",
+                  "id": "spec-0991"
+                }
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "spec-0991"
+              }
+            ]
+          },
+          {
+            "property": "assertion_ref_diff",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": {
+                  "@ref": "assertion",
+                  "item": "door-101",
+                  "context": "ev-0513",
+                  "source": "a-601"
+                }
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": {
+                  "@ref": "assertion",
+                  "item": "door-101",
+                  "context": "ev-0513",
+                  "source": "spec-0991"
+                }
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    }
+  ]
+}

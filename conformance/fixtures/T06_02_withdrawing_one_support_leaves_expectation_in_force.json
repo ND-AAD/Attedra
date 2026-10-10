@@ -1,0 +1,254 @@
+{
+  "id": "T06_02_withdrawing_one_support_leaves_expectation_in_force",
+  "family": "T06",
+  "rules": [
+    "6.3.1",
+    "6.3.2",
+    "6.7.2",
+    "2.4.3",
+    "12.6"
+  ],
+  "description": "Supports D1 and D2 both establish E. Withdrawing D1's support of E leaves E in force through D2, and a later qualifying A-601 issue fulfills both properties.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d2",
+          "kind": "decision"
+        },
+        {
+          "id": "d2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d2",
+      "context": "d2-at",
+      "source": "d2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          "~unordered",
+          {
+            "support": "d1|d1-at|d1",
+            "covers": [
+              "finish",
+              "fire_rating"
+            ],
+            "withdrawn_by": []
+          },
+          {
+            "support": "d2|d2-at|d2",
+            "covers": [
+              "finish",
+              "fire_rating"
+            ],
+            "withdrawn_by": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "d1",
+            "context": "d1-at",
+            "source": "d1",
+            "support": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fr",
+              "source": "a-601"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          },
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0603|a-601",
+            "qualifying_moment": "2026-06-03T09:00-07:00",
+            "timeliness": "on_time"
+          },
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0603|a-601",
+            "qualifying_moment": "2026-06-03T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 5: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

@@ -1,0 +1,143 @@
+{
+  "id": "T07_04_expectation_context_requires_a_valid_timing",
+  "family": "T07",
+  "rules": [
+    "4.1.1",
+    "6.2.1",
+    "10.2.3"
+  ],
+  "description": "Expectation contexts with no timing, an undefined timing type, a by timing with neither instant nor milestone, or a during timing with no phase are rejected (10.2.3) and not created. A context with a valid by timing is created.",
+  "steps": [
+    {
+      "op": "item",
+      "id": "e-none",
+      "kind": "expectation_context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-soon",
+      "kind": "expectation_context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "soon"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-by-empty",
+      "kind": "expectation_context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "by"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-during-empty",
+      "kind": "expectation_context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "during"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-ok",
+      "kind": "expectation_context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "by",
+            "instant": "2026-06-30-07:00"
+          },
+          "fresh": false
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-none"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-soon"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-by-empty"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-during-empty"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-ok"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "expectation",
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-30-07:00"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

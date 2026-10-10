@@ -1,0 +1,238 @@
+{
+  "id": "T15_27_dependents_are_a_sorted_set_of_every_kind",
+  "family": "T15",
+  "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.6",
+    "7.6.5"
+  ],
+  "description": "The dependents of a refused plan are a set listed sorted by compact form. For an Item they are the Assertions that use it, the Connections that touch it (from->to) and the Items whose definitions reference it. For fulfilling evidence that another record also cites, they are the expectation whose standing would change, the referencing record and the property's end act that cites the evidence, each once.",
+  "note": "8.5.2: \"Begin and end acts reference the records that began and ended their periods (7.6.4, 7.6.5), and those records therefore have downstream impact under (a).\" Steps 12 and 13: the fulfilling evidence door-101|ev-tue|spec-0991 is the record of the fire_rating property's fulfillment end act, which maintenance records when that evidence is written (7.6.9) and names exp:door-101/e-fr/spec-0991/fire_rating/e1 (README section 7, Recorded transitions); both dependents lists include that act.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "sheet-1",
+      "kind": "sheet",
+      "definition": {
+        "part_of": {
+          "@ref": "item",
+          "id": "a-601"
+        }
+      }
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "a-601",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "a-601",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "door-101|ev-0514|a-601",
+          "door-102|ev-0514|a-601",
+          "project->a-601",
+          "sheet-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-1-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "spec-0991"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "cites": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-tue",
+          "source": "spec-0991"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|spec-0991",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-tue|spec-0991"
+          }
+        }
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-tue|spec-0991",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "door-101|e-fr|spec-0991",
+          "door-102|ev-0603|a-601",
+          "exp:door-101/e-fr/spec-0991/fire_rating/e1|exp:door-101/e-fr/spec-0991/fire_rating/e1/at|exp:door-101/e-fr/spec-0991/fire_rating/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-tue|spec-0991"
+      },
+      "expect": {
+        "status": "found",
+        "dependents": [
+          "door-102|ev-0603|a-601",
+          "exp:door-101/e-fr/spec-0991/fire_rating/e1|exp:door-101/e-fr/spec-0991/fire_rating/e1/at|exp:door-101/e-fr/spec-0991/fire_rating/e1"
+        ]
+      }
+    }
+  ]
+}

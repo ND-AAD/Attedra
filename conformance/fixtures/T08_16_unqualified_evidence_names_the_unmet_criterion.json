@@ -1,0 +1,337 @@
+{
+  "id": "T08_16_unqualified_evidence_names_the_unmet_criterion",
+  "family": "T08",
+  "rules": [
+    "3.3.2",
+    "9.3.1",
+    "6.1.3",
+    "3.1.2"
+  ],
+  "description": "Where the expectation's source is an eligibility Item, each standing lists the evidence about the subject that carries the property but does not qualify, with its unmet criterion: an issuance with no @producer (missing_producer), a @producer that is not the named party (producer), no @agent where agents are stated (missing_agent), and no @agent among the agents (agents). Such a standing carries no source_current, since there is no single obligated source.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "role-intern",
+          "kind": "role"
+        },
+        {
+          "id": "role-principal",
+          "kind": "role"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "label": "Architect, any communication",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "email-20",
+          "kind": "email"
+        },
+        {
+          "id": "email-30",
+          "kind": "email"
+        },
+        {
+          "id": "email-31",
+          "kind": "email"
+        },
+        {
+          "id": "memo-5",
+          "kind": "memo"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-20-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-30-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-31-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "memo-5-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T12:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-spm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-20",
+      "context": "email-20-sent",
+      "source": "email-20",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-intern"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-20-sent",
+      "source": "email-20",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-30",
+      "context": "email-30-sent",
+      "source": "email-30",
+      "values": {
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-30-sent",
+      "source": "email-30",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-31",
+      "context": "email-31-sent",
+      "source": "email-31",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-31-sent",
+      "source": "email-31",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "memo-5",
+      "context": "memo-5-sent",
+      "source": "memo-5",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "contractor"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "memo-5-sent",
+      "source": "memo-5",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "limitation": "~absent",
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": "~absent",
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-30-07:00"
+            },
+            "interpretation": null,
+            "unqualified": [
+              "~unordered",
+              {
+                "evidence": "door-101|email-20-sent|email-20",
+                "unmet": "agents"
+              },
+              {
+                "evidence": "door-101|email-30-sent|email-30",
+                "unmet": "missing_producer"
+              },
+              {
+                "evidence": "door-101|email-31-sent|email-31",
+                "unmet": "missing_agent"
+              },
+              {
+                "evidence": "door-101|memo-5-sent|memo-5",
+                "unmet": "producer"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+{
+  "id": "T08_07_withdrawn_criteria_end_without_revival",
+  "family": "T08",
+  "rules": [
+    "3.3.2",
+    "6.7.9",
+    "6.7.5",
+    "4.5.3"
+  ],
+  "description": "Withdrawing a source's latest criteria ends them without reviving its earlier criteria. With the contract's criteria ended, only the letter's criteria are in force, so a principal email does not qualify (and is not ambiguous) and an SPM email qualifies.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "role-principal",
+          "kind": "role"
+        },
+        {
+          "id": "role-intern",
+          "kind": "role"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "label": "Architect, any communication",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "letter-8",
+          "kind": "letter"
+        },
+        {
+          "id": "wd-c2",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "email-50",
+          "kind": "email"
+        },
+        {
+          "id": "email-51",
+          "kind": "email"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "crit-0510",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10-07:00"
+            }
+          }
+        },
+        {
+          "id": "letter-8-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-c2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-50-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-25T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-51-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-27T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-principal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0510",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-intern"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "letter-8-issued",
+      "source": "letter-8",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-spm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-c2",
+      "context": "wd-c2-at",
+      "source": "wd-c2",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "elig-arch",
+            "context": "crit-0510",
+            "source": "contract-7"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-50",
+      "context": "email-50-sent",
+      "source": "email-50",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-principal"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-50-sent",
+      "source": "email-50",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-05-26-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-51",
+      "context": "email-51-sent",
+      "source": "email-51",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-51-sent",
+      "source": "email-51",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-05-28-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|email-51-sent|email-51",
+            "qualifying_moment": "2026-05-27T10:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    }
+  ]
+}

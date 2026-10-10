@@ -1,0 +1,288 @@
+{
+  "id": "T09_14_at_milestone_requirement_not_yet_due_until_published",
+  "family": "T09",
+  "rules": [
+    "6.2.1",
+    "6.2.4",
+    "6.6.1",
+    "4.4.1",
+    "9.3.2",
+    "12.9"
+  ],
+  "description": "At 100% CD requirements on Door 101 and Door 102 are not yet due, and listed as upcoming work, until the milestone is published. A-601's earlier event-dated 90 does not qualify. On publication, Door 101 is fulfilled by A-601's 100% CD Assertion at the publication instant, and Door 102, with no such Assertion, is outstanding and overdue.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "door-102",
+          "kind": "door",
+          "label": "Door 102"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "label": "Architect 100% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "e-100cd",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-100cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "arch-log",
+          "kind": "log",
+          "label": "Architect issue log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party",
+          "label": "Contractor"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-100cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-100cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-100cd",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-100cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-100cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-10T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "not_yet_due"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-10T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [
+          "~unordered",
+          {
+            "expectation": "door-101|e-100cd|a-601",
+            "not_yet_due": [
+              "fire_rating"
+            ]
+          },
+          {
+            "expectation": "door-102|e-100cd|a-601",
+            "not_yet_due": [
+              "fire_rating"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100cd",
+      "context": "arch-100cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-16T11:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-100cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-17T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|arch-100cd|a-601",
+            "qualifying_moment": "2026-06-16T11:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-100cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-17T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-17T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-102|e-100cd|a-601",
+            "outstanding": [
+              "fire_rating"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    }
+  ]
+}

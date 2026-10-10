@@ -1,0 +1,136 @@
+{
+  "id": "T04_01_empty_equivalence_null_and_blank",
+  "family": "T04",
+  "rules": [
+    "5.3.1",
+    "5.3.2",
+    "5.5.1",
+    "I-14",
+    "12.4"
+  ],
+  "description": "null, an empty string and a blank cell all read null and compare equal: three sources asserting them produce no conflict.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "hw-schedule",
+          "kind": "hardware-schedule"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values_json": "{\"finish\": \"\"}"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "hw-schedule",
+      "values_json": "{\"finish\": \"\"}"
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "spec-0991",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": null,
+            "origin": "door-101|ev-0514|spec-0991"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "hw-schedule",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": null,
+            "origin": "door-101|ev-0514|hw-schedule"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|spec-0991"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [],
+        "interpretation": null
+      }
+    }
+  ]
+}

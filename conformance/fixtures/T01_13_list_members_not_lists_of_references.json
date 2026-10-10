@@ -1,0 +1,386 @@
+{
+  "id": "T01_13_list_members_not_lists_of_references",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "2.4.4",
+    "6.3.1",
+    "7.4.1"
+  ],
+  "description": "@targets, @basis, @establishes and @reaffirms that are not lists of references are rejected with 10.2.2; the same acts with lists of references succeed.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T16:02-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "est-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "est-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-14T16:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "e-stain",
+          "source": "a-601"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          "door-101|e-stain|a-601"
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": "minutes-2026-05-15.pdf"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-16T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "change_required",
+        "@establishes": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "e-stain",
+          "source": "a-601"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-16T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "change_required",
+        "@reaffirms": "door-101|e-stain|a-601"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "est-1|est-1-at|est-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rv-1|rv-1-at|rv-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-05-15.pdf",
+            "edition": "issued 2026-05-15"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-16T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "change_required",
+        "@reaffirms": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

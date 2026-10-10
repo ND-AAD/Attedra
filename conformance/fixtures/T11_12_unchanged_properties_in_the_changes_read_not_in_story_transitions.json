@@ -1,0 +1,208 @@
+{
+  "id": "T11_12_unchanged_properties_in_the_changes_read_not_in_story_transitions",
+  "family": "T11",
+  "rules": [
+    "5.6.2",
+    "7.2.3",
+    "9.4.1",
+    "5.2.1",
+    "9.5.1"
+  ],
+  "description": "A partial reissue that omits hardware leaves it unchanged by carry-forward. The changes read reports every property the source asserted, in property-name order, with hardware as unchanged (both sides originate in the DD issue). Unchanged properties are not transitions of the revision: the change-story detection lists only finish, and the story read reports one transition, coming from its detection.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "chg-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T12:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|ev-dd|a-601",
+            "new": "door-101|ev-cd|a-601",
+            "members": []
+          },
+          {
+            "property": "hardware",
+            "transition": "unchanged",
+            "prior": "door-101|ev-dd|a-601",
+            "new": "door-101|ev-dd|a-601",
+            "members": []
+          }
+        ],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-1",
+      "context": "chg-1/d1",
+      "source": "chg-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-dd",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-cd",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-dd",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-cd",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-16T12:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "kind": "change",
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|ev-dd|a-601",
+            "new": "door-101|ev-cd|a-601"
+          }
+        ],
+        "transitions_from": "chg-1|chg-1/d1|chg-1",
+        "transition_corrections": "~absent",
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        }
+      }
+    }
+  ]
+}

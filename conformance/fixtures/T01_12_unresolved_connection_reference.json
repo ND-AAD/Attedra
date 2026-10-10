@@ -1,0 +1,166 @@
+{
+  "id": "T01_12_unresolved_connection_reference",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "2.4.2",
+    "2.2.1",
+    "8.6.2"
+  ],
+  "description": "A Connection reference to an ordered pair with no Connection is rejected with 10.2.2; the reverse of an existing pair is a different pair.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-05-11T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "door-101",
+            "to": "room-12"
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "hung_in": {
+          "@ref": "connection",
+          "from": "door-101",
+          "to": "room-12"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "disc-1|disc-1-at|disc-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-13-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "hung_in": {
+          "@ref": "connection",
+          "from": "room-12",
+          "to": "door-101"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-13-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    }
+  ]
+}

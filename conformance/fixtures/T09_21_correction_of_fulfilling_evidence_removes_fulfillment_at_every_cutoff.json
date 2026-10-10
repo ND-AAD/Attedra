@@ -1,0 +1,211 @@
+{
+  "id": "T09_21_correction_of_fulfilling_evidence_removes_fulfillment_at_every_cutoff",
+  "family": "T09",
+  "rules": [
+    "6.5.2",
+    "8.3.2",
+    "8.3.3",
+    "8.4.1",
+    "9.2.1"
+  ],
+  "description": "A replace correction on 10 June shows that A-601's 2 June Assertion said 60, not 90. Fulfillment is not reversed by later events, but a correction applies at every cutoff: a 3 June frame now shows the requirement outstanding, with the corrected 60 as the source value. The exact read keeps the original with its correction.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "log",
+          "label": "Import review log"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0602",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "fire_rating": 60
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a601-2026-06-02.pdf",
+            "edition": "issued 2026-06-02"
+          }
+        ],
+        "reason": "Fire rating misread during extraction."
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": 60,
+              "origin": "door-101|a601-0602|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|a601-0602|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 90
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    }
+  ]
+}

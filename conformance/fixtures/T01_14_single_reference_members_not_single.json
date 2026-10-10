@@ -1,0 +1,556 @@
+{
+  "id": "T01_14_single_reference_members_not_single",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "2.4.4",
+    "4.5.2",
+    "7.3.1",
+    "7.3.3",
+    "7.3.4",
+    "3.2.1"
+  ],
+  "description": "@after, @relates_to, @successor, @representative and @issuance that are not a single reference are rejected with 10.2.2.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T16:02-07:00"
+            }
+          }
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "ev-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-2",
+          "kind": "story"
+        },
+        {
+          "id": "story-2/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rc-1",
+          "kind": "reconciliation"
+        },
+        {
+          "id": "rc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-22T09:10-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "minutes-0514",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T14:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-0514-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T08:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "est-2",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-14T16:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@after": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@after": "door-102|ev-0514|a-601"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "story-2",
+      "context": "story-2/d1",
+      "source": "story-2",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-20T15:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@relates_to": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "story-2",
+      "context": "story-2/d1",
+      "source": "story-2",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-20T15:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rc-1",
+      "context": "rc-1-at",
+      "source": "rc-1",
+      "values": {
+        "@action": "reconcile",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@outcome": "split",
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-22T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@successor": [
+          {
+            "@ref": "item",
+            "id": "story-2"
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "rc-1",
+      "context": "rc-1-at",
+      "source": "rc-1",
+      "values": {
+        "@action": "reconcile",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          },
+          {
+            "@ref": "assertion",
+            "item": "story-2",
+            "context": "story-2/d1",
+            "source": "story-2"
+          }
+        ],
+        "@outcome": "continuous",
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-22T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@representative": "story-1"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-2",
+      "context": "meeting-0514",
+      "source": "minutes-0514",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-05-14.pdf",
+            "edition": "issued 2026-05-15"
+          }
+        ],
+        "@issuance": [
+          {
+            "@ref": "item",
+            "id": "minutes-0514-issued"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-102|ev-0515|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rc-1|rc-1-at|rc-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "est-2|meeting-0514|minutes-0514"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-102",
+          "context": "ev-0514",
+          "source": "a-601"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-2",
+      "context": "meeting-0514",
+      "source": "minutes-0514",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-05-14.pdf",
+            "edition": "issued 2026-05-15"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-0514-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

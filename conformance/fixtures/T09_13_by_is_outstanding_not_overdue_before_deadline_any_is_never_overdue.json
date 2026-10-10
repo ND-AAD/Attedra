@@ -1,0 +1,250 @@
+{
+  "id": "T09_13_by_is_outstanding_not_overdue_before_deadline_any_is_never_overdue",
+  "family": "T09",
+  "rules": [
+    "6.2.1",
+    "6.6.1",
+    "4.6.2",
+    "9.3.2",
+    "12.9"
+  ],
+  "description": "Requirements established Monday are not in force before establishment. A by-Friday requirement is outstanding, not overdue, on Tuesday, and overdue on Saturday. An any-timing request is outstanding from establishment and never overdue. Both are due work without any submission.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fri",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-05-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-any",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fri",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-any",
+      "source": "a-601",
+      "values": {
+        "finish": {
+          "@ask": true
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fri",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-any",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fri|a-601",
+        "frame": {
+          "cutoff": "2026-06-01T08:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-any|a-601",
+        "frame": {
+          "cutoff": "2026-06-01T08:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fri|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-any|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          "~unordered",
+          {
+            "expectation": "door-101|e-fri|a-601",
+            "outstanding": [
+              "fire_rating"
+            ]
+          },
+          {
+            "expectation": "door-101|e-any|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fri|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-any|a-601",
+        "frame": {
+          "cutoff": "2026-09-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    }
+  ]
+}

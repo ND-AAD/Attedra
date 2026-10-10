@@ -1,0 +1,366 @@
+{
+  "id": "T11_07_expectations_conflict_by_the_same_comparison",
+  "family": "T11",
+  "rules": [
+    "7.1.5",
+    "6.3.4",
+    "6.4.1",
+    "9.4.2",
+    "12.7"
+  ],
+  "description": "Two in-force, unfulfilled expectations requiring paint (at 50% CD, on A-601) and stain (at 100% CD, on the specification) conflict whatever their timing; an information request is not a side. Two expectations of which one was fulfilled before the other came into force never conflict.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "instr-2",
+          "kind": "instruction"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e1-paint",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-50cd"
+                }
+              },
+              "fresh": false,
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              }
+            }
+          }
+        },
+        {
+          "id": "e2-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-100cd"
+                }
+              },
+              "fresh": false,
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              }
+            }
+          }
+        },
+        {
+          "id": "e3-ask",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e4-paint",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e5-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-07-31-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e1-paint",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e2-stain",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e3-ask",
+      "source": "a-601",
+      "values": {
+        "finish": {
+          "@ask": true,
+          "@suggested": "oak"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e4-paint",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e1-paint",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e2-stain",
+            "source": "spec-0991"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e3-ask",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e4-paint",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-issued-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e5-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-2",
+      "context": "instr-2-at",
+      "source": "instr-2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e5-stain",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "expectation": "door-101|e1-paint|a-601",
+                "value": "paint"
+              },
+              {
+                "expectation": "door-101|e2-stain|spec-0991",
+                "value": "stain"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e4-paint|a-601",
+        "frame": {
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-102|a601-issued-0603|a-601",
+            "qualifying_moment": "2026-06-03T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "2026-06-10-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": []
+      }
+    }
+  ]
+}

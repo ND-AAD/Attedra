@@ -1,0 +1,126 @@
+{
+  "id": "T04_02_empty_string_normalized_at_depth",
+  "family": "T04",
+  "rules": [
+    "5.3.2",
+    "5.1.3",
+    "5.3.1",
+    "I-14"
+  ],
+  "description": "On write, the empty string becomes null at any depth of a value except inside reference objects; whitespace, zero, false, an empty list and an empty object are kept as written.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"notes\": \"\", \"dims\": {\"label\": \"\", \"width\": 900}, \"rows\": [\"\", \"a\", [\"\"]], \"drawing\": {\"@ref\": \"artifact\", \"id\": \"a-601.pdf\", \"edition\": \"\"}, \"blank_space\": \" \", \"zero\": 0, \"no\": false, \"empty_list\": [], \"empty_obj\": {}}"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "notes": null,
+          "dims": {
+            "label": null,
+            "width": 900
+          },
+          "rows": [
+            null,
+            "a",
+            [
+              null
+            ]
+          ],
+          "drawing": {
+            "@ref": "artifact",
+            "id": "a-601.pdf",
+            "edition": ""
+          },
+          "blank_space": " ",
+          "zero": 0,
+          "no": false,
+          "empty_list": [],
+          "empty_obj": {}
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "notes": {
+            "classification": "asserted",
+            "value": null,
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "blank_space": {
+            "classification": "asserted",
+            "value": " ",
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "zero": {
+            "classification": "asserted",
+            "value": 0,
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "no": {
+            "classification": "asserted",
+            "value": false,
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "empty_list": {
+            "classification": "asserted",
+            "value": [],
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "empty_obj": {
+            "classification": "asserted",
+            "value": {},
+            "origin": "door-101|ev-0514|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

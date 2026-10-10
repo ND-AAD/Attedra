@@ -1,0 +1,180 @@
+{
+  "id": "T15_03_genuine_revision_is_new_assertion_at_new_context",
+  "family": "T15",
+  "rules": [
+    "8.1.4",
+    "8.2.1",
+    "5.2.1",
+    "9.4.1",
+    "9.2.4",
+    "12.15"
+  ],
+  "description": "A-601's Thursday re-issue is written as a new Assertion at its own context. The Monday Assertion remains A-601's position at its context and in earlier frames; later frames show the revision, and the change read reports it with both origins.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        },
+        "corrections": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-mon-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-thu-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-02-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|ev-mon-a601|a-601",
+            "new": "door-101|ev-thu-a601|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        },
+        "source": "a-601"
+      },
+      "expect": {
+        "statements": [
+          "door-101|ev-mon-a601|a-601",
+          "door-101|ev-thu-a601|a-601"
+        ],
+        "acts": []
+      }
+    }
+  ]
+}

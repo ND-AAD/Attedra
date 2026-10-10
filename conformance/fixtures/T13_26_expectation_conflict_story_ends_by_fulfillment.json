@@ -1,0 +1,456 @@
+{
+  "id": "T13_26_expectation_conflict_story_ends_by_fulfillment",
+  "family": "T13",
+  "rules": [
+    "7.1.5",
+    "7.2.2",
+    "7.2.4",
+    "7.2.6",
+    "6.3.4",
+    "6.5.1",
+    "9.4.2",
+    "9.5.2",
+    "12.7"
+  ],
+  "description": "Two in-force expectations on A-601 require paint (any timing) and stain (by 20 June); their conflict story begins at the later establishment (Tuesday 10:00). A-601's Thursday paint fulfils the paint expectation and ends the story by fulfillment, with the fulfilling Assertion as ending record; the expectation side then reads absent and the stain expectation remains ordinary open work.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "story-x",
+          "kind": "story"
+        },
+        {
+          "id": "e-paint",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-20-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-mon",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-mon-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "sup-2",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-tue",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-tue",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-tue-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-x/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T17:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-paint",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "meeting-mon",
+      "source": "minutes-mon",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-paint",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-mon.pdf",
+            "edition": "issued"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-mon-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-2",
+      "context": "meeting-tue",
+      "source": "minutes-tue",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-tue.pdf",
+            "edition": "issued"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-tue-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-x",
+      "context": "story-x/d1",
+      "source": "story-x",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-paint",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-x",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "kind": "conflict",
+        "interval": {
+          "start": "2026-06-02T10:00-07:00",
+          "end": null
+        },
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "expectation": "door-101|e-paint|a-601",
+                "value": "paint"
+              },
+              {
+                "expectation": "door-101|e-stain|a-601",
+                "value": "stain"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-x",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": "2026-06-02T10:00-07:00",
+          "end": "2026-06-04T09:00-07:00"
+        },
+        "ending": {
+          "kind": "fulfillment",
+          "record": "door-101|ev-thu-a601|a-601",
+          "at": "2026-06-04T09:00-07:00"
+        },
+        "standing": {
+          "open": "ended",
+          "disagreement": "absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-paint|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-thu-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-stain|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "id": "T16_01_disconnect_and_reconnect_one_connection",
+  "family": "T16",
+  "rules": [
+    "8.6.1",
+    "8.6.2",
+    "8.6.3",
+    "8.6.4",
+    "2.2.1",
+    "2.2.3",
+    "2.2.4",
+    "9.9.1",
+    "12.16"
+  ],
+  "description": "Door 101 is connected to Room 12 on Monday, disconnected Tuesday and reconnected Thursday (from a site instruction). It is one Connection whose state at each cutoff and whose history (active, inactive, active) are derived from connected_at and the two lifecycle acts; both endpoints see it while it is active.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room",
+          "label": "Room 12"
+        },
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "site-instruction-12",
+          "kind": "instruction-document"
+        },
+        {
+          "id": "si12-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T08:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ],
+        "reason": "Door relocated to Room 14"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-1",
+      "context": "recon-1-at",
+      "source": "site-instruction-12",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "site-instruction-12.pdf",
+            "edition": "issued 2026-06-04"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "si12-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "contractor"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-01T08:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": [
+          "room-12"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-05T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": [
+          "room-12"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-06-05T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-02T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-02T09:00-07:00",
+              "to": "2026-06-04T09:00-07:00"
+            },
+            {
+              "state": "active",
+              "from": "2026-06-04T09:00-07:00",
+              "to": null
+            }
+          ]
+        },
+        "incoming": [
+          "room-12"
+        ],
+        "outgoing": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "disc-1|disc-1-at|disc-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "disconnect",
+          "@targets": [
+            {
+              "@ref": "connection",
+              "from": "room-12",
+              "to": "door-101"
+            }
+          ],
+          "reason": "Door relocated to Room 14"
+        }
+      }
+    }
+  ]
+}

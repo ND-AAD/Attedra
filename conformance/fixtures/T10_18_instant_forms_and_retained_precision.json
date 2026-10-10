@@ -1,0 +1,177 @@
+{
+  "id": "T10_18_instant_forms_and_retained_precision",
+  "family": "T10",
+  "rules": [
+    "4.2.1",
+    "10.2.4",
+    "5.1.3",
+    "4.4.1"
+  ],
+  "description": "Instants without an explicit offset, or not in a 4.2.1 form, are rejected; date, minute and sub-second instants with offsets are accepted and read back at the precision written.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "m1",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "m2",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "75% CD",
+              "ordinal": 75
+            }
+          }
+        },
+        {
+          "id": "m3",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "m1",
+      "context": "m1",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13 11:45"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "m1",
+      "context": "m1",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "m1",
+      "context": "m1",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "m1",
+      "context": "m1",
+      "source": "arch-log",
+      "values": {
+        "@published": "13 May 2026"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "m1",
+      "context": "m1",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12.250-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m2",
+      "context": "m2",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-14-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m3",
+      "context": "m3",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-15T09:45-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "m1|m1|arch-log"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@published": "2026-05-13T11:45:12.250-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "m2|m2|arch-log"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@published": "2026-05-14-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "m3|m3|arch-log"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@published": "2026-05-15T09:45-07:00"
+        }
+      }
+    }
+  ]
+}

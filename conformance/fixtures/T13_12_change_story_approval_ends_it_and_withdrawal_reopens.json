@@ -1,0 +1,441 @@
+{
+  "id": "T13_12_change_story_approval_ends_it_and_withdrawal_reopens",
+  "family": "T13",
+  "rules": [
+    "7.2.7",
+    "7.2.3",
+    "7.2.4",
+    "7.4.1",
+    "7.4.2",
+    "6.7.9",
+    "9.5.2",
+    "9.5.3",
+    "9.5.4",
+    "12.13"
+  ],
+  "description": "A change story on A-601 (paint Monday, stain Thursday) is open and awaiting review from Thursday 09:00. A no_change approval on Friday ends it, with the review as its ending record, and it leaves both the open-stories and pending-review reads. When the approval is withdrawn the following Monday the story is open and awaiting review again from then; a Saturday frame still shows it ended.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "chg-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-rv",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-rv-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-1",
+      "context": "chg-1/d1",
+      "source": "chg-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-thu-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-thu-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-04T18:00-07:00"
+        }
+      },
+      "expect": {
+        "kind": "change",
+        "detections": [
+          "chg-1|chg-1/d1|chg-1"
+        ],
+        "acts": [],
+        "interval": {
+          "start": "2026-06-04T09:00-07:00",
+          "end": null
+        },
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "review": "unreviewed",
+          "disagreement": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T18:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T18:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-1"
+        ],
+        "count": 1,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "chg-1",
+            "context": "chg-1/d1",
+            "source": "chg-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-thu-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-05T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": "2026-06-04T09:00-07:00",
+          "end": "2026-06-05T10:00-07:00"
+        },
+        "ending": {
+          "kind": "review",
+          "record": "rv-1|rv-1-at|rv-1",
+          "at": "2026-06-05T10:00-07:00"
+        },
+        "standing": {
+          "open": "ended",
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-rv",
+      "context": "wd-rv-at",
+      "source": "wd-rv",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "rv-1",
+            "context": "rv-1-at",
+            "source": "rv-1"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "ending": {
+          "kind": "review",
+          "record": "rv-1|rv-1-at|rv-1",
+          "at": "2026-06-05T10:00-07:00"
+        },
+        "standing": {
+          "open": "ended",
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-08T12:00-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-08T12:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-08T12:00-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-1"
+        ],
+        "count": 1,
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    }
+  ]
+}

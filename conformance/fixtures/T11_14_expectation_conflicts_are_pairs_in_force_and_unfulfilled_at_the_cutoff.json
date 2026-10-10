@@ -1,0 +1,330 @@
+{
+  "id": "T11_14_expectation_conflicts_are_pairs_in_force_and_unfulfilled_at_the_cutoff",
+  "family": "T11",
+  "rules": [
+    "9.4.2",
+    "7.1.5",
+    "7.2.6",
+    "4.5.3",
+    "6.5.1"
+  ],
+  "description": "The conflicts read reports a pair of expectations only when both are in force and not yet fulfilled for the property at the cutoff: a pair that conflicted from 5 to 20 May is reported on 15 May and not on 1 June, after one side was fulfilled (its history is a story). A pair whose standing at the cutoff depends on an unspecified order is reported among the ambiguous pairs instead.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-paint",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "dp",
+          "kind": "decision"
+        },
+        {
+          "id": "dp-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ds",
+          "kind": "decision"
+        },
+        {
+          "id": "ds-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0520",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "dp2",
+          "kind": "decision"
+        },
+        {
+          "id": "dp2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ds2",
+          "kind": "decision"
+        },
+        {
+          "id": "ds2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-paint",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "dp",
+      "context": "dp-at",
+      "source": "dp",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-paint",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ds",
+      "context": "ds-at",
+      "source": "ds",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0520",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "expectation": "door-101|e-paint|a-601",
+                "value": "paint"
+              },
+              {
+                "expectation": "door-101|e-stain|a-601",
+                "value": "stain"
+              }
+            ]
+          }
+        ],
+        "ambiguous": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [],
+        "ambiguous": "~absent"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-paint",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "dp2",
+      "context": "dp2-at",
+      "source": "dp2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-paint",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ds2",
+      "context": "ds2-at",
+      "source": "ds2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "expectation_conflicts": [],
+        "ambiguous": [
+          {
+            "property": "finish",
+            "expectations": [
+              "door-102|e-paint|a-601",
+              "door-102|e-stain|a-601"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "expectation_conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "expectation": "door-102|e-paint|a-601",
+                "value": "paint"
+              },
+              {
+                "expectation": "door-102|e-stain|a-601",
+                "value": "stain"
+              }
+            ]
+          }
+        ],
+        "ambiguous": "~absent"
+      }
+    }
+  ]
+}

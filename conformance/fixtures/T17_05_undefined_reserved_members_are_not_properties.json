@@ -1,0 +1,162 @@
+{
+  "id": "T17_05_undefined_reserved_members_are_not_properties",
+  "family": "T17",
+  "rules": [
+    "10.4.1",
+    "10.4.2",
+    "10.2.4",
+    "2.4.4",
+    "2.4.7",
+    "5.2.4",
+    "9.2.2"
+  ],
+  "description": "Undefined @ members are extensions: accepted on write and preserved, but never properties, so they never appear in a position, never carry forward and never conflict.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@x-confidence": 9,
+        "@x-source-row": {
+          "sheet": "A-601",
+          "row": 12
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "finish": "paint",
+        "@x-confidence": 3
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "@x-confidence": 5
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint",
+          "@x-confidence": 9,
+          "@x-source-row": {
+            "sheet": "A-601",
+            "row": 12
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0515|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@x-confidence": 5
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "@x-confidence": "~absent",
+          "@x-source-row": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": null
+      }
+    }
+  ]
+}

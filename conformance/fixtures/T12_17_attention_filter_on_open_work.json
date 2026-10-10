@@ -1,0 +1,280 @@
+{
+  "id": "T12_17_attention_filter_on_open_work",
+  "family": "T12",
+  "rules": [
+    "9.5.5",
+    "9.3.2",
+    "9.5.6",
+    "6.7.7"
+  ],
+  "description": "Open work takes the attention filter and reports which filter it applied. Without it, an ignored expectation is listed as usual; with it, an expectation that an ignore in effect at the cutoff targets is omitted. An ignore with @until is in effect only while the cutoff is at or before @until. Ignoring changes no standing.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "e-fin",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-1",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-2",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ign-1",
+      "context": "ign-1-at",
+      "source": "ign-1",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ign-2",
+      "context": "ign-2-at",
+      "source": "ign-2",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@until": "2026-06-05T17:00-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          },
+          {
+            "expectation": "door-102|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": [],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-102|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02T09:30-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-fin|a-601"
+          },
+          {
+            "expectation": "door-102|e-fin|a-601"
+          }
+        ],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    }
+  ]
+}

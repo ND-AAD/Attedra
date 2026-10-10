@@ -1,0 +1,287 @@
+{
+  "id": "T08_10_qualifying_email_does_not_outrank_the_schedule",
+  "family": "T08",
+  "rules": [
+    "3.3.3",
+    "I-12",
+    "9.2.3",
+    "9.4.2",
+    "6.5.1",
+    "12.8"
+  ],
+  "description": "A qualifying principal email fulfills the party requirement but does not outrank A-601 where they disagree: the conflict read reports both sides, and the resolved view reports both positions without a winner.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "role-principal",
+          "kind": "role"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "label": "Architect, any communication",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "email-80",
+          "kind": "email"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-80-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-principal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-issued-0602",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0602",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-80",
+      "context": "email-80-sent",
+      "source": "email-80",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-principal"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-80-sent",
+      "source": "email-80",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|email-80-sent|email-80",
+            "qualifying_moment": "2026-06-03T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "paint",
+                "origin": "door-101|a601-issued-0602|a-601"
+              },
+              {
+                "source": "email-80",
+                "value": "stain",
+                "origin": "door-101|email-80-sent|email-80"
+              }
+            ]
+          }
+        ],
+        "expectation_conflicts": [],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|a601-issued-0602|a-601"
+            },
+            "email-80": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|email-80-sent|email-80"
+            },
+            "elig-arch": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

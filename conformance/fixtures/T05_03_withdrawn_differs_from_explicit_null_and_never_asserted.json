@@ -1,0 +1,135 @@
+{
+  "id": "T05_03_withdrawn_differs_from_explicit_null_and_never_asserted",
+  "family": "T05",
+  "rules": [
+    "5.6.1",
+    "5.3.1",
+    "6.7.2",
+    "6.7.4",
+    "9.2.2",
+    "I-14",
+    "12.5"
+  ],
+  "description": "One A-601 Assertion carries fire_rating 90 and finish null, and a withdrawal targets only its fire_rating property. fire_rating reads withdrawn with no value, finish reads asserted with the value null, and a property never submitted reads never_asserted with no value.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601",
+            "property": "fire_rating"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        },
+        "properties": [
+          "closer"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "withdrawn",
+            "withdrawn_by": "w1|w1-at|w1",
+            "value": "~absent",
+            "origin": "~absent"
+          },
+          "finish": {
+            "classification": "asserted",
+            "value": null,
+            "origin": "door-101|a601-0601|a-601",
+            "withdrawn_by": "~absent"
+          },
+          "closer": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|a601-0601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 90,
+          "finish": null
+        },
+        "withdrawals": [
+          "w1|w1-at|w1"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+{
+  "id": "T06_18_every_property_withdrawn_takes_expectation_out_of_force",
+  "family": "T06",
+  "rules": [
+    "6.3.1",
+    "6.7.2",
+    "6.6.1",
+    "6.3.3",
+    "9.3.2"
+  ],
+  "description": "An expectation is in force while some support covers at least one of its properties. When each property is withdrawn by its own property-level withdrawal, the supports themselves stand but the expectation is not in force; each property reads withdrawn with its own withdrawal, and the expectation leaves open work.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d2",
+          "kind": "decision"
+        },
+        {
+          "id": "d2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w-fin",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w-fin-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w-fr",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w-fr-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d2",
+      "context": "d2-at",
+      "source": "d2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w-fin",
+      "context": "w-fin-at",
+      "source": "w-fin",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w-fr",
+      "context": "w-fr-at",
+      "source": "w-fr",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601",
+            "property": "fire_rating"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-fin|w-fin-at|w-fin"
+            ]
+          },
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-fin|w-fin-at|w-fin"
+            ]
+          },
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-fr|w-fr-at|w-fr"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "d1|d1-at|d1"
+      },
+      "expect": {
+        "status": "found",
+        "withdrawals": []
+      }
+    }
+  ]
+}

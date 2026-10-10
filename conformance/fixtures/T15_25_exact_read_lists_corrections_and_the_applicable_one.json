@@ -1,0 +1,349 @@
+{
+  "id": "T15_25_exact_read_lists_corrections_and_the_applicable_one",
+  "family": "T15",
+  "rules": [
+    "9.2.1",
+    "8.3.2",
+    "8.3.3",
+    "8.3.4"
+  ],
+  "description": "The exact read returns the record as recorded with every correction that targets it in the corrected account, in presentation order, and identifies the applicable one (the latest by occurrence time) with the corrected values every other read uses. A correction corrected as erroneous is not in the corrected account, so the earlier correction applies again. Tied corrections are listed as ambiguous in place of an applicable one.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "ev-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-2",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-3",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-4",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-4-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-5",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-5-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-mon",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "corrections": [],
+        "applicable_correction": "~absent",
+        "corrections_ambiguous": "~absent",
+        "corrected_values": "~absent"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "brown"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-2",
+      "context": "corr-2-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "stain"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log",
+          "corr-2|corr-2-at|import-review-log"
+        ],
+        "applicable_correction": "corr-2|corr-2-at|import-review-log",
+        "corrections_ambiguous": "~absent",
+        "corrected_values": {
+          "finish": "stain"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-3",
+      "context": "corr-3-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "corr-2",
+            "context": "corr-2-at",
+            "source": "import-review-log"
+          }
+        ],
+        "@outcome": "erroneous",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ],
+        "applicable_correction": "corr-1|corr-1-at|import-review-log",
+        "corrected_values": {
+          "finish": "brown"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-4",
+      "context": "corr-4-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "ev-mon",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "brown"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-5",
+      "context": "corr-5-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "ev-mon",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "stain"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-102|ev-mon|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        },
+        "corrections": [
+          "~unordered",
+          "corr-4|corr-4-at|import-review-log",
+          "corr-5|corr-5-at|import-review-log"
+        ],
+        "corrections_ambiguous": [
+          "~unordered",
+          "corr-4|corr-4-at|import-review-log",
+          "corr-5|corr-5-at|import-review-log"
+        ],
+        "applicable_correction": "~absent"
+      }
+    }
+  ]
+}

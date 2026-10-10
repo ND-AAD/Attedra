@@ -1,0 +1,268 @@
+{
+  "id": "T07_05_competing_expectations_conflict_whatever_their_milestones",
+  "family": "T07",
+  "rules": [
+    "6.3.4",
+    "7.1.1",
+    "7.1.5",
+    "9.4.2",
+    "6.2.1",
+    "12.7"
+  ],
+  "description": "Two expectations on A-601, finish paint at the architect's 50% CD and finish stain at 100% CD, conflict as soon as both are in force. The ordinary comparison finds the conflict whatever their milestones. Neither supersedes the other: both stay in force and not yet due.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "label": "Architect 50% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "label": "Architect 100% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "e-paint-50cd",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-50cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-stain-100cd",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-100cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "dp",
+          "kind": "decision"
+        },
+        {
+          "id": "dp-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ds",
+          "kind": "decision"
+        },
+        {
+          "id": "ds-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-paint-50cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "dp",
+      "context": "dp-at",
+      "source": "dp",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-paint-50cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain-100cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ds",
+      "context": "ds-at",
+      "source": "ds",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain-100cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-20T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-22T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "expectation": "door-101|e-paint-50cd|a-601",
+                "value": "paint"
+              },
+              {
+                "expectation": "door-101|e-stain-100cd|a-601",
+                "value": "stain"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-paint-50cd|a-601",
+        "frame": {
+          "cutoff": "2026-05-22T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "not_yet_due"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain-100cd|a-601",
+        "frame": {
+          "cutoff": "2026-05-22T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "not_yet_due"
+          }
+        }
+      }
+    }
+  ]
+}

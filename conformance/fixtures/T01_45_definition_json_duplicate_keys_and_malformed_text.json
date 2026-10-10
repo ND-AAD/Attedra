@@ -1,0 +1,84 @@
+{
+  "id": "T01_45_definition_json_duplicate_keys_and_malformed_text",
+  "family": "T01",
+  "rules": [
+    "5.1.1",
+    "8.1.5",
+    "10.2.4"
+  ],
+  "description": "An Item definition given as raw JSON text (definition_json) is parsed like values_json: a duplicate key at any depth fails duplicate_key, text that is not valid JSON or not a JSON object fails 10.2.4, and nothing is created. Keys differing only in case are distinct and the Item is created.",
+  "steps": [
+    {
+      "op": "item",
+      "id": "ev-dup",
+      "kind": "event",
+      "definition_json": "{\"@context\": {\"role\": \"event\", \"at\": \"2026-05-14T09:45-07:00\", \"at\": \"2026-05-15T09:45-07:00\"}}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "definition_json": "{\"type_code\": \"D1\", \"type_code\": \"D2\"}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "definition_json": "{\"type_code\": \"D1\"",
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "definition_json": "[\"D1\"]",
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-dup"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-101"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "definition_json": "{\"type_code\": \"D1\", \"Type_code\": \"D2\"}",
+      "expect": {
+        "status": "created",
+        "id": "door-101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-101"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "type_code": "D1",
+          "Type_code": "D2"
+        }
+      }
+    }
+  ]
+}

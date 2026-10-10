@@ -1,0 +1,723 @@
+{
+  "id": "T18_13_new_period_after_withdrawal_terminal_fulfillment_and_an_ending_revised_ahead_of_its_time",
+  "family": "T18",
+  "rules": [
+    "7.6.2",
+    "7.6.3",
+    "7.6.5",
+    "7.6.9",
+    "7.6.10",
+    "6.3.3",
+    "6.5.2",
+    "6.6.1",
+    "6.7.2",
+    "9.3.1",
+    "9.5.7",
+    "12.19"
+  ],
+  "description": "The 12.6 example: E (fire_rating and finish, fresh) is established on 1 June and withdrawn at the 2 June meeting with effect 5 June. The withdrawal records both end acts now, at the 5 June instant, and both properties read open until then. A-601's 4 June stain fulfils finish first, so that write revises finish's end act to the fulfillment (exp:.../finish/v1). D4 on 12 June begins a second fire_rating period (b2), but none for finish, which is fulfilled: fulfillment is terminal. The 11 June 90 is not fresh for that period; the 15 June 90 ends it (e2).",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "minutes-0602",
+          "kind": "minutes"
+        },
+        {
+          "id": "minutes-0602-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w-0602",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "a601-0604",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0611",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-11T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d4",
+          "kind": "decision"
+        },
+        {
+          "id": "d4-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-12T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0615",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-15T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-fr|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "d1|d1-at|d1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-fr/a-601/finish/b1|exp:door-101/e-fr/a-601/finish/b1/at|exp:door-101/e-fr/a-601/finish/b1",
+          "exp:door-101/e-fr/a-601/fire_rating/b1|exp:door-101/e-fr/a-601/fire_rating/b1/at|exp:door-101/e-fr/a-601/fire_rating/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w-0602",
+      "context": "meeting-0602",
+      "source": "minutes-0602",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-05-07:00",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-02.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-0602-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "note": "Requirement to be restated under the revised specification."
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "w-0602|meeting-0602|minutes-0602",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-fr/a-601/finish/e1|exp:door-101/e-fr/a-601/finish/e1/at|exp:door-101/e-fr/a-601/finish/e1",
+          "exp:door-101/e-fr/a-601/fire_rating/e1|exp:door-101/e-fr/a-601/fire_rating/e1/at|exp:door-101/e-fr/a-601/fire_rating/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-101/e-fr/a-601/finish/e1|exp:door-101/e-fr/a-601/finish/e1/at|exp:door-101/e-fr/a-601/finish/e1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-06-05-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "w-0602",
+              "context": "meeting-0602",
+              "source": "minutes-0602",
+              "property": "~absent"
+            },
+            "cause": "withdrawal",
+            "policy": null
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-fr/a-601/finish/e1/at"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-02T10:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-fr|a-601#finish",
+            "began": {
+              "act": "exp:door-101/e-fr/a-601/finish/b1|exp:door-101/e-fr/a-601/finish/b1/at|exp:door-101/e-fr/a-601/finish/b1",
+              "at": "2026-06-01T09:00-07:00",
+              "record": "d1|d1-at|d1",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "outstanding",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          },
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-fr|a-601#fire_rating",
+            "began": {
+              "act": "exp:door-101/e-fr/a-601/fire_rating/b1|exp:door-101/e-fr/a-601/fire_rating/b1/at|exp:door-101/e-fr/a-601/fire_rating/b1",
+              "at": "2026-06-01T09:00-07:00",
+              "record": "d1|d1-at|d1",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "outstanding",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 2
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0604",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|a601-0604|a-601",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-fr/a-601/finish/v1|exp:door-101/e-fr/a-601/finish/v1/at|exp:door-101/e-fr/a-601/finish/v1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-101/e-fr/a-601/finish/v1|exp:door-101/e-fr/a-601/finish/v1/at|exp:door-101/e-fr/a-601/finish/v1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "reconcile",
+          "@outcome": "revise",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "exp:door-101/e-fr/a-601/finish/e1",
+              "context": "exp:door-101/e-fr/a-601/finish/e1/at",
+              "source": "exp:door-101/e-fr/a-601/finish/e1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-04T09:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "a601-0604",
+              "source": "a-601",
+              "property": "~absent"
+            },
+            "cause": "fulfillment",
+            "policy": null,
+            "timeliness": "on_time",
+            "interpretation": null
+          },
+          "@basis": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "a601-0604",
+              "source": "a-601"
+            }
+          ],
+          "@frame": "~absent"
+        },
+        "event_time": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-fr/a-601/finish/v1"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "reconciliation"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-fr/a-601/finish/v1/at"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-04T09:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0611",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|a601-0611|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d4",
+      "context": "d4-at",
+      "source": "d4",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "d4|d4-at|d4",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-fr/a-601/fire_rating/b2|exp:door-101/e-fr/a-601/fire_rating/b2/at|exp:door-101/e-fr/a-601/fire_rating/b2"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-13T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-fr|a-601#fire_rating",
+            "began": {
+              "act": "exp:door-101/e-fr/a-601/fire_rating/b2|exp:door-101/e-fr/a-601/fire_rating/b2/at|exp:door-101/e-fr/a-601/fire_rating/b2",
+              "at": "2026-06-12T09:00-07:00",
+              "record": "d4|d4-at|d4",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "outstanding",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 1
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0615",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|a601-0615|a-601",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-fr/a-601/fire_rating/e2|exp:door-101/e-fr/a-601/fire_rating/e2/at|exp:door-101/e-fr/a-601/fire_rating/e2"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0604|a-601",
+            "qualifying_moment": "2026-06-04T09:00-07:00",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-fr/a-601/finish/b1|exp:door-101/e-fr/a-601/finish/b1/at|exp:door-101/e-fr/a-601/finish/b1",
+                  "at": "2026-06-01T09:00-07:00",
+                  "record": "d1|d1-at|d1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-fr/a-601/finish/e1|exp:door-101/e-fr/a-601/finish/e1/at|exp:door-101/e-fr/a-601/finish/e1",
+                  "at": "2026-06-04T09:00-07:00",
+                  "record": "door-101|a601-0604|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null,
+                  "revised_by": "exp:door-101/e-fr/a-601/finish/v1|exp:door-101/e-fr/a-601/finish/v1/at|exp:door-101/e-fr/a-601/finish/v1"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          },
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0615|a-601",
+            "qualifying_moment": "2026-06-15T09:00-07:00",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/b1|exp:door-101/e-fr/a-601/fire_rating/b1/at|exp:door-101/e-fr/a-601/fire_rating/b1",
+                  "at": "2026-06-01T09:00-07:00",
+                  "record": "d1|d1-at|d1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/e1|exp:door-101/e-fr/a-601/fire_rating/e1/at|exp:door-101/e-fr/a-601/fire_rating/e1",
+                  "at": "2026-06-05-07:00",
+                  "record": "w-0602|meeting-0602|minutes-0602",
+                  "cause": "withdrawal"
+                },
+                "policy_end": "~absent"
+              },
+              {
+                "begin": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/b2|exp:door-101/e-fr/a-601/fire_rating/b2/at|exp:door-101/e-fr/a-601/fire_rating/b2",
+                  "at": "2026-06-12T09:00-07:00",
+                  "record": "d4|d4-at|d4",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/e2|exp:door-101/e-fr/a-601/fire_rating/e2/at|exp:door-101/e-fr/a-601/fire_rating/e2",
+                  "at": "2026-06-15T09:00-07:00",
+                  "record": "door-101|a601-0615|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-fr/a-601/finish/b1|exp:door-101/e-fr/a-601/finish/b1/at|exp:door-101/e-fr/a-601/finish/b1",
+                  "at": "2026-06-01T09:00-07:00",
+                  "record": "d1|d1-at|d1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-fr/a-601/finish/e1|exp:door-101/e-fr/a-601/finish/e1/at|exp:door-101/e-fr/a-601/finish/e1",
+                  "at": "2026-06-04T09:00-07:00",
+                  "record": "door-101|a601-0604|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null,
+                  "revised_by": "exp:door-101/e-fr/a-601/finish/v1|exp:door-101/e-fr/a-601/finish/v1/at|exp:door-101/e-fr/a-601/finish/v1"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          },
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-0602|meeting-0602|minutes-0602"
+            ],
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/b1|exp:door-101/e-fr/a-601/fire_rating/b1/at|exp:door-101/e-fr/a-601/fire_rating/b1",
+                  "at": "2026-06-01T09:00-07:00",
+                  "record": "d1|d1-at|d1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/e1|exp:door-101/e-fr/a-601/fire_rating/e1/at|exp:door-101/e-fr/a-601/fire_rating/e1",
+                  "at": "2026-06-05-07:00",
+                  "record": "w-0602|meeting-0602|minutes-0602",
+                  "cause": "withdrawal"
+                },
+                "policy_end": "~absent"
+              },
+              {
+                "begin": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/b2|exp:door-101/e-fr/a-601/fire_rating/b2/at|exp:door-101/e-fr/a-601/fire_rating/b2",
+                  "at": "2026-06-12T09:00-07:00",
+                  "record": "d4|d4-at|d4",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-fr/a-601/fire_rating/e2|exp:door-101/e-fr/a-601/fire_rating/e2/at|exp:door-101/e-fr/a-601/fire_rating/e2",
+                  "at": "2026-06-15T09:00-07:00",
+                  "record": "door-101|a601-0615|a-601",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

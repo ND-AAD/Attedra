@@ -1,0 +1,194 @@
+{
+  "id": "T01_17_context_role_missing_members",
+  "family": "T01",
+  "rules": [
+    "10.2.3",
+    "4.1.1"
+  ],
+  "description": "A context Item lacking a member its role requires is rejected with 10.2.3: an event without at, a milestone without stage or ordinal, a phase without schedule, starts or ends.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "ev-x",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ms-x",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "ordinal": 50
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ms-x",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ph-x",
+      "kind": "phase",
+      "definition": {
+        "@context": {
+          "role": "phase",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "starts": "2026-06-01-07:00"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ph-x",
+      "kind": "phase",
+      "definition": {
+        "@context": {
+          "role": "phase",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "ends": "2026-06-30-07:00"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ph-x",
+      "kind": "phase",
+      "definition": {
+        "@context": {
+          "role": "phase",
+          "starts": "2026-06-01-07:00",
+          "ends": "2026-06-30-07:00"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ms-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ph-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "item",
+      "id": "ev-x",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event",
+          "at": "2026-05-14T09:45-07:00"
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "ms-x",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD",
+          "ordinal": 50
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "ph-x",
+      "kind": "phase",
+      "definition": {
+        "@context": {
+          "role": "phase",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "starts": {
+            "@ref": "item",
+            "id": "ms-x"
+          },
+          "ends": "2026-06-30-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ph-x"
+      },
+      "expect": {
+        "status": "found"
+      }
+    }
+  ]
+}

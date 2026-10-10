@@ -1,0 +1,278 @@
+{
+  "id": "T06_07_withdrawal_effective_later_ends_supports_covering_at_effective_time",
+  "family": "T06",
+  "rules": [
+    "6.7.2",
+    "6.7.5",
+    "6.6.1",
+    "6.5.2",
+    "6.3.3",
+    "8.4.1",
+    "3.2.1",
+    "12.6"
+  ],
+  "description": "E is withdrawn at the 2 June meeting, recorded from the minutes, effective 5 June. On 5 June this ends every support covering E, including a reaffirmation that occurred on 3 June. finish, fulfilled on 4 June, stays fulfilled, with the later withdrawal noted. fire_rating reads withdrawn.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "owner",
+          "kind": "party",
+          "label": "Owner"
+        },
+        {
+          "id": "minutes-0602",
+          "kind": "minutes",
+          "label": "Minutes of the 2 June meeting"
+        },
+        {
+          "id": "minutes-0602-issued",
+          "kind": "event",
+          "label": "Minutes of 2 June issued",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-0602",
+          "kind": "event",
+          "label": "Meeting 2 June",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w-0602",
+          "kind": "withdrawal",
+          "label": "Withdrawal of E at the 2 June meeting"
+        },
+        {
+          "id": "r1",
+          "kind": "decision"
+        },
+        {
+          "id": "r1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0604",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w-0602",
+      "context": "meeting-0602",
+      "source": "minutes-0602",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-05-07:00",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-02.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-0602-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "note": "Requirement to be restated under the revised specification."
+      }
+    },
+    {
+      "op": "assert",
+      "item": "r1",
+      "context": "r1-at",
+      "source": "r1",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0604",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          },
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0604|a-601",
+            "qualifying_moment": "2026-06-04T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-0602|meeting-0602|minutes-0602"
+            ]
+          },
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0604|a-601",
+            "qualifying_moment": "2026-06-04T09:00-07:00",
+            "timeliness": "on_time",
+            "later": [
+              {
+                "record": "w-0602|meeting-0602|minutes-0602"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    }
+  ]
+}

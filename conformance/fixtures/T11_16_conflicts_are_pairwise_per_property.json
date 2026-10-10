@@ -1,0 +1,173 @@
+{
+  "id": "T11_16_conflicts_are_pairwise_per_property",
+  "family": "T11",
+  "rules": [
+    "9.4.2",
+    "7.1.1",
+    "7.2.2"
+  ],
+  "description": "Conflicts are reported per property and per unordered pair of sources whose applicable values differ: three sources with three different values give three entries, and sources that agree form no entry. Entries are ordered by property, then by the pair's source ids, and sides are in source-id order.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "c-201",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-3",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "c-201",
+      "values": {
+        "finish": "stain",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-3",
+      "source": "spec-0991",
+      "values": {
+        "finish": "lacquer",
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "paint"
+              },
+              {
+                "source": "c-201",
+                "value": "stain"
+              }
+            ]
+          },
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "paint"
+              },
+              {
+                "source": "spec-0991",
+                "value": "lacquer"
+              }
+            ]
+          },
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "c-201",
+                "value": "stain"
+              },
+              {
+                "source": "spec-0991",
+                "value": "lacquer"
+              }
+            ]
+          },
+          {
+            "property": "hardware",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "HW-1"
+              },
+              {
+                "source": "spec-0991",
+                "value": "HW-2"
+              }
+            ]
+          },
+          {
+            "property": "hardware",
+            "sides": [
+              {
+                "source": "c-201",
+                "value": "HW-1"
+              },
+              {
+                "source": "spec-0991",
+                "value": "HW-2"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "id": "T09_05_ordinary_non_null_values_answer_information_requests",
+  "family": "T09",
+  "rules": [
+    "6.4.1",
+    "6.4.4",
+    "5.3.2"
+  ],
+  "description": "Zero, false, whitespace, an empty list and a placeholder word are ordinary values, not empties. Each answers an information request.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-ask",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-05-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-ask",
+      "source": "a-601",
+      "values": {
+        "fire_rating": {
+          "@ask": true
+        },
+        "closer": {
+          "@ask": true
+        },
+        "note": {
+          "@ask": true
+        },
+        "tags": {
+          "@ask": true
+        },
+        "hardware": {
+          "@ask": true
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-ask",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 0,
+        "closer": false,
+        "note": " ",
+        "tags": [],
+        "hardware": "N/A"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-ask|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          },
+          "closer": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          },
+          "note": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          },
+          "tags": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          },
+          "hardware": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    }
+  ]
+}

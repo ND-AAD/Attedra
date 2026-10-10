@@ -1,0 +1,242 @@
+{
+  "id": "T07_02_reaffirmation_references_the_same_expectation",
+  "family": "T07",
+  "rules": [
+    "6.3.1",
+    "6.3.2",
+    "6.3.3",
+    "9.3.2",
+    "9.3.3",
+    "12.7"
+  ],
+  "description": "A reaffirming decision references E1 exactly and adds a second support to the same expectation. It creates no E1'. An equal-valued expectation in another context is a distinct expectation: the model infers no reuse from equal values, and with no support of its own it is not in force.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e1",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e1b",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "r1",
+          "kind": "decision"
+        },
+        {
+          "id": "r1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e1",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e1b",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e1",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "r1",
+      "context": "r1-at",
+      "source": "r1",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e1",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e1|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          "~unordered",
+          {
+            "support": "d1|d1-at|d1",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          },
+          {
+            "support": "r1|r1-at|r1",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectations_about",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "expectations": [
+          "~unordered",
+          {
+            "expectation": "door-101|e1|a-601",
+            "in_force": true,
+            "properties": {
+              "finish": {
+                "standing": "outstanding"
+              }
+            }
+          },
+          {
+            "expectation": "door-101|e1b|a-601",
+            "in_force": false,
+            "properties": {
+              "finish": {
+                "standing": "not_in_force"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e1|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": []
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 6: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

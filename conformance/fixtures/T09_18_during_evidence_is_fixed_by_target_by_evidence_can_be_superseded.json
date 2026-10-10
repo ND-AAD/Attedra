@@ -1,0 +1,245 @@
+{
+  "id": "T09_18_during_evidence_is_fixed_by_target_by_evidence_can_be_superseded",
+  "family": "T09",
+  "rules": [
+    "6.5.1",
+    "6.5.5",
+    "6.2.1"
+  ],
+  "description": "A-601 issues 90 on 9 and 11 June, inside the phase, and 60 on 16 June, after it. Two expectations are established on 17 June. The during-phase one is fulfilled at establishment by the earliest qualifying evidence, the 9 June 90, because later supersession does not disqualify during evidence. The by-timing one is outstanding, because both 90s were superseded before it came into force.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "phase-cd",
+          "kind": "phase",
+          "label": "CD phase",
+          "definition": {
+            "@context": {
+              "role": "phase",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "starts": "2026-06-08-07:00",
+              "ends": "2026-06-15-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-cd",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "during",
+                "phase": {
+                  "@ref": "item",
+                  "id": "phase-cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-by",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "a601-0609",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-09T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0611",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-11T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0616",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-17T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-by",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0609",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0611",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0616",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 60
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-cd",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-by",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-17T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0609|a-601",
+            "qualifying_moment": "2026-06-17T09:00-07:00",
+            "source_current": {
+              "classification": "asserted",
+              "value": 60,
+              "origin": "door-101|a601-0616|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by|a-601",
+        "frame": {
+          "cutoff": "2026-06-17T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": 60,
+              "origin": "door-101|a601-0616|a-601",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

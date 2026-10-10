@@ -1,0 +1,269 @@
+{
+  "id": "T05_13_withdrawal_of_never_withdrawn_records_is_rejected",
+  "family": "T05",
+  "rules": [
+    "6.7.9",
+    "10.2.6",
+    "4.4.1",
+    "6.7.4"
+  ],
+  "description": "Withdrawing a withdrawal, or a milestone publication, is rejected under 10.2.6 and leaves the store unchanged. The withdrawn value stays withdrawn until a new Assertion reinstates it.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "label": "Architect 50% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "arch-log",
+          "kind": "log",
+          "label": "Architect issue log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party",
+          "label": "Contractor"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w2",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w3",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0605",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-50cd",
+      "context": "arch-50cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02T11:45-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w2",
+      "context": "w2-at",
+      "source": "w2",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "w1",
+            "context": "w1-at",
+            "source": "w1"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "w3",
+      "context": "w3-at",
+      "source": "w3",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "arch-50cd",
+            "context": "arch-50cd",
+            "source": "arch-log"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "w2|w2-at|w2"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "w3|w3-at|w3"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "withdrawn",
+            "withdrawn_by": "w1|w1-at|w1",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0605",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "asserted",
+            "value": 90,
+            "origin": "door-101|a601-0605|a-601",
+            "withdrawn_by": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

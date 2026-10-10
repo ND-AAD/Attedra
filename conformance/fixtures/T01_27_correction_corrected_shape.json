@@ -1,0 +1,295 @@
+{
+  "id": "T01_27_correction_corrected_shape",
+  "family": "T01",
+  "rules": [
+    "10.2.5",
+    "8.3.1"
+  ],
+  "description": "A replace correction without @corrected, and a relocated correction whose @corrected is not one Assertion reference, are rejected with 10.2.5; well-formed replace and relocated corrections are accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-2",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "review-log",
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0515",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0515",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace"
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": {
+          "@ref": "item",
+          "id": "door-102"
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": {
+          "finish": "paint"
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": {
+          "@ref": "artifact",
+          "id": "a-601-rev-3.pdf",
+          "edition": "rev 3"
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "cor-1|cor-1-at|review-log"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "cor-2|cor-2-at|review-log"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0515",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "stain",
+          "hardware": "HW-2"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": {
+          "@ref": "assertion",
+          "item": "door-102",
+          "context": "ev-0514",
+          "source": "a-601"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

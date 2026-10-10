@@ -1,0 +1,175 @@
+{
+  "id": "T09_04_empty_answers_and_required_null",
+  "family": "T09",
+  "rules": [
+    "6.4.1",
+    "6.4.4",
+    "5.3.1",
+    "5.3.2",
+    "5.2.3",
+    "12.4",
+    "12.9"
+  ],
+  "description": "With no interpretation supplied, an explicit null, or \"\" normalized to null, does not answer an information request, and null never meets a required non-empty value. A required null is met by an explicit null and not by an omitted property.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-05-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": {
+          "@ask": true
+        },
+        "finish": {
+          "@ask": true
+        },
+        "frame_type": "HM",
+        "hardware": null,
+        "closer": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": null,
+        "finish": "",
+        "frame_type": null,
+        "hardware": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": null,
+              "origin": "door-101|a601-0602|a-601",
+              "withdrawn_by": "~absent"
+            }
+          },
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": null,
+              "origin": "door-101|a601-0602|a-601",
+              "withdrawn_by": "~absent"
+            }
+          },
+          "frame_type": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "asserted",
+              "value": null,
+              "origin": "door-101|a601-0602|a-601",
+              "withdrawn_by": "~absent"
+            }
+          },
+          "hardware": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "timeliness": "on_time"
+          },
+          "closer": {
+            "standing": "outstanding",
+            "overdue": false,
+            "source_current": {
+              "classification": "never_asserted",
+              "value": "~absent",
+              "origin": "~absent"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "T01_22_duplicate_keys",
+  "family": "T01",
+  "rules": [
+    "5.1.1",
+    "10.2.4"
+  ],
+  "description": "An object with a duplicate key is rejected with duplicate_key at any depth, including inside an array element and inside a reference object; keys differing only in case are distinct.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\", \"finish\": \"stain\"}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\", \"finish\": \"paint\"}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"dims\": {\"width\": 900, \"width\": 910}}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"rows\": [{\"mark\": \"101\", \"mark\": \"102\"}]}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"spec\": {\"@ref\": \"item\", \"id\": \"spec-0991\", \"id\": \"a-601\"}}",
+      "expect_error": "duplicate_key"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\", \"Finish\": \"stain\"}",
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint",
+          "Finish": "stain"
+        }
+      }
+    }
+  ]
+}

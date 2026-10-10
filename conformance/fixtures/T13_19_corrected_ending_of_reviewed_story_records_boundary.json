@@ -1,0 +1,422 @@
+{
+  "id": "T13_19_corrected_ending_of_reviewed_story_records_boundary",
+  "family": "T13",
+  "rules": [
+    "7.2.6",
+    "7.3.5",
+    "7.3.1",
+    "7.2.8",
+    "8.3.1",
+    "12.13"
+  ],
+  "description": "A reviewed story ends when A-601's finish is withdrawn on Wednesday; A-601's Thursday lacquer then opens a related story. On Friday the withdrawal is corrected as erroneous. Because story-1 is reviewed the later story stays a separate related story, and maintenance records a boundary reconciliation (story-1/r1) for the reviewed story's recomputed interval. The review stays on story-1.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "ending": {
+          "kind": "withdrawal",
+          "record": "wd-1|wd-1-at|wd-1",
+          "at": "2026-06-03T10:00-07:00"
+        },
+        "standing": {
+          "open": "ended",
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "wd-1",
+            "context": "wd-1-at",
+            "source": "wd-1"
+          }
+        ],
+        "@outcome": "erroneous",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-1/r1|story-1/r1/at|story-1/r1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "reconcile",
+          "@outcome": "boundary"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "acts": [
+          "~unordered",
+          "rv-1|rv-1-at|rv-1",
+          "story-1/r1|story-1/r1/at|story-1/r1"
+        ],
+        "standing": {
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1+1",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "related": [
+          "story-1"
+        ],
+        "interval": {
+          "start": "2026-06-04T09:00-07:00",
+          "end": null
+        },
+        "standing": {
+          "open": "open",
+          "review": "unreviewed",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1+1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-1|wd-1-at|wd-1"
+      },
+      "expect": {
+        "status": "found",
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    }
+  ]
+}

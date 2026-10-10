@@ -1,0 +1,120 @@
+{
+  "id": "T04_03_null_versus_omission",
+  "family": "T04",
+  "rules": [
+    "7.1.4",
+    "9.4.2",
+    "5.2.3",
+    "5.3.1",
+    "12.4"
+  ],
+  "description": "An explicit null against a populated value is a conflict; a property one source never asserted does not conflict with another source's value.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "finish": null,
+        "closer": "C-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "paint"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          }
+        ],
+        "expectation_conflicts": [],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "spec-0991",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "hardware"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": null,
+            "origin": "door-101|ev-0514|spec-0991"
+          },
+          "hardware": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

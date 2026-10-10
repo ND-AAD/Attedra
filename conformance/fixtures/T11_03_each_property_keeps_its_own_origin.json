@@ -1,0 +1,235 @@
+{
+  "id": "T11_03_each_property_keeps_its_own_origin",
+  "family": "T11",
+  "rules": [
+    "7.1.3",
+    "5.2.1",
+    "5.2.2",
+    "9.4.2",
+    "9.2.2",
+    "12.11"
+  ],
+  "description": "The consultant's Thursday issue omits hardware, so its hardware position still originates in Tuesday's issue: the Thursday conflict read reports each property with its own origin, and no value is attributed to the newest document by default.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "cons-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "c-201",
+          "kind": "schedule",
+          "label": "Consultant door schedule"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Architect door schedule"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "cons-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "cons-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "cons-50cd",
+      "context": "cons-50cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-12T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cons-100cd",
+      "context": "cons-100cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-14T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-50cd",
+      "source": "c-201",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-100cd",
+      "source": "c-201",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-14T18:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          "~unordered",
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "stain",
+                "origin": "door-101|arch-100dd|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": "lacquer",
+                "origin": "door-101|cons-100cd|c-201"
+              }
+            ]
+          },
+          {
+            "property": "hardware",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "HW-2",
+                "origin": "door-101|arch-100dd|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": "HW-1",
+                "origin": "door-101|cons-50cd|c-201"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "c-201",
+        "frame": {
+          "cutoff": "2026-05-14T18:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "lacquer",
+            "origin": "door-101|cons-100cd|c-201"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|cons-50cd|c-201"
+          }
+        }
+      }
+    }
+  ]
+}

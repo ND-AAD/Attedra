@@ -1,0 +1,303 @@
+{
+  "id": "T15_20_item_definition_corrected_and_validated",
+  "family": "T15",
+  "rules": [
+    "8.3.8",
+    "8.1.5",
+    "4.1.2",
+    "10.2.5",
+    "10.2.3",
+    "8.3.3",
+    "4.2.4"
+  ],
+  "description": "An event context was created with the wrong instant (Friday instead of Monday). A replace correction of the Item supplies the complete corrected kind, label and definition: reads use the corrected instant at every cutoff, and the item read still shows the original with the correction. A corrected milestone that names no schedule, or whose ordinal duplicates another milestone of its schedule, is rejected under 10.2.5.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "ev-x",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "issue-schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "arch-75cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "75% CD",
+              "ordinal": 75
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-x",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-x",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "ev-x"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "event",
+          "label": "A-601 issued 1 June",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-x|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-x"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "event",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-05T09:00-07:00"
+          }
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-x",
+      "context": "corr-x-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "arch-75cd"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": "75% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "stage": "75% CD",
+              "ordinal": 75
+            }
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "corr-x",
+      "context": "corr-x-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "arch-75cd"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": "75% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "75% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "arch-75cd"
+      },
+      "expect": {
+        "status": "found",
+        "corrections": []
+      }
+    }
+  ]
+}

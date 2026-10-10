@@ -1,0 +1,212 @@
+{
+  "id": "T09_20_by_milestone_deadline_is_the_publication_instant",
+  "family": "T09",
+  "rules": [
+    "6.2.4",
+    "6.2.1",
+    "6.5.4",
+    "4.4.1"
+  ],
+  "description": "A requirement due by the architect's 100% CD is outstanding and not overdue while the milestone is unpublished. Once the milestone is published on 16 June at 11:00 it is overdue, and A-601's 18 June 11:00 issue fulfills it late by two days.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "label": "Architect 100% CD",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "e-by100",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-100cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "arch-log",
+          "kind": "log",
+          "label": "Architect issue log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party",
+          "label": "Contractor"
+        },
+        {
+          "id": "a601-0618",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-18T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-by100",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-by100",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by100|a-601",
+        "frame": {
+          "cutoff": "2026-06-15T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100cd",
+      "context": "arch-100cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-16T11:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by100|a-601",
+        "frame": {
+          "cutoff": "2026-06-17T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0618",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by100|a-601",
+        "frame": {
+          "cutoff": "2026-06-19T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0618|a-601",
+            "qualifying_moment": "2026-06-18T11:00-07:00",
+            "timeliness": "late",
+            "late_by": "P2D"
+          }
+        }
+      }
+    }
+  ]
+}

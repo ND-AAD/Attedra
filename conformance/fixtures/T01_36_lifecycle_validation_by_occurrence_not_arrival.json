@@ -1,0 +1,212 @@
+{
+  "id": "T01_36_lifecycle_validation_by_occurrence_not_arrival",
+  "family": "T01",
+  "rules": [
+    "10.2.8",
+    "8.6.6",
+    "4.2.2",
+    "I-5"
+  ],
+  "description": "A backfilled lifecycle act is validated against the derived state at its own occurrence time, not against what was recorded first: a backfilled Tuesday reconnect of a Connection active on Tuesday fails, a backfilled Tuesday disconnect succeeds, and the later Wednesday disconnect then changes nothing.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "at-tue",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-wed",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-thu",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-wed",
+          "kind": "disconnection"
+        },
+        {
+          "id": "reco-tue",
+          "kind": "reconnection"
+        },
+        {
+          "id": "disc-tue",
+          "kind": "disconnection"
+        },
+        {
+          "id": "reco-thu",
+          "kind": "reconnection"
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-05-11T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-wed",
+      "context": "at-wed",
+      "source": "disc-wed",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "reco-tue",
+      "context": "at-tue",
+      "source": "reco-tue",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-tue",
+      "context": "at-tue",
+      "source": "disc-tue",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "reco-thu",
+      "context": "at-thu",
+      "source": "reco-thu",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-12T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-13T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": []
+      }
+    }
+  ]
+}

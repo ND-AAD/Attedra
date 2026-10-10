@@ -1,0 +1,319 @@
+{
+  "id": "T11_18_changes_between_two_assertions_evaluate_participant_coverage_at_the_frame_cutoff",
+  "family": "T11",
+  "rules": [
+    "9.4.1",
+    "4.4.2",
+    "4.6.1",
+    "9.7.2",
+    "5.6.2",
+    "7.1.1"
+  ],
+  "description": "In the Assertion form of the changes read, a participant perspective counts the statements distributed to the participant at the cutoff of the read's frame. A-601's 1 and 3 June issues go to the contractor and the consultant; its 2 June issue, which alone carries hardware, goes to the contractor and reaches the consultant only by a transmittal on 10 June. Between the 1 and 3 June Assertions, the record and the contractor see finish changed and hardware introduced. The consultant at a 5 June cutoff sees only the finish change, and at a 12 June cutoff sees both.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "transmittal-9",
+          "kind": "transmittal"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "dist-0610",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          },
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          },
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "dist-0610",
+      "source": "transmittal-9",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "a601-0602"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from_assertion": "door-101|a601-0601|a-601",
+        "to_assertion": "door-101|a601-0603|a-601"
+      },
+      "expect": {
+        "from": "~absent",
+        "interpretation": null,
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-0601|a-601",
+            "new": "door-101|a601-0603|a-601"
+          },
+          {
+            "property": "hardware",
+            "transition": "introduced",
+            "prior": null,
+            "new": "door-101|a601-0602|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from_assertion": "door-101|a601-0601|a-601",
+        "to_assertion": "door-101|a601-0603|a-601",
+        "frame": {
+          "perspective": "consultant",
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "from": "~absent",
+        "frame": {
+          "perspective": "consultant",
+          "cutoff": "2026-06-05-07:00"
+        },
+        "excluded": "~any",
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-0601|a-601",
+            "new": "door-101|a601-0603|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from_assertion": "door-101|a601-0601|a-601",
+        "to_assertion": "door-101|a601-0603|a-601",
+        "frame": {
+          "perspective": "contractor",
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "frame": {
+          "perspective": "contractor",
+          "cutoff": "2026-06-05-07:00"
+        },
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-0601|a-601",
+            "new": "door-101|a601-0603|a-601"
+          },
+          {
+            "property": "hardware",
+            "transition": "introduced",
+            "prior": null,
+            "new": "door-101|a601-0602|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from_assertion": "door-101|a601-0601|a-601",
+        "to_assertion": "door-101|a601-0603|a-601",
+        "frame": {
+          "perspective": "consultant",
+          "cutoff": "2026-06-12-07:00"
+        }
+      },
+      "expect": {
+        "from": "~absent",
+        "frame": {
+          "perspective": "consultant",
+          "cutoff": "2026-06-12-07:00"
+        },
+        "excluded": "~any",
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-0601|a-601",
+            "new": "door-101|a601-0603|a-601"
+          },
+          {
+            "property": "hardware",
+            "transition": "introduced",
+            "prior": null,
+            "new": "door-101|a601-0602|a-601"
+          }
+        ]
+      }
+    }
+  ]
+}

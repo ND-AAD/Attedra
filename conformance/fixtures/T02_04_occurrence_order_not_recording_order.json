@@ -1,0 +1,120 @@
+{
+  "id": "T02_04_occurrence_order_not_recording_order",
+  "family": "T02",
+  "rules": [
+    "5.2.1",
+    "4.2.2",
+    "4.2.3",
+    "I-5",
+    "2.3.1"
+  ],
+  "description": "Carry-forward is ordered by occurrence time, never by recording time or arrival: a communication imported late takes its place at the time it was issued.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-early",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-late",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-late",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-05-15T10:05:00-07:00",
+      "recorded_by": "operator-1"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-early",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      },
+      "recorded_at": "2026-05-25T16:00:00-07:00",
+      "recorded_by": "operator-2"
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-late|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|ev-early|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-early|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|ev-early|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

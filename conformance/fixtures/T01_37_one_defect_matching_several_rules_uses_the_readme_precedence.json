@@ -1,0 +1,207 @@
+{
+  "id": "T01_37_one_defect_matching_several_rules_uses_the_readme_precedence",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "10.2.3",
+    "10.2.4",
+    "4.2.1",
+    "2.4.1",
+    "2.4.2",
+    "8.4.1"
+  ],
+  "description": "When one defect in a write matches more than one validation rule, the failure code follows the precedence of README section 6: a context instant that is present but not in a 4.2.1 form is 10.2.4; a non-integer ordinal is 10.2.3; an Assertion reference missing a coordinate, or a reference with an undefined @ref kind, is 10.2.4, while a well-formed reference that does not resolve is 10.2.2; @effective on a statement is 10.2.4. Each rejected write carries exactly one defect and leaves the store unchanged.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "ev-bad",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event",
+          "at": "2026-05-14 09:45"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "item",
+      "id": "ev-bad",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event",
+          "at": "2026-05-14T09:45"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "item",
+      "id": "ms-bad",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD",
+          "ordinal": "fifty"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ms-bad",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD",
+          "ordinal": 50.5
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-bad"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ms-bad"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "cites": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0514"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "governed_by": {
+          "@ref": "document",
+          "id": "spec-0991"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "cites": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-0514",
+          "source": "spec-0991"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@effective": "2026-05-15-07:00"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "governed_by": {
+          "@ref": "item",
+          "id": "spec-0991"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

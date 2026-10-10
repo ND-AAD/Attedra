@@ -1,0 +1,92 @@
+{
+  "id": "T14_05_participant_results_list_what_the_perspective_excluded",
+  "family": "T14",
+  "rules": [
+    "4.6.1",
+    "9.7.2",
+    "4.4.2",
+    "9.2.2",
+    "7.5.3"
+  ],
+  "description": "Every result evaluated in a participant perspective identifies the records the perspective excluded. A statement whose issuance was never distributed to the consultant is excluded from the consultant's view of A-601's position, which then reads never_asserted, and the result lists that statement as excluded.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now",
+          "perspective": "consultant"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        },
+        "excluded": [
+          "door-101|ev-0514|a-601"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint"
+          }
+        }
+      }
+    }
+  ]
+}

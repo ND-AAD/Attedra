@@ -1,0 +1,296 @@
+{
+  "id": "T17_04_unknown_action_counts_as_nothing",
+  "family": "T17",
+  "rules": [
+    "10.4.1",
+    "10.4.2",
+    "10.2.4",
+    "9.2.2",
+    "6.3.1",
+    "6.7.4",
+    "8.1.2",
+    "12.17"
+  ],
+  "description": "A record with @action \"escalate\" is accepted and preserved exactly, takes part in replay identity, and counts as nothing: it is not a support, not a withdrawal, and contributes no values.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "esc-1",
+          "kind": "escalation"
+        },
+        {
+          "id": "esc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "esc-2",
+          "kind": "escalation"
+        },
+        {
+          "id": "esc-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "priority": "high",
+        "@x-route": "owner"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "esc-2",
+      "context": "esc-2-at",
+      "source": "esc-2",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "priority": "high",
+        "@x-route": "owner"
+      },
+      "expect": {
+        "status": "replayed"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "priority": "high",
+        "@x-route": "client"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "esc-1|esc-1-at|esc-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "escalate",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-stain",
+              "source": "a-601"
+            }
+          ],
+          "priority": "high",
+          "@x-route": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "supports": [],
+        "properties": {
+          "finish": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-0514|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "withdrawals": [],
+        "dependents": [
+          "esc-2|esc-2-at|esc-2"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "esc-1",
+        "source": "esc-1",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "priority"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "priority": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          },
+          "@x-route": "~absent"
+        }
+      }
+    }
+  ]
+}

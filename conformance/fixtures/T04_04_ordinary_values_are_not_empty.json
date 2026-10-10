@@ -1,0 +1,220 @@
+{
+  "id": "T04_04_ordinary_values_are_not_empty",
+  "family": "T04",
+  "rules": [
+    "5.3.2",
+    "5.5.1",
+    "7.1.4",
+    "12.4"
+  ],
+  "description": "Zero, false, a placeholder word, whitespace, an empty list and an empty object are ordinary values: each is unequal to null and to each other; equal values and null against a blank do not conflict.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"zero_vs_false\": 0, \"zero_vs_null\": 0, \"false_vs_null\": false, \"na_vs_null\": \"N/A\", \"space_vs_null\": \" \", \"space_vs_blank\": \" \", \"empty_list_vs_null\": [], \"empty_object_vs_null\": {}, \"empty_list_vs_empty_object\": [], \"na_vs_space\": \"N/A\", \"zero_vs_zero\": 0, \"null_vs_blank\": null}"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values_json": "{\"zero_vs_false\": false, \"zero_vs_null\": null, \"false_vs_null\": null, \"na_vs_null\": null, \"space_vs_null\": null, \"space_vs_blank\": \"\", \"empty_list_vs_null\": null, \"empty_object_vs_null\": null, \"empty_list_vs_empty_object\": {}, \"na_vs_space\": \" \", \"zero_vs_zero\": 0, \"null_vs_blank\": \"\"}"
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          "~unordered",
+          {
+            "property": "zero_vs_false",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": 0
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": false
+              }
+            ]
+          },
+          {
+            "property": "zero_vs_null",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": 0
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "false_vs_null",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": false
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "na_vs_null",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "N/A"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "space_vs_null",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": " "
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "space_vs_blank",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": " "
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "empty_list_vs_null",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": []
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "empty_object_vs_null",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": {}
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": null
+              }
+            ]
+          },
+          {
+            "property": "empty_list_vs_empty_object",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": []
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": {}
+              }
+            ]
+          },
+          {
+            "property": "na_vs_space",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "N/A"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": " "
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    }
+  ]
+}

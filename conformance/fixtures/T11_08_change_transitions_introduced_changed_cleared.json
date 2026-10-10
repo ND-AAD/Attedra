@@ -1,0 +1,103 @@
+{
+  "id": "T11_08_change_transitions_introduced_changed_cleared",
+  "family": "T11",
+  "rules": [
+    "5.6.2",
+    "9.4.1",
+    "5.3.1",
+    "5.3.3"
+  ],
+  "description": "Between two frames one source's revision reports each property's transition with its exact prior and new origins: a new property is introduced, a different value is changed, and populated to explicit empty is cleared.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "a601-issued-0512",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0512",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "hardware": null,
+        "closer": "CL-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-05-12-07:00"
+        },
+        "to": {
+          "cutoff": "2026-05-14-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "closer",
+            "transition": "introduced",
+            "prior": null,
+            "new": "door-101|a601-issued-0514|a-601"
+          },
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-issued-0512|a-601",
+            "new": "door-101|a601-issued-0514|a-601"
+          },
+          {
+            "property": "hardware",
+            "transition": "cleared",
+            "prior": "door-101|a601-issued-0512|a-601",
+            "new": "door-101|a601-issued-0514|a-601"
+          }
+        ]
+      }
+    }
+  ]
+}

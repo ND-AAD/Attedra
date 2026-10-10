@@ -1,0 +1,268 @@
+{
+  "id": "T15_13_fulfilling_evidence_refused_then_corrected",
+  "family": "T15",
+  "rules": [
+    "8.5.2",
+    "8.5.3",
+    "6.5.1",
+    "6.5.2",
+    "8.3.3",
+    "12.15"
+  ],
+  "description": "A-601's Tuesday 90 is the evidence that fulfils an expectation and nothing references it. Removing it would change the expectation's fulfillment, so the plan is refused and the entry kept. When it is instead corrected (the source said 60), the correction removes it as evidence at every cutoff and the expectation is outstanding again.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-mon",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-mon-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "meeting-mon",
+      "source": "minutes-mon",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-mon.pdf",
+            "edition": "issued"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-mon-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-tue-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-tue-a601|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "refused",
+        "dependents": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-tue-a601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 90
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-tue-a601",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "fire_rating": 60
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding"
+          }
+        }
+      }
+    }
+  ]
+}

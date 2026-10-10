@@ -1,0 +1,205 @@
+{
+  "id": "T05_14_malformed_withdrawals_are_rejected_and_leave_store_unchanged",
+  "family": "T05",
+  "rules": [
+    "6.7.1",
+    "10.2.2",
+    "10.2.6",
+    "10.2.7",
+    "8.4.1"
+  ],
+  "description": "Four malformed withdrawals are rejected and leave the triple unoccupied: an empty target list (10.2.6), a @targets that is not a list (10.2.2), a target that does not resolve (10.2.2) and an @effective before the act's occurrence (10.2.7). A well-formed withdrawal at the same triple then succeeds.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0610",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": []
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "a601-0601",
+          "source": "a-601"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0610",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-01-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "w1|w1-at|w1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "asserted",
+            "value": 90,
+            "origin": "door-101|a601-0601|a-601",
+            "withdrawn_by": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "withdrawn",
+            "withdrawn_by": "w1|w1-at|w1",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,525 @@
+{
+  "id": "T18_27_fixture_policy_withdrawn_directive_ends_the_period_by_withdrawal_and_reopens_the_story",
+  "family": "T18",
+  "rules": [
+    "7.7.5",
+    "7.6.2",
+    "7.6.4",
+    "7.6.5",
+    "6.7.9",
+    "7.2.7",
+    "9.5.2",
+    "9.5.4",
+    "9.5.7"
+  ],
+  "description": "Under the fixture policy, withdrawing the directive itself, its expectation's only support, ends the expectation property at the same instant. The directive was withdrawn at the last of the endings it waited for, so the policy ends the first period with cause withdrawal, citing the withdrawal; and the baseline begins a second period at that instant, cause review_withdrawn. One write records, in order, the first period's policy end act, the second period's begin act and the property's end act. The story is open, unreviewed and pending again, with no open child.",
+  "note": "7.6.7: \"An expectation property whose first period is nested under exactly one story (7.6.15), because a review of that story began it, is part of that story, its middle: its begin and end acts, and the revisions of them (7.6.10), are Assertions on that story Item in the same form, `(story, <event context>, story)`.\" The act names follow README section 7, Story-held expectation property acts: `(<story>, \"<story>/exp:<path>/b<n>\", <story>)`, with `/e<n>` and `/v<n>` likewise.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "chg-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-lacquer",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "ev-mon8-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-rv",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-rv-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-thu-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-1",
+      "context": "chg-1/d1",
+      "source": "chg-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-thu-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-thu-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null,
+          "policy": "fixture-change-closes-with-directive",
+          "policy_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-1|chg-1/d1|chg-1",
+        "generated": [],
+        "transition_acts": [
+          "chg-1|chg-1/b1|chg-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-lacquer",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-lacquer|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "chg-1",
+            "context": "chg-1/d1",
+            "source": "chg-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-thu-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-05T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "change_required",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@establishes": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-lacquer",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "rv-1|rv-1-at|rv-1",
+        "generated": [],
+        "transition_acts": [
+          "chg-1|chg-1/e1|chg-1",
+          "chg-1|chg-1/exp:door-101/e-lacquer/a-601/finish/b1|chg-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-rv",
+      "context": "wd-rv-at",
+      "source": "wd-rv",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "rv-1",
+            "context": "rv-1-at",
+            "source": "rv-1"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "wd-rv|wd-rv-at|wd-rv",
+        "generated": [],
+        "transition_acts": [
+          "chg-1|chg-1/e2|chg-1",
+          "chg-1|chg-1/b2|chg-1",
+          "chg-1|chg-1/exp:door-101/e-lacquer/a-601/finish/e1|chg-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-1|chg-1/e2|chg-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "chg-1",
+              "context": "chg-1/b1",
+              "source": "chg-1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-08T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "wd-rv",
+              "context": "wd-rv-at",
+              "source": "wd-rv",
+              "property": "~absent"
+            },
+            "cause": "withdrawal",
+            "policy": {
+              "name": "fixture-change-closes-with-directive",
+              "version": "1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-09-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "baseline_ending": null,
+        "periods": [
+          {
+            "begin": {
+              "act": "chg-1|chg-1/b1|chg-1",
+              "at": "2026-06-04T09:00-07:00",
+              "record": "door-101|ev-thu-a601|a-601",
+              "cause": "revision"
+            },
+            "end": {
+              "act": "chg-1|chg-1/e1|chg-1",
+              "at": "2026-06-05T10:00-07:00",
+              "record": "rv-1|rv-1-at|rv-1",
+              "cause": "review"
+            },
+            "policy_end": {
+              "act": "chg-1|chg-1/e2|chg-1",
+              "at": "2026-06-08T10:00-07:00",
+              "record": "wd-rv|wd-rv-at|wd-rv",
+              "cause": "withdrawal"
+            }
+          },
+          {
+            "begin": {
+              "act": "chg-1|chg-1/b2|chg-1",
+              "at": "2026-06-08T10:00-07:00",
+              "record": "wd-rv|wd-rv-at|wd-rv",
+              "cause": "review_withdrawn"
+            },
+            "end": null,
+            "policy_end": null
+          }
+        ],
+        "standing": {
+          "open": "open",
+          "review": "unreviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-1",
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "baseline_ending": {
+          "kind": "review",
+          "record": "rv-1|rv-1-at|rv-1",
+          "at": "2026-06-05T10:00-07:00"
+        },
+        "standing": {
+          "open": "open",
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "pending_review",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-09-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "chg-1"
+        ],
+        "count": 1
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-09-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "change",
+            "unit": "chg-1",
+            "began": {
+              "act": "chg-1|chg-1/b2|chg-1",
+              "at": "2026-06-08T10:00-07:00",
+              "record": "wd-rv|wd-rv-at|wd-rv",
+              "cause": "review_withdrawn"
+            },
+            "policy": {
+              "name": "fixture-change-closes-with-directive",
+              "version": "1"
+            },
+            "standing": {
+              "review": "unreviewed",
+              "disagreement": "~absent"
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 1,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

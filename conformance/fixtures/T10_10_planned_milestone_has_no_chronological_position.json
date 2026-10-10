@@ -1,0 +1,169 @@
+{
+  "id": "T10_10_planned_milestone_has_no_chronological_position",
+  "family": "T10",
+  "rules": [
+    "4.2.4",
+    "4.3.2",
+    "4.3.3",
+    "4.6.1",
+    "9.6.1",
+    "10.2"
+  ],
+  "description": "A planned milestone (no publication) cannot be a cutoff, and an Assertion at it has no occurrence time: both are read limitations, and writing that Assertion is not a write failure. Once published, the milestone resolves.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 400
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-issued-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "arch-100cd"
+        }
+      },
+      "expect": {
+        "limitation": "~any"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "limitation": "~absent",
+        "properties": {
+          "finish": {
+            "limitation": "no_occurrence_time",
+            "records": [
+              "door-101|arch-100cd|a-601"
+            ],
+            "classification": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100cd",
+      "context": "arch-100cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-16T10:00-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "arch-100cd"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-100cd|a-601"
+          }
+        },
+        "limitation": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "arch-100cd"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-102|a601-issued-0601|a-601"
+          }
+        }
+      }
+    }
+  ],
+  "note": "9.2.2: \"A statement with no occurrence time (4.2.4) cannot be placed against the cutoff or against the source's other statements. Each property it carries reads as a limitation, in place of its classification, naming that statement (9.6.1).\" Step 5 expects the per-property limitation no_occurrence_time naming door-101|arch-100cd|a-601, not a read-level limitation (README section 5, source_position). Step 3, a planned milestone used as the cutoff, is a read-level limitation (4.6.1)."
+}

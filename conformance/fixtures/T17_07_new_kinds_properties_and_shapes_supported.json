@@ -1,0 +1,151 @@
+{
+  "id": "T17_07_new_kinds_properties_and_shapes_supported",
+  "family": "T17",
+  "rules": [
+    "10.4.3",
+    "3.3.4",
+    "2.1.6",
+    "5.1.1",
+    "9.4.2"
+  ],
+  "description": "New Item kinds, new property names and new value shapes are ordinary content, not extensions: a newly encountered kind of communication participates in positions and comparisons without configuration.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "drone-survey-7",
+          "kind": "drone-survey"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0520",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "clearance_mm": 12
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0520",
+      "source": "drone-survey-7",
+      "values": {
+        "finish": "paint",
+        "clearance_mm": 12,
+        "scan": {
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "units": "mm"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "drone-survey-7",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "scan": {
+            "classification": "asserted",
+            "value": {
+              "points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  2
+                ]
+              ],
+              "units": "mm"
+            },
+            "origin": "door-101|ev-0520|drone-survey-7"
+          },
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-0520|drone-survey-7"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "stain",
+                "origin": "door-101|ev-0514|a-601"
+              },
+              {
+                "source": "drone-survey-7",
+                "value": "paint",
+                "origin": "door-101|ev-0520|drone-survey-7"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    }
+  ]
+}

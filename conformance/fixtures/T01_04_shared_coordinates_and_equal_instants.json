@@ -1,0 +1,221 @@
+{
+  "id": "T01_04_shared_coordinates_and_equal_instants",
+  "family": "T01",
+  "rules": [
+    "2.3.3",
+    "2.3.2",
+    "4.5.1",
+    "9.2.4",
+    "5.2.1"
+  ],
+  "description": "Many Assertions share a source and a context; two distinct contexts carry an equal instant. Each triple is its own record, the instants are not shifted, and a by-source read lists every statement.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-a",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-a"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-05-13T09:45:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-b"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-05-13T09:45:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-a|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-b|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "hardware": "HW-2",
+          "finish": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-a|spec-0991"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-a|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-2",
+            "origin": "door-101|ev-b|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "statements": [
+          "~unordered",
+          "door-101|ev-a|a-601",
+          "door-102|ev-a|a-601",
+          "door-103|ev-a|a-601",
+          "door-101|ev-b|a-601"
+        ],
+        "acts": []
+      }
+    }
+  ]
+}

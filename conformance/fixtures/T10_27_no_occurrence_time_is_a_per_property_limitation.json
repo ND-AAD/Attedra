@@ -1,0 +1,152 @@
+{
+  "id": "T10_27_no_occurrence_time_is_a_per_property_limitation",
+  "family": "T10",
+  "rules": [
+    "9.2.2",
+    "9.2.3",
+    "4.2.4",
+    "4.3.3",
+    "9.6.1"
+  ],
+  "description": "A statement at a planned milestone has no occurrence time. In source_position each property it carries reads as the limitation no_occurrence_time, naming that statement, in place of its classification, while the source's other properties are classified as usual and the read itself is not a limitation. The resolved view shows the limitation in that source's entry beside the other sources' classifications.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 400
+            }
+          }
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "spec-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "spec-0601",
+      "source": "spec-0991",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "~absent",
+        "properties": {
+          "finish": {
+            "limitation": "no_occurrence_time",
+            "records": [
+              "door-101|arch-100cd|a-601"
+            ],
+            "classification": "~absent"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|a601-0601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "~absent",
+        "properties": {
+          "finish": {
+            "a-601": {
+              "limitation": "no_occurrence_time",
+              "records": [
+                "door-101|arch-100cd|a-601"
+              ]
+            },
+            "spec-0991": {
+              "classification": "asserted",
+              "value": "paint"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,471 @@
+{
+  "id": "T15_04_replace_correction_restores_dropped_member_at_every_cutoff",
+  "family": "T15",
+  "rules": [
+    "8.3.1",
+    "8.3.2",
+    "8.3.3",
+    "8.3.5",
+    "8.3.6",
+    "8.2.2",
+    "9.2.1",
+    "9.2.3",
+    "7.2.6",
+    "I-16",
+    "12.15"
+  ],
+  "description": "A-601's dimensions were imported without height and disagreed with the specification; a review cited that original. A Wednesday replace correction carries the complete values. Corrected reads show the height at every cutoff, including Tuesday (before the correction). The exact read shows the original with the correction; the review keeps its basis; the dimensions story reads ended by the correction. The correction is no source position, appears in no submitted-value read, and fabricates no A-601 issuance.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:30-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "dimensions"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "dimensions"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "dimensions"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "dimensions"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "dimensions"
+          },
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-02.pdf",
+            "edition": "issued 2026-06-02"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "dimensions": {
+            "width": 900,
+            "height": 2100
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ],
+        "reason": "Height dropped during extraction; see sheet 12."
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "classification": "asserted",
+            "value": {
+              "width": 900,
+              "height": 2100
+            },
+            "origin": "door-101|ev-mon-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "classification": "asserted",
+            "value": {
+              "width": 900,
+              "height": 2100
+            },
+            "origin": "door-101|ev-mon-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "dimensions": {
+            "width": 900,
+            "height": "~absent"
+          }
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rv-1|rv-1-at|rv-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@basis": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon-a601",
+              "source": "a-601",
+              "property": "dimensions"
+            },
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "ev-mon-spec",
+              "source": "spec-09-91",
+              "property": "dimensions"
+            },
+            {
+              "@ref": "artifact",
+              "id": "minutes-2026-06-02.pdf",
+              "edition": "issued 2026-06-02"
+            }
+          ]
+        },
+        "corrections": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "ending": {
+          "kind": "correction",
+          "record": "corr-1|corr-1-at|import-review-log"
+        },
+        "standing": {
+          "open": "ended",
+          "review": "reviewed"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "a-601": {
+              "classification": "asserted",
+              "value": {
+                "width": 900,
+                "height": 2100
+              },
+              "origin": "door-101|ev-mon-a601|a-601"
+            },
+            "spec-09-91": {
+              "classification": "asserted",
+              "value": {
+                "width": 900,
+                "height": 2100
+              },
+              "origin": "door-101|ev-mon-spec|spec-09-91"
+            },
+            "import-review-log": "~absent",
+            "corr-1": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        },
+        "source": "a-601"
+      },
+      "expect": {
+        "statements": [
+          "door-101|ev-mon-a601|a-601"
+        ],
+        "acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        },
+        "source": "import-review-log"
+      },
+      "expect": {
+        "statements": [],
+        "acts": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    }
+  ]
+}

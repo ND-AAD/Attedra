@@ -1,0 +1,450 @@
+{
+  "id": "T01_34_effective_on_disallowed_acts",
+  "family": "T01",
+  "rules": [
+    "10.2.7",
+    "8.4.1",
+    "2.4.4"
+  ],
+  "description": "@effective is allowed only on establish, reaffirm, withdraw, review and ignore: on a detection, reconciliation, correction, disconnect or reconnect it is rejected with 10.2.7.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T16:02-07:00"
+            }
+          }
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "rc-1",
+          "kind": "reconciliation"
+        },
+        {
+          "id": "rc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "review-log",
+          "kind": "log"
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "reco-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "reco-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ig-1",
+          "kind": "ignore"
+        },
+        {
+          "id": "ig-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-17T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-2",
+          "kind": "story"
+        },
+        {
+          "id": "story-2/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-14T16:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-102",
+      "at": "2026-05-11T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-2",
+      "context": "story-2/d1",
+      "source": "story-2",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "spec-0991",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-16T09:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@effective": "2026-05-20-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "rc-1",
+      "context": "rc-1-at",
+      "source": "rc-1",
+      "values": {
+        "@action": "reconcile",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@outcome": "boundary",
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-05-15T08:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@effective": "2026-05-20-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "stain"
+        },
+        "@effective": "2026-05-20-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-102"
+          }
+        ],
+        "@effective": "2026-05-13-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-102"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "reco-1",
+      "context": "reco-1-at",
+      "source": "reco-1",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-102"
+          }
+        ],
+        "@effective": "2026-05-15-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-2|story-2/d1|story-2"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rc-1|rc-1-at|rc-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "cor-1|cor-1-at|review-log"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "reco-1|reco-1-at|reco-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ig-1",
+      "context": "ig-1-at",
+      "source": "ig-1",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "story-1"
+          }
+        ],
+        "@effective": "2026-05-18-07:00"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

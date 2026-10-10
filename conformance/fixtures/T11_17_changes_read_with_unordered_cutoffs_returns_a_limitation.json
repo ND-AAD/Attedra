@@ -1,0 +1,186 @@
+{
+  "id": "T11_17_changes_read_with_unordered_cutoffs_returns_a_limitation",
+  "family": "T11",
+  "rules": [
+    "5.6.2",
+    "4.2.5",
+    "9.4.1",
+    "4.6.1",
+    "9.6.1"
+  ],
+  "description": "A changes read whose two cutoffs are unordered returns the limitation unordered_comparison in place of transitions. A from cutoff of 2 June (a date) is neither at or before nor after a to cutoff of 2 June at 10:00, whether it is given as an instant or as a milestone published on that date. Ordered cutoffs are compared as usual, and a from cutoff after the to cutoff still returns reversed_comparison.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "m-cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "CD",
+              "ordinal": 10
+            }
+          }
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "m-cd",
+      "context": "m-cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-02-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-02T10:00-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "~absent",
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-0601|a-601",
+            "new": "door-101|a601-0602|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-02-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-02T10:00-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "unordered_comparison",
+        "transitions": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "m-cd"
+        },
+        "to": {
+          "cutoff": "2026-06-02T10:00-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "unordered_comparison",
+        "transitions": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-02T10:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-01-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "reversed_comparison",
+        "transitions": "~absent"
+      }
+    }
+  ]
+}

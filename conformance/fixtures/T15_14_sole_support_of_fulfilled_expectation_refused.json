@@ -1,0 +1,199 @@
+{
+  "id": "T15_14_sole_support_of_fulfilled_expectation_refused",
+  "family": "T15",
+  "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.1",
+    "6.3.1",
+    "12.15"
+  ],
+  "description": "The only support of a fulfilled expectation references the expectation but nothing references it. Removing it would change the expectation's in-force period and fulfillment, so the plan is refused and the support remains.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-mon",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-mon-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "meeting-mon",
+      "source": "minutes-mon",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-mon.pdf",
+            "edition": "issued"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-mon-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "sup-1|meeting-mon|minutes-mon",
+      "as": "p1",
+      "expect": {
+        "status": "refused",
+        "dependents": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "sup-1|meeting-mon|minutes-mon"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "sup-1|meeting-mon|minutes-mon",
+            "covers": [
+              "fire_rating"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-tue-a601|a-601"
+          }
+        }
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 9: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

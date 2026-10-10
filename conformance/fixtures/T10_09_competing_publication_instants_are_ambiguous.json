@@ -1,0 +1,163 @@
+{
+  "id": "T10_09_competing_publication_instants_are_ambiguous",
+  "family": "T10",
+  "rules": [
+    "4.4.1",
+    "4.5.3",
+    "4.6.1",
+    "9.6.1",
+    "12.10"
+  ],
+  "description": "Two sources assert publication instants for one milestone (13 May 11:45 and 14 May 09:00) neither of which contains the other. The milestone cannot be a cutoff (limitation), a statement at it is ambiguous against a cutoff between the two instants, and it is included after both.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-transmittal-7",
+          "kind": "transmittal"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "m-arch",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0510",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "m-arch",
+      "context": "m-arch",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m-arch",
+      "context": "m-arch",
+      "source": "arch-transmittal-7",
+      "values": {
+        "@published": "2026-05-14T09:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0510",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "m-arch",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "m-arch"
+        }
+      },
+      "expect": {
+        "limitation": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-13T18:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "candidates": [
+              "~unordered",
+              {
+                "value": "paint",
+                "origin": "door-101|a601-issued-0510|a-601"
+              },
+              {
+                "value": "stain",
+                "origin": "door-101|m-arch|a-601"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|m-arch|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

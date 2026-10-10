@@ -1,0 +1,436 @@
+{
+  "id": "T12_18_unordered_ignore_until_places_an_expectation_among_ambiguous_open_work",
+  "family": "T12",
+  "rules": [
+    "9.5.6",
+    "9.3.2",
+    "9.5.5",
+    "4.2.5",
+    "4.5.3",
+    "6.7.7"
+  ],
+  "description": "Under the attention filter, an expectation targeted by an ignore whose @until is unordered with the cutoff is listed among open work's ambiguous entries, in place of open or upcoming, unless an ignore in effect also targets it. A date cutoff of 5 June is unordered with a 17:00 @until that day: Door 101 (outstanding) and Door 104 (not yet due) are ambiguous, Door 102 stays omitted through a second ignore without @until, and the unignored Door 103 is open. At 17:00 the first ignore is in effect, and at 17:01 it has lapsed. Without the filter every expectation is listed as usual, and the ignore changes no standing.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue-schedule"
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "e-fin",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-100cd",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-100cd"
+                }
+              },
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-1",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-2",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "e-fin",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "e-100cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "e-100cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ign-1",
+      "context": "ign-1-at",
+      "source": "ign-1",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "e-100cd",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@until": "2026-06-05T17:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ign-2",
+      "context": "ign-2-at",
+      "source": "ign-2",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fin",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-103|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [
+          {
+            "expectation": "door-101|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "ambiguous": "~absent"
+          },
+          {
+            "expectation": "door-104|e-100cd|a-601",
+            "outstanding": [],
+            "not_yet_due": [
+              "finish"
+            ],
+            "ambiguous": "~absent"
+          }
+        ],
+        "limitations": [],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          },
+          {
+            "expectation": "door-102|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          },
+          {
+            "expectation": "door-103|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          }
+        ],
+        "upcoming": [
+          {
+            "expectation": "door-104|e-100cd|a-601",
+            "outstanding": [],
+            "not_yet_due": [
+              "finish"
+            ]
+          }
+        ],
+        "ambiguous": [],
+        "limitations": [],
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05T17:00-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-103|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05T17:01-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          },
+          {
+            "expectation": "door-103|e-fin|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": []
+          }
+        ],
+        "upcoming": [
+          {
+            "expectation": "door-104|e-100cd|a-601",
+            "outstanding": [],
+            "not_yet_due": [
+              "finish"
+            ]
+          }
+        ],
+        "ambiguous": [],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fin|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    }
+  ]
+}

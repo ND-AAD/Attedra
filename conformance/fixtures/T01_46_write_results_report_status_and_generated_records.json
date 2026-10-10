@@ -1,0 +1,309 @@
+{
+  "id": "T01_46_write_results_report_status_and_generated_records",
+  "family": "T01",
+  "rules": [
+    "8.1.1",
+    "8.1.2",
+    "8.1.5",
+    "2.2.1",
+    "8.5.3",
+    "8.5.4",
+    "7.2.5",
+    "7.2.8"
+  ],
+  "description": "Every write op returns the result README section 2 defines: item and items report created or exists with the id; assert reports inserted or replayed, the compact reference and the Assertions that story maintenance generated in the same operation (empty for a replay); connect reports created or exists; plan, cancel and confirm report planned, cancelled and removed.",
+  "steps": [
+    {
+      "op": "item",
+      "id": "project",
+      "kind": "project",
+      "expect": {
+        "status": "created",
+        "id": "project"
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ],
+      "expect": [
+        {
+          "status": "created",
+          "id": "door-101"
+        },
+        {
+          "status": "created",
+          "id": "door-102"
+        },
+        {
+          "status": "created",
+          "id": "a-601"
+        },
+        {
+          "status": "created",
+          "id": "spec-09-91"
+        },
+        {
+          "status": "created",
+          "id": "story-1"
+        },
+        {
+          "status": "created",
+          "id": "ev-mon-a601"
+        },
+        {
+          "status": "created",
+          "id": "ev-mon-spec"
+        },
+        {
+          "status": "created",
+          "id": "story-1/d1"
+        },
+        {
+          "status": "created",
+          "id": "ev-tue-a601"
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00",
+      "expect": {
+        "status": "created"
+      }
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-02-07:00",
+      "expect": {
+        "status": "exists"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-a601|a-601",
+        "generated": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-spec|spec-09-91",
+        "generated": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-1|story-1/d1|story-1",
+        "generated": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "replayed",
+        "ref": "door-101|ev-mon-a601|a-601",
+        "generated": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "brown-paint"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-tue-a601|a-601",
+        "generated": [
+          "story-1|story-1/d2|story-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-102|ev-mon-a601|a-601",
+        "generated": []
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-102|ev-mon-a601|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p1",
+      "expect": {
+        "status": "cancelled"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-102|ev-mon-a601|a-601",
+      "as": "p2",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p2",
+      "expect": {
+        "status": "removed"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-102|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

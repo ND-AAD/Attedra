@@ -1,0 +1,321 @@
+{
+  "id": "T03_08_member_differences_only_for_objects_one_per_top_level_key",
+  "family": "T03",
+  "rules": [
+    "5.6.2",
+    "5.4.1",
+    "5.5.1",
+    "9.4.1"
+  ],
+  "description": "A transition lists member differences only when both values are objects other than references, one entry per top-level key that differs, and a difference inside a nested value is member_changed of its top-level key. Lists are compared as whole values and list no member differences; a scalar replaced by an object, and one reference replaced by another, list none; an unchanged object reports unchanged with no members.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "door-105",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "room-14",
+          "kind": "room"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "hardware_set": {
+          "hinges": {
+            "type": "butt",
+            "count": 3
+          },
+          "closer": "C-1"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "hardware_set": {
+          "hinges": {
+            "type": "butt",
+            "count": 4
+          },
+          "closer": "C-1"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "finish": {
+          "color": "white"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "location": {
+          "@ref": "item",
+          "id": "room-12"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "location": {
+          "@ref": "item",
+          "id": "room-14"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-105",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-105",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "height": 2100,
+          "width": 900
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "tags",
+            "transition": "changed",
+            "prior": "door-101|ev-dd|a-601",
+            "new": "door-101|ev-cd|a-601",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-102",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "hardware_set",
+            "transition": "changed",
+            "prior": "door-102|ev-dd|a-601",
+            "new": "door-102|ev-cd|a-601",
+            "members": [
+              {
+                "member": "hinges",
+                "difference": "member_changed"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-103",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-103|ev-dd|a-601",
+            "new": "door-103|ev-cd|a-601",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-104",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "location",
+            "transition": "changed",
+            "prior": "door-104|ev-dd|a-601",
+            "new": "door-104|ev-cd|a-601",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-105",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "dimensions",
+            "transition": "unchanged",
+            "prior": "door-105|ev-dd|a-601",
+            "new": "door-105|ev-cd|a-601",
+            "members": []
+          }
+        ]
+      }
+    }
+  ]
+}

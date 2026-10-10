@@ -1,0 +1,146 @@
+{
+  "id": "T01_07_references_create_no_connections",
+  "family": "T01",
+  "rules": [
+    "2.4.6",
+    "2.4.5",
+    "9.9.1"
+  ],
+  "description": "References inside Assertion values or Item definitions never create Connections; adjacency stays empty.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "governed_by": {
+          "@ref": "item",
+          "id": "spec-0991"
+        },
+        "drawing": {
+          "@ref": "artifact",
+          "id": "a-601-rev-3.pdf",
+          "edition": "2026-05-14"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "spec-0991",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "arch-schedule",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "arch-dd",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    }
+  ]
+}

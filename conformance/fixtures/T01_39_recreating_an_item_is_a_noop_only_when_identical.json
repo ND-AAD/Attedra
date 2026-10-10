@@ -1,0 +1,199 @@
+{
+  "id": "T01_39_recreating_an_item_is_a_noop_only_when_identical",
+  "family": "T01",
+  "rules": [
+    "8.1.5",
+    "10.2.1",
+    "2.1.2",
+    "5.5.1",
+    "10.2.4",
+    "5.1.1"
+  ],
+  "description": "Creating an Item whose id exists is a successful no-op (status exists) when its kind, label and definition equal the existing Item's under literal comparison, key order included; a different label, kind or definition fails occupied and leaves the Item unchanged. Value text that is not valid JSON, or valid JSON that is not an object, fails 10.2.4.",
+  "steps": [
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "label": "Door 101",
+      "expect": {
+        "status": "created",
+        "id": "door-101"
+      }
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "label": "Door 101",
+      "expect": {
+        "status": "exists",
+        "id": "door-101"
+      }
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "label": "Door 101A",
+      "expect_error": "occupied"
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "door",
+      "label": "Door 101",
+      "definition": {
+        "type_code": "D1"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "item",
+      "id": "door-101",
+      "kind": "frame",
+      "label": "Door 101",
+      "expect_error": "occupied"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-101"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "door",
+        "label": "Door 101"
+      }
+    },
+    {
+      "op": "item",
+      "id": "ev-1",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event",
+          "at": "2026-05-14T09:45-07:00"
+        },
+        "@x-clock": "site"
+      },
+      "expect": {
+        "status": "created",
+        "id": "ev-1"
+      }
+    },
+    {
+      "op": "item",
+      "id": "ev-1",
+      "kind": "event",
+      "definition": {
+        "@x-clock": "site",
+        "@context": {
+          "at": "2026-05-14T09:45-07:00",
+          "role": "event"
+        }
+      },
+      "expect": {
+        "status": "exists",
+        "id": "ev-1"
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            },
+            "@x-clock": "site"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "status": "created",
+          "id": "a-601"
+        },
+        {
+          "status": "exists",
+          "id": "ev-1"
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "ev-1",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event",
+          "at": "2026-05-14T09:46-07:00"
+        },
+        "@x-clock": "site"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-1"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-05-14T09:45-07:00"
+          },
+          "@x-clock": "site"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\"",
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values_json": "[\"paint\"]",
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-1|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\"}",
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "id": "T12_16_ignore_applies_to_the_story_it_targets_and_never_to_a_related_story",
+  "family": "T12",
+  "rules": [
+    "9.5.6",
+    "7.4.1",
+    "9.5.5",
+    "6.7.3",
+    "9.5.3"
+  ],
+  "description": "An ignore applies to a story when its @targets include the story Item or any of the story's detections, a later continuation detection included. Its target list is fixed: an ignore of a reviewed story does not extend to the related story a later change opened, which stays attended and listed under the attention filter while the ignored story is superseded.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T08:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-1",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-2",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601-hw",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:30-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec-hw",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:30-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-2/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue-a601-hw",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:30-07:00"
+            }
+          }
+        },
+        {
+          "id": "ign-2",
+          "kind": "ignore"
+        },
+        {
+          "id": "ign-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T08:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "brown-paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601-hw",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec-hw",
+      "source": "spec-09-91",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-2",
+      "context": "story-2/d1",
+      "source": "story-2",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "hardware"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601-hw",
+            "source": "a-601",
+            "property": "hardware"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec-hw",
+            "source": "spec-09-91",
+            "property": "hardware"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601-hw",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-3"
+      },
+      "expect": {
+        "generated": [
+          "story-2|story-2/d2|story-2"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ign-1",
+      "context": "ign-1-at",
+      "source": "ign-1",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "story-1"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "ign-2",
+      "context": "ign-2-at",
+      "source": "ign-2",
+      "values": {
+        "@action": "ignore",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-2",
+            "context": "story-2/d2",
+            "source": "story-2"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "standing": {
+          "open": "open",
+          "review": "reviewed",
+          "attention": "ignored"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1+1",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "related": [
+          "story-1"
+        ],
+        "standing": {
+          "open": "open",
+          "review": "unreviewed",
+          "attention": "attended"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-2",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "standing": {
+          "open": "open",
+          "attention": "ignored"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        },
+        "attention_filter": "ignore"
+      },
+      "expect": {
+        "stories": [
+          "story-1+1"
+        ],
+        "count": 1,
+        "superseded": [
+          "story-1"
+        ],
+        "ambiguous": [],
+        "filter": "ignore"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "stories": [
+          "story-1+1",
+          "story-2"
+        ],
+        "count": 2,
+        "superseded": [
+          "story-1"
+        ],
+        "ambiguous": [],
+        "filter": null
+      }
+    }
+  ]
+}

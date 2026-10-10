@@ -1,0 +1,201 @@
+{
+  "id": "T02_02_per_property_origins",
+  "family": "T02",
+  "rules": [
+    "5.2.1",
+    "5.2.2",
+    "I-13",
+    "9.2.2"
+  ],
+  "description": "Each property carries forward from the Assertion that last asserted it and keeps that Assertion as its origin, so one position draws on three Assertions; an earlier cutoff assembles the position from the evidence then.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-08T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-3",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1",
+        "fire_rating": 60
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-3",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "closer": "C-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-1|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-2",
+            "origin": "door-101|ev-2|a-601"
+          },
+          "fire_rating": {
+            "classification": "asserted",
+            "value": 90,
+            "origin": "door-101|ev-3|a-601"
+          },
+          "closer": {
+            "classification": "asserted",
+            "value": "C-1",
+            "origin": "door-101|ev-3|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        },
+        "properties": [
+          "closer"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-1|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-2",
+            "origin": "door-101|ev-2|a-601"
+          },
+          "fire_rating": {
+            "classification": "asserted",
+            "value": 60,
+            "origin": "door-101|ev-1|a-601"
+          },
+          "closer": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|ev-1|a-601"
+            }
+          },
+          "hardware": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "HW-2",
+              "origin": "door-101|ev-2|a-601"
+            }
+          },
+          "fire_rating": {
+            "a-601": {
+              "classification": "asserted",
+              "value": 90,
+              "origin": "door-101|ev-3|a-601"
+            }
+          },
+          "closer": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "C-1",
+              "origin": "door-101|ev-3|a-601"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

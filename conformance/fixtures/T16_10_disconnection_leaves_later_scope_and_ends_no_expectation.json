@@ -1,0 +1,236 @@
+{
+  "id": "T16_10_disconnection_leaves_later_scope_and_ends_no_expectation",
+  "family": "T16",
+  "rules": [
+    "2.1.5",
+    "8.6.2",
+    "8.6.4",
+    "8.6.5",
+    "8.7.2",
+    "12.16"
+  ],
+  "description": "A door whose Connection from the scope chain is disconnected leaves later scoped open work, still appears at earlier frames, and none of its expectations ends.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-req",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-schedule",
+      "at": "2026-05-04T09:00-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "door-schedule",
+      "to": "door-101",
+      "at": "2026-05-04T09:00-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "door-schedule",
+      "to": "door-102",
+      "at": "2026-05-04T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-req",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-req",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "door-schedule",
+            "to": "door-102"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "scope": "project",
+          "cutoff": "2026-06-08-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          "~unordered",
+          {
+            "expectation": "door-101|e-req|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": []
+          },
+          {
+            "expectation": "door-102|e-req|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": []
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "scope": "project",
+          "cutoff": "2026-06-12-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-req|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": []
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-12-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    }
+  ]
+}

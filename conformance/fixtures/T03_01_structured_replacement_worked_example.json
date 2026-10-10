@@ -1,0 +1,167 @@
+{
+  "id": "T03_01_structured_replacement_worked_example",
+  "family": "T03",
+  "rules": [
+    "5.4.1",
+    "5.4.4",
+    "5.6.2",
+    "9.4.1",
+    "12.3"
+  ],
+  "description": "A supplied object replaces the property's whole value: width is not inherited by a height-only dimensions object, the change reports width removed and height changed, and the earlier value remains historical evidence.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "width": 900,
+          "height": 2100
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "dimensions": {
+          "height": 2200
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "classification": "asserted",
+            "value": {
+              "height": 2200,
+              "width": "~absent"
+            },
+            "origin": "door-101|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-01-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "dimensions": {
+            "classification": "asserted",
+            "value": {
+              "width": 900,
+              "height": 2100
+            },
+            "origin": "door-101|ev-dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "dimensions",
+            "transition": "changed",
+            "prior": "door-101|ev-dd|a-601",
+            "new": "door-101|ev-cd|a-601",
+            "members": [
+              "~unordered",
+              {
+                "member": "width",
+                "difference": "member_removed"
+              },
+              {
+                "member": "height",
+                "difference": "member_changed"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-dd|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "dimensions": {
+            "width": 900,
+            "height": 2100
+          }
+        }
+      }
+    }
+  ]
+}

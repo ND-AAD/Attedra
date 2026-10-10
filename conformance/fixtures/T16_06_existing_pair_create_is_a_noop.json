@@ -1,0 +1,187 @@
+{
+  "id": "T16_06_existing_pair_create_is_a_noop",
+  "family": "T16",
+  "rules": [
+    "2.2.1",
+    "8.6.1",
+    "8.6.3",
+    "I-4",
+    "10.2.4"
+  ],
+  "description": "Creating a Connection for a pair that already has one is a successful no-op: it neither reconnects a disconnected pair nor moves connected_at. The reverse direction is a different pair. A connection time not in a 4.2.1 form is rejected.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room",
+          "label": "Room 12"
+        },
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-102",
+          "kind": "door"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-03T09:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-02T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-02T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "connect",
+      "from": "door-101",
+      "to": "room-12",
+      "at": "2026-06-03T09:00-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "door-101",
+      "to": "room-12",
+      "at": "2026-05-25T09:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "room-12"
+        ],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-05-28T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-102",
+      "at": "2026-06-01 09:00",
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-102",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    }
+  ]
+}

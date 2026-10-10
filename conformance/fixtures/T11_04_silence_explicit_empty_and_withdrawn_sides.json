@@ -1,0 +1,304 @@
+{
+  "id": "T11_04_silence_explicit_empty_and_withdrawn_sides",
+  "family": "T11",
+  "rules": [
+    "7.1.4",
+    "9.4.2",
+    "5.3.1",
+    "6.7.4",
+    "5.6.1"
+  ],
+  "description": "A property the consultant never asserted does not conflict; an explicit null against a populated value does; equal values do not; once the consultant withdraws its finish, that side is absence, not conflict.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "cons-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "c-201",
+          "kind": "schedule",
+          "label": "Consultant door schedule"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Architect door schedule"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "cons-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "cons-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "cons-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "cons-50cd",
+      "context": "cons-50cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-12T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cons-100cd",
+      "context": "cons-100cd",
+      "source": "cons-log",
+      "values": {
+        "@published": "2026-05-14T10:00-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-50cd",
+      "source": "c-201",
+      "values": {
+        "remarks": "issued for coordination"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "hardware": "HW-2",
+        "closer": "CL-1",
+        "frame": "steel"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "cons-100cd",
+      "source": "c-201",
+      "values": {
+        "finish": "paint",
+        "closer": null,
+        "frame": "steel"
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-14T18:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          "~unordered",
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "stain",
+                "origin": "door-101|arch-100dd|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": "paint",
+                "origin": "door-101|cons-100cd|c-201"
+              }
+            ]
+          },
+          {
+            "property": "closer",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "CL-1",
+                "origin": "door-101|arch-100dd|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": null,
+                "origin": "door-101|cons-100cd|c-201"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "cons-100cd",
+            "source": "c-201",
+            "property": "finish"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-16-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "closer",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "CL-1",
+                "origin": "door-101|arch-100dd|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": null,
+                "origin": "door-101|cons-100cd|c-201"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-16-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|arch-100dd|a-601"
+            },
+            "c-201": {
+              "classification": "withdrawn",
+              "withdrawn_by": "wd-1|wd-1-at|wd-1",
+              "value": "~absent"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

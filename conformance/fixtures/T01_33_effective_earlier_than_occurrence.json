@@ -1,0 +1,248 @@
+{
+  "id": "T01_33_effective_earlier_than_occurrence",
+  "family": "T01",
+  "rules": [
+    "10.2.7",
+    "8.4.1",
+    "4.2.5",
+    "4.2.1"
+  ],
+  "description": "An @effective earlier than the act's occurrence time is rejected with 10.2.7, comparing instants across offsets; an @effective equal to or later than the occurrence time is accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "mtg-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-2",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "est-1",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "mtg-0602",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-01T10:00-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "mtg-0602",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-02T09:30-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "mtg-0602",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-02T16:30+00:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "mtg-0602",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-01-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-1|mtg-0602|wd-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "est-1|mtg-0602|est-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "mtg-0602",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-02T10:00-07:00"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-2",
+      "context": "mtg-0602",
+      "source": "wd-2",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-02T17:00+00:00"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "mtg-0602",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-05-07:00"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "id": "T01_31_withdrawal_of_communication_records",
+  "family": "T01",
+  "rules": [
+    "10.2.6",
+    "6.7.9",
+    "4.4.1",
+    "3.1.2"
+  ],
+  "description": "Publication, distribution and self-description Assertions are never withdrawn: a withdrawal targeting one, or a property of one, is rejected with 10.2.6. Withdrawing an ordinary statement is accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "issue-log",
+          "kind": "log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "consultant-mep",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "dist-0516",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-16T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a-601-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "transmittal-22",
+          "kind": "transmittal"
+        },
+        {
+          "id": "dist-0520",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "wd-x",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-25T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-50cd",
+      "context": "arch-50cd",
+      "source": "issue-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          },
+          {
+            "@ref": "item",
+            "id": "client"
+          }
+        ],
+        "edition": "set 4"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-50cd",
+      "context": "dist-0516",
+      "source": "issue-log",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant-mep"
+          }
+        ],
+        "edition": "set 4"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a-601-issued",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ],
+        "edition": "rev 3"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "dist-0520",
+      "source": "transmittal-22",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant-mep"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "a-601-issued"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a-601-issued",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "arch-50cd",
+            "context": "arch-50cd",
+            "source": "issue-log"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "arch-50cd",
+            "context": "arch-50cd",
+            "source": "issue-log",
+            "property": "edition"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "arch-50cd",
+            "context": "dist-0516",
+            "source": "issue-log"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "a-601",
+            "context": "a-601-issued",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "a-601",
+            "context": "dist-0520",
+            "source": "transmittal-22"
+          }
+        ]
+      },
+      "expect_error": "10.2.6"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-x|wd-x-at|wd-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "arch-50cd|arch-50cd|issue-log"
+      },
+      "expect": {
+        "status": "found",
+        "withdrawals": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-x",
+      "context": "wd-x-at",
+      "source": "wd-x",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a-601-issued",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

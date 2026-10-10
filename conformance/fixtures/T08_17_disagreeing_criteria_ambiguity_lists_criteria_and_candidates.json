@@ -1,0 +1,290 @@
+{
+  "id": "T08_17_disagreeing_criteria_ambiguity_lists_criteria_and_candidates",
+  "family": "T08",
+  "rules": [
+    "3.3.2",
+    "4.5.3",
+    "6.6.1",
+    "9.3.1",
+    "9.3.2",
+    "9.6.1",
+    "6.4.5"
+  ],
+  "description": "When the criteria of two sources disagree about one piece of evidence, the property's standing is ambiguous. It lists each source's @eligible Assertion in force at the evidence's occurrence time under criteria, and complete candidate standings: a fulfilled candidate with its fulfilling Assertion, qualifying moment and timeliness, and an outstanding candidate with overdue. Overall is ambiguous, and open work lists the entry among its ambiguous entries.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "role-intern",
+          "kind": "role"
+        },
+        {
+          "id": "role-principal",
+          "kind": "role"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "label": "Architect, any communication",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "amend-3",
+          "kind": "letter"
+        },
+        {
+          "id": "email-60",
+          "kind": "email"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "amend-3-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-05-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-11T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-60-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-principal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "amend-3-issued",
+      "source": "amend-3",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-spm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-60",
+      "context": "email-60-sent",
+      "source": "email-60",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-60-sent",
+      "source": "email-60",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "overall": "ambiguous",
+        "properties": {
+          "finish": {
+            "standing": "ambiguous",
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-30-07:00"
+            },
+            "criteria": [
+              "~unordered",
+              "elig-arch|crit-0501|contract-7",
+              "elig-arch|amend-3-issued|amend-3"
+            ],
+            "candidates": [
+              "~unordered",
+              {
+                "standing": "fulfilled",
+                "fulfilled_by": "door-101|email-60-sent|email-60",
+                "qualifying_moment": "2026-05-15T09:00-07:00",
+                "timeliness": "on_time"
+              },
+              {
+                "standing": "outstanding",
+                "overdue": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "ambiguous": [
+          {
+            "expectation": "door-101|e-stain|elig-arch",
+            "ambiguous": [
+              "finish"
+            ],
+            "candidates": {
+              "finish": [
+                "~unordered",
+                {
+                  "standing": "fulfilled"
+                },
+                {
+                  "standing": "outstanding"
+                }
+              ]
+            }
+          }
+        ],
+        "limitations": []
+      }
+    }
+  ]
+}

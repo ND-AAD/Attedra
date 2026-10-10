@@ -1,0 +1,450 @@
+{
+  "id": "T01_43_extension_act_members_and_withdrawal",
+  "family": "T01",
+  "rules": [
+    "10.4.1",
+    "10.4.2",
+    "10.2.4",
+    "10.2.7",
+    "2.4.4",
+    "6.7.9"
+  ],
+  "description": "An act whose @action is an undefined string is an extension act: it may carry the members of every act (@targets, @basis, @party) and is accepted. A member allowed only on particular actions is invalid on it: @outcome or @frame fails 10.2.4 and @effective fails 10.2.7. An @action that is not a string, and an undefined review @outcome, are wrong shapes (10.2.4). A withdrawal may target an extension act, and the extension act is no support.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "esc-1",
+          "kind": "escalation"
+        },
+        {
+          "id": "esc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "rv-x",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "no_change"
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-03-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": 5,
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "rv-x",
+      "context": "rv-x-at",
+      "source": "rv-x",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T11:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "approved",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "esc-1|esc-1-at|esc-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "rv-x|rv-x-at|rv-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "esc-1",
+      "context": "esc-1-at",
+      "source": "esc-1",
+      "values": {
+        "@action": "escalate",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-02.pdf",
+            "edition": "issued 2026-06-02"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "priority": "high"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "esc-1",
+            "context": "esc-1-at",
+            "source": "esc-1"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "esc-1|esc-1-at|esc-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "escalate",
+          "priority": "high"
+        },
+        "withdrawals": [
+          "wd-1|wd-1-at|wd-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "supports": [],
+        "properties": {
+          "finish": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    }
+  ]
+}

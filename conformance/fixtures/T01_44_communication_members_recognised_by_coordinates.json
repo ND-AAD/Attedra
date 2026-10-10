@@ -1,0 +1,319 @@
+{
+  "id": "T01_44_communication_members_recognised_by_coordinates",
+  "family": "T01",
+  "rules": [
+    "2.4.4",
+    "10.2.4",
+    "3.1.2",
+    "3.2.1",
+    "4.4.1",
+    "2.1.6"
+  ],
+  "description": "@producer, @agent, @distribution and @issuance are recognised by coordinates and members, never by kind. On an ordinary statement about a door, @producer, @issuance or @distribution is invalid (10.2.4); @distribution about a communication at an event context without @issuance is not a later distribution and is invalid; an act may carry @issuance but not @producer or @distribution. A self-description, a later distribution naming @issuance, and an act carrying @issuance are accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "transmittal-22",
+          "kind": "transmittal"
+        },
+        {
+          "id": "a601-issued-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "dist-0520",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "est-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "est-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@issuance": {
+          "@ref": "item",
+          "id": "a601-issued-0514"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "dist-0520",
+      "source": "transmittal-22",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ]
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ]
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      },
+      "expect_error": "10.2.4"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|a601-issued-0514|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "a-601|dist-0520|transmittal-22"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "est-1|est-1-at|est-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "architect"
+          }
+        ],
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "dist-0520",
+      "source": "transmittal-22",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "a601-issued-0514"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "a601-issued-0514"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

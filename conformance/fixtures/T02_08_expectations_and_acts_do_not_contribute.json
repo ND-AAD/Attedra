@@ -1,0 +1,176 @@
+{
+  "id": "T02_08_expectations_and_acts_do_not_contribute",
+  "family": "T02",
+  "rules": [
+    "9.2.2",
+    "I-6",
+    "2.4.7",
+    "5.2.4",
+    "6.1.1"
+  ],
+  "description": "Only statements at event and milestone contexts contribute to a source position: an expectation about the same subject from the same source, and the plain members of an act, never do.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-lacquer",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "est-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "est-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-lacquer",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer",
+        "hardware": "HW-9"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-lacquer",
+            "source": "a-601"
+          }
+        ],
+        "note": "per owner"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "hardware"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-0514|a-601"
+          },
+          "hardware": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "est-1",
+        "source": "est-1",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "note"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "note": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          },
+          "@action": "~absent",
+          "@targets": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|ev-0514|a-601"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

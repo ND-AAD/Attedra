@@ -1,0 +1,273 @@
+{
+  "id": "T16_04_lifecycle_acts_validated_against_derived_state_at_occurrence",
+  "family": "T16",
+  "rules": [
+    "10.2.8",
+    "10.2.2",
+    "8.6.6",
+    "8.6.2",
+    "8.6.3"
+  ],
+  "description": "Disconnect and reconnect are validated against the derived state at the act's own occurrence time, not arrival order: reconnecting an active pair, disconnecting an inactive or not-yet-connected pair, and a backfilled reconnect at a time when the pair was active all fail; a disconnect of a pair with no Connection is an unresolved reference. Failed writes leave nothing.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "recon-x",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-y",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-y-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-y",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-y-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-06T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-w",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-w-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "disc-z",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-z-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-30T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "recon-x",
+      "context": "recon-x-at",
+      "source": "recon-x",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-y",
+      "context": "recon-y-at",
+      "source": "recon-y",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-y",
+      "context": "disc-y-at",
+      "source": "disc-y",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-z",
+      "context": "disc-z-at",
+      "source": "disc-z",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-w",
+      "context": "disc-w-at",
+      "source": "disc-w",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "door-101",
+            "to": "room-12"
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-05T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-05T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "recon-y|recon-y-at|recon-y"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "disc-w|disc-w-at|disc-w"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

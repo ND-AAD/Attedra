@@ -1,0 +1,276 @@
+{
+  "id": "T16_17_exact_read_of_a_connection_returns_materialized_and_derived_state",
+  "family": "T16",
+  "rules": [
+    "9.2.1",
+    "2.2.4",
+    "8.6.2",
+    "8.6.3",
+    "8.6.6",
+    "8.3.9",
+    "12.16"
+  ],
+  "description": "The exact read of a Connection returns its lifecycle properties (connected_at, disconnected, disconnected_at, disconnect_reason, reconnected_at), which equal the derivation from its acts, and the corrections that target it. After the only disconnect act is corrected as erroneous, the properties are recomputed: the Connection was never disconnected and the later reconnect sets no timestamp.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "room-14",
+          "kind": "room"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "log"
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-2",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-2",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ],
+        "reason": "Door relocated to Room 14"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-1",
+      "context": "recon-1-at",
+      "source": "recon-1",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "room-12->door-101"
+      },
+      "expect": {
+        "status": "found",
+        "properties": {
+          "connected_at": "2026-06-01T09:00-07:00",
+          "disconnected": false,
+          "disconnected_at": "2026-06-02T09:00-07:00",
+          "disconnect_reason": "Door relocated to Room 14",
+          "reconnected_at": "2026-06-04T09:00-07:00"
+        },
+        "derived": {
+          "connected_at": "2026-06-01T09:00-07:00",
+          "disconnected": false,
+          "disconnected_at": "2026-06-02T09:00-07:00",
+          "disconnect_reason": "Door relocated to Room 14",
+          "reconnected_at": "2026-06-04T09:00-07:00"
+        },
+        "corrections": []
+      }
+    },
+    {
+      "op": "connect",
+      "from": "room-14",
+      "to": "door-102",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-2",
+      "context": "disc-2-at",
+      "source": "disc-2",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-14",
+            "to": "door-102"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-2",
+      "context": "recon-2-at",
+      "source": "recon-2",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-14",
+            "to": "door-102"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "disc-2",
+            "context": "disc-2-at",
+            "source": "disc-2"
+          }
+        ],
+        "@outcome": "erroneous",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "site-diary-2026-06-02.pdf",
+            "edition": "issued 2026-06-02"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "room-14->door-102"
+      },
+      "expect": {
+        "status": "found",
+        "properties": {
+          "connected_at": "2026-06-01T09:00-07:00",
+          "disconnected": false,
+          "disconnected_at": "~absent",
+          "disconnect_reason": "~absent",
+          "reconnected_at": "~absent"
+        },
+        "derived": {
+          "connected_at": "2026-06-01T09:00-07:00",
+          "disconnected": false,
+          "disconnected_at": "~absent",
+          "reconnected_at": "~absent"
+        },
+        "corrections": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101->room-12"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

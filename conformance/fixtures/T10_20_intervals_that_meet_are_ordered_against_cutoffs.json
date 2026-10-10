@@ -1,0 +1,208 @@
+{
+  "id": "T10_20_intervals_that_meet_are_ordered_against_cutoffs",
+  "family": "T10",
+  "rules": [
+    "4.2.1",
+    "4.2.5",
+    "4.6.1",
+    "4.5.3",
+    "5.2.1",
+    "12.10"
+  ],
+  "description": "An instant's interval includes its start and excludes its end, so intervals that meet are ordered. A letter dated 14 May is after a 13 May cutoff and after a cutoff at 23:59 on 13 May, so it is excluded there rather than ambiguous, and it is included by a 14 May cutoff. An email at 09:46 is after one at 09:45: a 09:45 cutoff excludes it, and a later cutoff takes its value without ambiguity.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a601-issued-0510",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-letter-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-email-0945",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-email-0946",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:46-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-issued-0510",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-letter-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-13-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-102|a601-issued-0510|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-13T23:59-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-102|a601-issued-0510|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-102|a601-letter-0514|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "a601-email-0945",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "a601-email-0946",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-103",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14T09:45-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-103|a601-email-0945|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-103",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-103|a601-email-0946|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

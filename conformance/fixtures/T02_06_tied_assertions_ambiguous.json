@@ -1,0 +1,217 @@
+{
+  "id": "T02_06_tied_assertions_ambiguous",
+  "family": "T02",
+  "rules": [
+    "5.6.1",
+    "4.5.1",
+    "4.5.3",
+    "4.2.5",
+    "5.2.1"
+  ],
+  "description": "When tied or unordered Assertions by one source assert different values and no sequence evidence orders them, the property reads ambiguous with both candidates; a property only one of them carries is unaffected, and a later Assertion settles the property.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-date",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-min",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-c",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-date",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-min",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "value": "~absent",
+            "candidates": [
+              "~unordered",
+              {
+                "value": "paint",
+                "origin": "door-101|ev-a|a-601"
+              },
+              {
+                "value": "stain",
+                "origin": "door-101|ev-b|a-601"
+              }
+            ]
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|ev-a|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "value": "~absent",
+            "candidates": [
+              "~unordered",
+              {
+                "value": "paint",
+                "origin": "door-102|ev-date|a-601"
+              },
+              {
+                "value": "stain",
+                "origin": "door-102|ev-min|a-601"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-c",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "lacquer",
+            "origin": "door-101|ev-c|a-601"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1",
+            "origin": "door-101|ev-a|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

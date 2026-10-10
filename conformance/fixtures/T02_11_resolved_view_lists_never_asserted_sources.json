@@ -1,0 +1,185 @@
+{
+  "id": "T02_11_resolved_view_lists_never_asserted_sources",
+  "family": "T02",
+  "rules": [
+    "9.2.3",
+    "9.2.2",
+    "5.6.1"
+  ],
+  "description": "The resolved view lists, under each property that any source's statements about the subject carry, an entry for every source with a property-bearing statement about the subject, never_asserted included, and a source whose statement comes after the cutoff reads never_asserted at that cutoff. The view never selects a winner.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "hw-schedule",
+          "kind": "hardware-schedule"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-3",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-3",
+      "source": "hw-schedule",
+      "values": {
+        "closer": "C-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|ev-1|a-601"
+            },
+            "spec-0991": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|ev-2|spec-0991"
+            },
+            "hw-schedule": {
+              "classification": "never_asserted",
+              "value": "~absent",
+              "origin": "~absent"
+            }
+          },
+          "hardware": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "HW-1"
+            },
+            "spec-0991": {
+              "classification": "never_asserted"
+            },
+            "hw-schedule": {
+              "classification": "never_asserted"
+            }
+          },
+          "closer": {
+            "a-601": {
+              "classification": "never_asserted"
+            },
+            "spec-0991": {
+              "classification": "never_asserted"
+            },
+            "hw-schedule": {
+              "classification": "asserted",
+              "value": "C-1",
+              "origin": "door-101|ev-3|hw-schedule"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint"
+            },
+            "spec-0991": {
+              "classification": "never_asserted",
+              "value": "~absent"
+            },
+            "hw-schedule": {
+              "classification": "never_asserted"
+            }
+          },
+          "closer": {
+            "a-601": {
+              "classification": "never_asserted"
+            },
+            "spec-0991": {
+              "classification": "never_asserted"
+            },
+            "hw-schedule": {
+              "classification": "never_asserted"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

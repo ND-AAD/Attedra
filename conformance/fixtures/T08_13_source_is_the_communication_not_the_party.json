@@ -1,0 +1,180 @@
+{
+  "id": "T08_13_source_is_the_communication_not_the_party",
+  "family": "T08",
+  "rules": [
+    "3.1.1",
+    "3.1.2",
+    "2.4.7",
+    "9.2.2",
+    "9.2.3",
+    "12.2",
+    "12.8"
+  ],
+  "description": "The door value's source is A-601 and the architect is only its @producer: the architect has no position on Door 101, and A-601's self-description contributes its ordinary property but never @producer, @agent or @distribution.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "spm-jones",
+          "kind": "person"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "a601-issued-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "spm-jones"
+          },
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ],
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          },
+          {
+            "@ref": "item",
+            "id": "client"
+          }
+        ],
+        "edition": "rev 3"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|a601-issued-0514|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "architect",
+        "frame": {},
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "a-601",
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "edition": {
+            "classification": "asserted",
+            "value": "rev 3",
+            "origin": "a-601|a601-issued-0514|a-601"
+          },
+          "@producer": "~absent",
+          "@agent": "~absent",
+          "@distribution": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {}
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|a601-issued-0514|a-601"
+            },
+            "architect": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

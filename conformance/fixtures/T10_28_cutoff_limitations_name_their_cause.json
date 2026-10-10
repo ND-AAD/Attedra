@@ -1,0 +1,189 @@
+{
+  "id": "T10_28_cutoff_limitations_name_their_cause",
+  "family": "T10",
+  "rules": [
+    "4.6.1",
+    "9.6.1",
+    "10.3",
+    "4.4.1",
+    "4.3.3"
+  ],
+  "description": "A cutoff that cannot be resolved returns a limitation with a code and members instead of a result: a planned milestone (planned_milestone, naming the milestone), a milestone with competing publication instants (competing_publication_instants, naming the milestone), and a value that is neither an instant, now nor a milestone (cutoff_unresolvable, echoing the cutoff).",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "arch-transmittal-7",
+          "kind": "transmittal"
+        },
+        {
+          "id": "m-planned",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "m-comp",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "a601-0510",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0510",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m-comp",
+      "context": "m-comp",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "m-comp",
+      "context": "m-comp",
+      "source": "arch-transmittal-7",
+      "values": {
+        "@published": "2026-05-14T09:00-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "m-planned"
+        }
+      },
+      "expect": {
+        "limitation": "planned_milestone",
+        "milestone": "m-planned",
+        "properties": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "m-comp"
+        }
+      },
+      "expect": {
+        "limitation": "competing_publication_instants",
+        "milestone": "m-comp",
+        "properties": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "yesterday"
+        }
+      },
+      "expect": {
+        "limitation": "cutoff_unresolvable",
+        "cutoff": "yesterday",
+        "properties": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "door-101"
+        }
+      },
+      "expect": {
+        "limitation": "cutoff_unresolvable",
+        "cutoff": "door-101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-20-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "~absent",
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint"
+          }
+        }
+      }
+    }
+  ]
+}

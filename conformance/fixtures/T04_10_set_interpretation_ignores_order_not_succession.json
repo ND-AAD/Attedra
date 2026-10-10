@@ -1,0 +1,201 @@
+{
+  "id": "T04_10_set_interpretation_ignores_order_not_succession",
+  "family": "T04",
+  "rules": [
+    "5.5.3",
+    "5.5.1",
+    "5.4.1",
+    "5.5.4"
+  ],
+  "description": "A set interpretation makes list order and duplicates irrelevant, but cannot union successive submissions: a source's current list is still its latest list.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "spec-0991",
+      "values": {
+        "tags": [
+          "b",
+          "a",
+          "a"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-2",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-2",
+      "source": "spec-0991",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "tags",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-2|a-601",
+                "value": [
+                  "a",
+                  "b"
+                ]
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-2|spec-0991",
+                "value": [
+                  "b",
+                  "a",
+                  "a"
+                ]
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": "fixture-set:tags"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": "fixture-set:tags"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": "fixture-set:tags"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "tags",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-102|ev-2|a-601",
+                "value": [
+                  "b"
+                ]
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-102|ev-2|spec-0991",
+                "value": [
+                  "a",
+                  "b"
+                ]
+              }
+            ]
+          }
+        ],
+        "interpretation": "fixture-set:tags"
+      }
+    }
+  ]
+}

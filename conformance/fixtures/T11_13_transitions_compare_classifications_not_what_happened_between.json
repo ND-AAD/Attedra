@@ -1,0 +1,430 @@
+{
+  "id": "T11_13_transitions_compare_classifications_not_what_happened_between",
+  "family": "T11",
+  "rules": [
+    "5.6.2",
+    "5.6.1",
+    "9.4.1",
+    "6.7.4",
+    "4.5.3"
+  ],
+  "description": "A transition compares the two sides' classifications only. A value withdrawn and then replaced between the frames is changed (or unchanged when equal), never reasserted. Withdrawn to withdrawn is unchanged. A side with no value has a null origin; a withdrawn side names its withdrawing record (withdrawn_by for the second side, prior_withdrawn_by for the first). An ambiguous side makes the transition ambiguous with both classifications as candidates. Sides given in reverse order return the limitation reversed_comparison.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-2",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-3",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-2",
+      "context": "wd-2-at",
+      "source": "wd-2",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-3",
+      "context": "wd-3-at",
+      "source": "wd-3",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "changed",
+            "prior": "door-101|a601-0601|a-601",
+            "new": "door-101|a601-0603|a-601",
+            "withdrawn_by": "~absent",
+            "prior_withdrawn_by": "~absent",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-102",
+        "from": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "unchanged",
+            "prior": "door-102|a601-0601|a-601",
+            "new": "door-102|a601-0603|a-601",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "withdrawn",
+            "prior": "door-101|a601-0601|a-601",
+            "new": null,
+            "withdrawn_by": "wd-1|wd-1-at|wd-1",
+            "prior_withdrawn_by": "~absent",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "reasserted",
+            "prior": null,
+            "new": "door-101|a601-0603|a-601",
+            "prior_withdrawn_by": "wd-1|wd-1-at|wd-1",
+            "withdrawn_by": "~absent",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-103",
+        "from": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "unchanged",
+            "prior": null,
+            "new": null,
+            "prior_withdrawn_by": "wd-3|wd-3-at|wd-3",
+            "withdrawn_by": "wd-3|wd-3-at|wd-3",
+            "members": []
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-104",
+        "from": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "finish",
+            "transition": "ambiguous",
+            "prior": null,
+            "new": null,
+            "members": [],
+            "candidates": [
+              {
+                "classification": "asserted",
+                "value": "paint",
+                "origin": "door-104|a601-0601|a-601"
+              },
+              {
+                "classification": "ambiguous"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-04-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "reversed_comparison",
+        "transitions": "~absent"
+      }
+    }
+  ]
+}

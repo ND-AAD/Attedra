@@ -1,0 +1,67 @@
+{
+  "id": "T09_17_phase_is_never_an_assertion_context",
+  "family": "T09",
+  "rules": [
+    "4.1.1",
+    "10.2.3"
+  ],
+  "description": "A phase bounds expectation timing only. An Assertion whose context is a phase is rejected (10.2.3) and not recorded.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "arch-sched",
+          "kind": "issue_schedule",
+          "label": "Architect issue schedule"
+        },
+        {
+          "id": "phase-cd",
+          "kind": "phase",
+          "label": "CD phase",
+          "definition": {
+            "@context": {
+              "role": "phase",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-sched"
+              },
+              "starts": "2026-06-08-07:00",
+              "ends": "2026-06-15-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "phase-cd",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|phase-cd|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

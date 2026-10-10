@@ -1,0 +1,268 @@
+{
+  "id": "T01_41_effective_unordered_with_occurrence_is_accepted",
+  "family": "T01",
+  "rules": [
+    "8.4.1",
+    "10.2.7",
+    "4.2.5",
+    "4.5.1",
+    "4.5.3",
+    "4.6.1"
+  ],
+  "description": "Only an @effective that is before the act's occurrence time is rejected under 10.2.7. A minute @effective on an act at a date context, and a date @effective on an act at 10:00 that day, are unordered with the occurrence time and are accepted at the precision written. A read whose result depends on the unordered effective time reports it as ambiguous.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-2",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-3",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-02T15:00-07:00"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-2",
+      "context": "wd-2-at",
+      "source": "wd-2",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-02-07:00"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-3",
+      "context": "wd-3-at",
+      "source": "wd-3",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-01-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-1|wd-1-at|wd-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@effective": "2026-06-02T15:00-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-2|wd-2-at|wd-2"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@effective": "2026-06-02-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-3|wd-3-at|wd-3"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "withdrawn",
+            "withdrawn_by": "wd-1|wd-1-at|wd-1"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "withdrawn",
+            "withdrawn_by": "wd-2|wd-2-at|wd-2"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "value": "~absent",
+            "candidates": [
+              "~unordered",
+              {
+                "classification": "asserted",
+                "value": "paint",
+                "origin": "door-102|a601-0601|a-601"
+              },
+              {
+                "classification": "withdrawn",
+                "withdrawn_by": "wd-2|wd-2-at|wd-2"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

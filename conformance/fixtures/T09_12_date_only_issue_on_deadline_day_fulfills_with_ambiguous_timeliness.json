@@ -1,0 +1,136 @@
+{
+  "id": "T09_12_date_only_issue_on_deadline_day_fulfills_with_ambiguous_timeliness",
+  "family": "T09",
+  "rules": [
+    "4.2.5",
+    "4.5.3",
+    "6.5.4",
+    "6.6.1",
+    "9.3.2",
+    "12.9"
+  ],
+  "description": "An A-601 issue dated only 10 June, against a deadline of 17:00 that day, is neither at or before the deadline nor after it. Late evidence still qualifies under `by` timing, so the requirement is fulfilled either way; only its timeliness is ambiguous (6.5.4, 6.6.1, 12.9). Open work excludes the expectation.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-1700",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-10T17:00-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-dated-0610",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-1700",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-1700",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-dated-0610",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-1700|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "timeliness": "ambiguous"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "ambiguous": []
+      }
+    }
+  ],
+  "note": "6.5.4: \"When the evidence and the deadline are unordered (4.2.5), the property is still fulfilled, because late evidence qualifies, and its timeliness is `ambiguous`.\" Step 5 reads the property fulfilled with ambiguous timeliness."
+}

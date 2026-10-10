@@ -1,0 +1,294 @@
+{
+  "id": "T01_35_lifecycle_act_against_derived_state",
+  "family": "T01",
+  "rules": [
+    "10.2.8",
+    "8.6.2",
+    "8.6.3",
+    "8.6.4",
+    "8.6.6"
+  ],
+  "description": "Reconnecting a pair that is not disconnected, or disconnecting one that is not active (already disconnected, or not yet connected), at the act's occurrence time is rejected with 10.2.8.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "at-0510",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-0512a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T08:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-0512b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-12T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-0513",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "at-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-0",
+          "kind": "disconnection"
+        },
+        {
+          "id": "reco-0",
+          "kind": "reconnection"
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-2",
+          "kind": "disconnection"
+        },
+        {
+          "id": "reco-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "reco-2",
+          "kind": "reconnection"
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-05-11T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-0",
+      "context": "at-0510",
+      "source": "disc-0",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "reco-0",
+      "context": "at-0512a",
+      "source": "reco-0",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "at-0512b",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ],
+        "reason": "Opening reframed"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-2",
+      "context": "at-0513",
+      "source": "disc-2",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "reco-1",
+      "context": "at-0514",
+      "source": "reco-1",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "reco-2",
+      "context": "at-0515",
+      "source": "reco-2",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "disc-0|at-0510|disc-0"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "reco-0|at-0512a|reco-0"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "disc-2|at-0513|disc-2"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "reco-2|at-0515|reco-2"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-13T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "room-12",
+        "frame": {
+          "cutoff": "2026-05-16-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": []
+      }
+    }
+  ]
+}

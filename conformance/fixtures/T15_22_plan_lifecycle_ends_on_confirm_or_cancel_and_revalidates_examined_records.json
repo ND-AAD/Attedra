@@ -1,0 +1,222 @@
+{
+  "id": "T15_22_plan_lifecycle_ends_on_confirm_or_cancel_and_revalidates_examined_records",
+  "family": "T15",
+  "rules": [
+    "8.5.4",
+    "8.5.3",
+    "8.5.2",
+    "8.5.5"
+  ],
+  "description": "Cancelling or confirming a plan ends it: a later confirm or cancel of that plan fails plan_unknown. A confirm revalidates the target and every record the impact test examined, so a correction of the source's other Assertion, which is examined but is not a dependent, makes the confirm fail plan_stale and leaves the target untouched. A plan for a target that is not recorded is refused with reason not_found.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "ev-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-dup",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dup",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-dup|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p1",
+      "expect": {
+        "status": "cancelled"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p1",
+      "expect_error": "plan_unknown"
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p1",
+      "expect_error": "plan_unknown"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-dup|a-601"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-dup|a-601",
+      "as": "p2",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "finish": "stain"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p2",
+      "expect_error": "plan_stale"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-dup|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint"
+        }
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-dup|a-601",
+      "as": "p3",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p3",
+      "expect": {
+        "status": "removed"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p3",
+      "expect_error": "plan_unknown"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-dup|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-dup|a-601",
+      "expect": {
+        "status": "refused",
+        "reason": "not_found",
+        "dependents": []
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-999",
+      "expect": {
+        "status": "refused",
+        "reason": "not_found",
+        "dependents": []
+      }
+    }
+  ]
+}

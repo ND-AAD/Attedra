@@ -1,0 +1,228 @@
+{
+  "id": "T10_12_issuance_distribution_limited_to_that_issuance",
+  "family": "T10",
+  "rules": [
+    "4.4.2",
+    "3.1.2",
+    "4.6.1",
+    "12.10"
+  ],
+  "description": "A consultant listed only in the distribution of A-601 rev 1 is not covered for rev 3's Assertions and sees the rev 1 value; the contractor (listed on rev 3) and the producer (always covered) see rev 3; an unlisted party sees nothing.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "a601-rev1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-rev3",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-rev1",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          },
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ],
+        "edition": "rev 1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-rev1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-rev3",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ],
+        "edition": "rev 3"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-rev3",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-25-07:00",
+          "perspective": "consultant"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|a601-rev1|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-25-07:00",
+          "perspective": "contractor"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|a601-rev3|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-25-07:00",
+          "perspective": "architect"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|a601-rev3|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-25-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|a601-rev3|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-25-07:00",
+          "perspective": "client"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

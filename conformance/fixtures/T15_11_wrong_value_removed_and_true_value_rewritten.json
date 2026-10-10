@@ -1,0 +1,132 @@
+{
+  "id": "T15_11_wrong_value_removed_and_true_value_rewritten",
+  "family": "T15",
+  "rules": [
+    "8.5.1",
+    "8.5.3",
+    "8.5.4",
+    "8.5.5",
+    "8.2.1",
+    "12.15"
+  ],
+  "description": "A misrecorded value that nothing depends on is removed on direction, and the true value is then written at the same triple as an ordinary insert, not as an occupied write.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stian"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-mon-a601|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p1",
+      "expect": {
+        "status": "removed"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain"
+        },
+        "corrections": [],
+        "withdrawals": [],
+        "dependents": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-mon-a601|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,553 @@
+{
+  "id": "T15_08_relocated_instruction_limits_standing_until_support_corrected",
+  "family": "T15",
+  "rules": [
+    "8.3.1",
+    "8.3.7",
+    "9.6.1",
+    "9.3.1",
+    "9.3.2",
+    "9.3.3",
+    "8.3.3",
+    "2.4.1",
+    "3.3.1",
+    "12.15"
+  ],
+  "description": "An expectation meant for A-602 was recorded against A-601 and established by D1. It is corrected relocated to a replacement written at the A-602 coordinates. The A-601 original contributes nothing at any cutoff, and while D1 still targets the original the standing of both is a limitation (naming the correction and D1), counted neither as open nor as excluded. Once D1 is corrected with replace to target the A-602 expectation, that expectation is in force from D1's time, outstanding, and later fulfilled only by A-602's own evidence.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a-602",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1-instr",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-mon",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-mon-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-2",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1-instr",
+      "context": "meeting-mon",
+      "source": "minutes-mon",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-mon-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-fr|a-601",
+            "outstanding": [
+              "fire_rating"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-602",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "e-fr",
+          "source": "a-602"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ],
+        "reason": "Instruction concerns A-602."
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-602",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-602",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "limitation": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|e-fr|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 90
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "d1-instr|meeting-mon|minutes-mon"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fr",
+              "source": "a-601"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-2",
+      "context": "corr-2-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "d1-instr",
+            "context": "meeting-mon",
+            "source": "minutes-mon"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "@action": "establish",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fr",
+              "source": "a-602"
+            }
+          ],
+          "@basis": [
+            {
+              "@ref": "artifact",
+              "id": "minutes-2026-06-01.pdf",
+              "edition": "issued 2026-06-01"
+            }
+          ],
+          "@issuance": {
+            "@ref": "item",
+            "id": "minutes-mon-issued"
+          },
+          "@party": {
+            "@ref": "item",
+            "id": "client"
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-602",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "d1-instr|meeting-mon|minutes-mon",
+            "covers": [
+              "fire_rating"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-fr|a-602",
+            "outstanding": [
+              "fire_rating"
+            ]
+          }
+        ],
+        "upcoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectations_about",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "expectations": [
+          {
+            "expectation": "door-101|e-fr|a-602",
+            "in_force": true,
+            "properties": {
+              "fire_rating": {
+                "standing": "outstanding"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "d1-instr|meeting-mon|minutes-mon"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fr",
+              "source": "a-601"
+            }
+          ]
+        },
+        "corrections": [
+          "corr-2|corr-2-at|import-review-log"
+        ]
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-fri-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T08:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-fri-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "ev-fri-a602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-fri-a602",
+      "source": "a-602",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-602",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-fri-a602|a-602",
+            "qualifying_moment": "2026-06-05T09:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": []
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 16: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

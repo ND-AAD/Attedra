@@ -1,0 +1,168 @@
+{
+  "id": "T16_13_renumbering_keeps_identity",
+  "family": "T16",
+  "rules": [
+    "2.1.4",
+    "8.7.1",
+    "7.1.1",
+    "9.4.1",
+    "9.4.2",
+    "12.1"
+  ],
+  "description": "The architect renumbers Door 101 from '101' to '201' while the consultant still writes '101': one Item, two dated mark assertions by the architect, a change in the architect's position, and one conflict on 'mark'.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "c-201",
+          "kind": "schedule"
+        },
+        {
+          "id": "a601-issued-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "c201-issued-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-issued-0604",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0601",
+      "source": "a-601",
+      "values": {
+        "mark": "101"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "c201-issued-0602",
+      "source": "c-201",
+      "values": {
+        "mark": "101"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0604",
+      "source": "a-601",
+      "values": {
+        "mark": "201"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "mark",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "201",
+                "origin": "door-101|a601-issued-0604|a-601"
+              },
+              {
+                "source": "c-201",
+                "value": "101",
+                "origin": "door-101|c201-issued-0602|c-201"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-03-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "mark",
+            "transition": "changed",
+            "prior": "door-101|a601-issued-0601|a-601",
+            "new": "door-101|a601-issued-0604|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-101"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "door",
+        "label": "Door 101"
+      }
+    }
+  ]
+}

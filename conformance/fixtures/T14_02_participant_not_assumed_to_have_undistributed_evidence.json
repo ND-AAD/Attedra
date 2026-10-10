@@ -1,0 +1,450 @@
+{
+  "id": "T14_02_participant_not_assumed_to_have_undistributed_evidence",
+  "family": "T14",
+  "rules": [
+    "7.5.3",
+    "4.6.1",
+    "4.6.3",
+    "4.4.2",
+    "9.7.2",
+    "6.5.1",
+    "12.14"
+  ],
+  "description": "A-601's Monday issuance and the specification were distributed to the owner; A-601's Tuesday stain issuance (entered Friday) went only to the contractor until it was redistributed to the owner on Saturday. In the owner's Wednesday view A-601 still shows paint and the story is open and disagreeing, while the record view shows it ended on Tuesday. From Saturday the owner's view shows the Tuesday alignment, dated Tuesday.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "spec-consultant",
+          "kind": "party"
+        },
+        {
+          "id": "transmittal-9",
+          "kind": "transmittal"
+        },
+        {
+          "id": "dist-sat",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-06T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-tue-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "owner"
+          },
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "spec-09-91",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "spec-consultant"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "owner"
+          },
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      },
+      "recorded_at": "2026-06-05T09:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-tue-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-06-05T09:00:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "perspective": "owner"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-mon-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-tue-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "perspective": "contractor"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-tue-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "perspective": "owner"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "standing": {
+          "open": "open",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "ending": {
+          "kind": "alignment",
+          "at": "2026-06-02T09:00-07:00"
+        },
+        "standing": {
+          "open": "ended"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "dist-sat",
+      "source": "transmittal-9",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "owner"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "ev-tue-a601"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "perspective": "owner"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-mon-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "perspective": "owner"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-tue-a601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00",
+          "perspective": "owner"
+        }
+      },
+      "expect": {
+        "ending": {
+          "kind": "alignment",
+          "record": "door-101|ev-tue-a601|a-601",
+          "at": "2026-06-02T09:00-07:00"
+        },
+        "standing": {
+          "open": "ended"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "owner",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": [
+          "~unordered",
+          "a-601|ev-mon-a601|a-601",
+          "door-101|ev-mon-a601|a-601",
+          "spec-09-91|ev-mon-spec|spec-09-91",
+          "door-101|ev-mon-spec|spec-09-91"
+        ]
+      }
+    }
+  ]
+}

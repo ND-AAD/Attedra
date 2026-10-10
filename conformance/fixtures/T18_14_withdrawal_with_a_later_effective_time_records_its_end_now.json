@@ -1,0 +1,368 @@
+{
+  "id": "T18_14_withdrawal_with_a_later_effective_time_records_its_end_now",
+  "family": "T18",
+  "rules": [
+    "7.6.3",
+    "7.6.5",
+    "7.6.8",
+    "7.6.9",
+    "6.7.5",
+    "8.4.1",
+    "9.3.1",
+    "9.3.2",
+    "9.5.7",
+    "12.19"
+  ],
+  "description": "A withdrawal written on 2 June with effect 1 July records the property's end act in the same operation, at the 1 July instant as written in @effective; its context, at the withdrawal's occurrence time, is provenance. The recorded period is listed at every cutoff, but the property is open until the end takes effect: outstanding and in what remains and open work on 15 June, withdrawn on 2 July.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-07-15-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "sup-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-stain|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-1-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-1|sup-1-at|sup-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@effective": "2026-07-01-07:00"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "wd-1|wd-1-at|wd-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@period": {
+            "at": "2026-07-01-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "wd-1",
+              "context": "wd-1-at",
+              "source": "wd-1",
+              "property": "~absent"
+            },
+            "cause": "withdrawal",
+            "policy": null
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-stain/a-601/finish/e1/at"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-02T10:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-06-15-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false,
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1",
+                  "at": "2026-07-01-07:00",
+                  "record": "wd-1|wd-1-at|wd-1",
+                  "cause": "withdrawal"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-15-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-stain|a-601#finish",
+            "began": {
+              "act": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1",
+              "at": "2026-06-01T10:00-07:00",
+              "record": "sup-1|sup-1-at|sup-1",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "outstanding",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 1
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-15-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-stain|a-601",
+            "outstanding": [
+              "finish"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-07-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "wd-1|wd-1-at|wd-1"
+            ],
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-stain/a-601/finish/b1|exp:door-101/e-stain/a-601/finish/b1/at|exp:door-101/e-stain/a-601/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "sup-1|sup-1-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-stain/a-601/finish/e1|exp:door-101/e-stain/a-601/finish/e1/at|exp:door-101/e-stain/a-601/finish/e1",
+                  "at": "2026-07-01-07:00",
+                  "record": "wd-1|wd-1-at|wd-1",
+                  "cause": "withdrawal"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-07-02-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,344 @@
+{
+  "id": "T16_18_adjacency_history_at_a_past_cutoff",
+  "family": "T16",
+  "rules": [
+    "9.9.1",
+    "8.6.4",
+    "8.6.6",
+    "9.1.1"
+  ],
+  "description": "With history, the adjacency read has an entry for every Connection touching the Item that was created at or before the cutoff, active or not, with segments ending at the cutoff (the last segment's to is null); a Connection created after the cutoff has none. Lifecycle acts at or before the cutoff that changed nothing are listed per Connection in history_ignored_acts, which is absent when no Connection has any.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "hw-7",
+          "kind": "hardware-set"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "log"
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-x",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-x",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-x-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-1",
+      "context": "recon-1-at",
+      "source": "recon-1",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "connect",
+      "from": "door-101",
+      "to": "hw-7",
+      "at": "2026-06-05T09:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        },
+        "history": true
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": [],
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-02T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-02T09:00-07:00",
+              "to": null
+            }
+          ],
+          "door-101->hw-7": "~absent"
+        },
+        "history_ignored_acts": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-06-07:00"
+        },
+        "history": true
+      },
+      "expect": {
+        "outgoing": [
+          "hw-7"
+        ],
+        "incoming": [
+          "room-12"
+        ],
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-02T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-02T09:00-07:00",
+              "to": "2026-06-04T09:00-07:00"
+            },
+            {
+              "state": "active",
+              "from": "2026-06-04T09:00-07:00",
+              "to": null
+            }
+          ],
+          "door-101->hw-7": [
+            {
+              "state": "active",
+              "from": "2026-06-05T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-102",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-x",
+      "context": "disc-x-at",
+      "source": "disc-x",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-102"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-x",
+      "context": "recon-x-at",
+      "source": "recon-x",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-102"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "disc-x",
+            "context": "disc-x-at",
+            "source": "disc-x"
+          }
+        ],
+        "@outcome": "erroneous",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "site-diary-2026-06-02.pdf",
+            "edition": "issued 2026-06-02"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-102",
+        "frame": {
+          "cutoff": "now"
+        },
+        "history": true
+      },
+      "expect": {
+        "incoming": [
+          "room-12"
+        ],
+        "history": {
+          "room-12->door-102": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": null
+            }
+          ]
+        },
+        "history_ignored_acts": {
+          "room-12->door-102": [
+            "recon-x|recon-x-at|recon-x"
+          ]
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-102",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        },
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-102": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": null
+            }
+          ]
+        },
+        "history_ignored_acts": "~absent"
+      }
+    }
+  ]
+}

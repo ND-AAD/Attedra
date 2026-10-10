@@ -1,0 +1,208 @@
+{
+  "id": "T09_30_accept_empty_interpretation_lets_null_answer_a_request",
+  "family": "T09",
+  "rules": [
+    "6.4.4",
+    "5.3.3",
+    "5.5.3",
+    "5.5.4",
+    "12.9"
+  ],
+  "description": "Under the fixture interpretation fixture-accept-empty:fire_rating, an explicit null is an acceptable answer to an information request on fire_rating, so the request is fulfilled; under the literal comparison it stays outstanding. The interpretation changes no equality: null still does not meet a required 90.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-ask",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-ask",
+      "source": "a-601",
+      "values": {
+        "fire_rating": {
+          "@ask": true
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-ask",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-ask",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-ask",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-ask|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00",
+          "interpretation": "fixture-accept-empty:fire_rating"
+        }
+      },
+      "expect": {
+        "frame": {
+          "interpretation": "fixture-accept-empty:fire_rating",
+          "interpretation_version": "1"
+        },
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|a601-0602|a-601",
+            "interpretation": "fixture-accept-empty:fire_rating"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-ask|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-ask|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00",
+          "interpretation": "fixture-accept-empty:fire_rating"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-ask|a-601",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding"
+          }
+        }
+      }
+    }
+  ]
+}

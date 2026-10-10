@@ -1,0 +1,415 @@
+{
+  "id": "T18_17_eligibility_sourced_expectation_and_a_criteria_change",
+  "family": "T18",
+  "rules": [
+    "7.6.1",
+    "7.6.7",
+    "7.6.9",
+    "6.1.3",
+    "3.3.2",
+    "6.5.1",
+    "9.3.1",
+    "9.5.7"
+  ],
+  "description": "An expectation whose source is the eligibility Item elig-arch is a unit from its support; its act names are built from that triple. An architect email whose agent is the intern does not qualify under the criteria in force, so nothing ends. Criteria of the same source asserted at noon on 1 June, before the email, add the intern role: that write changes the email's qualification and records the property's end act, fulfillment at the email's occurrence time, with the criteria write as provenance.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "role-intern",
+          "kind": "role"
+        },
+        {
+          "id": "elig-arch",
+          "kind": "eligibility",
+          "definition": {
+            "@eligibility": true
+          }
+        },
+        {
+          "id": "contract-7",
+          "kind": "contract"
+        },
+        {
+          "id": "email-20",
+          "kind": "email"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "crit-0501",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01-07:00"
+            }
+          }
+        },
+        {
+          "id": "crit-0601-noon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T12:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-20-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0501",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-spm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "elig-arch",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|e-stain|elig-arch",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "elig-arch"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "instr-1|instr-1-at|instr-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-stain/elig-arch/finish/b1|exp:door-101/e-stain/elig-arch/finish/b1/at|exp:door-101/e-stain/elig-arch/finish/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "email-20",
+      "context": "email-20-sent",
+      "source": "email-20",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-intern"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-20-sent",
+      "source": "email-20",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|email-20-sent|email-20",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "unqualified": [
+              {
+                "evidence": "door-101|email-20-sent|email-20",
+                "unmet": "agents"
+              }
+            ],
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-stain/elig-arch/finish/b1|exp:door-101/e-stain/elig-arch/finish/b1/at|exp:door-101/e-stain/elig-arch/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "instr-1|instr-1-at|instr-1",
+                  "cause": "in_force"
+                },
+                "end": null,
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-101|e-stain|elig-arch#finish",
+            "began": {
+              "act": "exp:door-101/e-stain/elig-arch/finish/b1|exp:door-101/e-stain/elig-arch/finish/b1/at|exp:door-101/e-stain/elig-arch/finish/b1",
+              "at": "2026-06-01T10:00-07:00",
+              "record": "instr-1|instr-1-at|instr-1",
+              "cause": "in_force"
+            },
+            "policy": null,
+            "standing": {
+              "standing": "outstanding",
+              "overdue": false
+            },
+            "parents": [],
+            "succeeds": [],
+            "children": [],
+            "interpretation": null
+          }
+        ],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 1
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "elig-arch",
+      "context": "crit-0601-noon",
+      "source": "contract-7",
+      "values": {
+        "@eligible": {
+          "party": {
+            "@ref": "item",
+            "id": "architect"
+          },
+          "agents": [
+            {
+              "@ref": "item",
+              "id": "role-spm"
+            },
+            {
+              "@ref": "item",
+              "id": "role-intern"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "elig-arch|crit-0601-noon|contract-7",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-101/e-stain/elig-arch/finish/e1|exp:door-101/e-stain/elig-arch/finish/e1/at|exp:door-101/e-stain/elig-arch/finish/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "exp:door-101/e-stain/elig-arch/finish/e1/at"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-01T12:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|elig-arch",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|email-20-sent|email-20",
+            "qualifying_moment": "2026-06-02T09:00-07:00",
+            "source_current": "~absent",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-101/e-stain/elig-arch/finish/b1|exp:door-101/e-stain/elig-arch/finish/b1/at|exp:door-101/e-stain/elig-arch/finish/b1",
+                  "at": "2026-06-01T10:00-07:00",
+                  "record": "instr-1|instr-1-at|instr-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-101/e-stain/elig-arch/finish/e1|exp:door-101/e-stain/elig-arch/finish/e1/at|exp:door-101/e-stain/elig-arch/finish/e1",
+                  "at": "2026-06-02T09:00-07:00",
+                  "record": "door-101|email-20-sent|email-20",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": null
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

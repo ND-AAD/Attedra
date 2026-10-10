@@ -1,0 +1,194 @@
+{
+  "id": "T10_22_distributed_to_lists_distribution_records",
+  "family": "T10",
+  "rules": [
+    "4.4.2",
+    "9.7.1",
+    "4.4.1",
+    "4.6.1"
+  ],
+  "description": "A publication or later-distribution Assertion is covered for the participants it lists, and a publication is also covered through later distributions of it. distributed_to therefore lists, with the statements distributed, the publication and the later distribution that reached the participant, in presentation order; a participant not listed on the later distribution does not receive it.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "dist-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "architect"
+          },
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ],
+        "edition": "set 4"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "dist-0515",
+      "source": "arch-log",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ],
+        "edition": "set 4"
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "consultant",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "consultant",
+        "frame": {
+          "cutoff": "2026-05-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": [
+          "arch-100dd|arch-100dd|arch-log",
+          "door-101|arch-100dd|a-601",
+          "arch-100dd|dist-0515|arch-log"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "contractor",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": [
+          "arch-100dd|arch-100dd|arch-log",
+          "door-101|arch-100dd|a-601"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "contractor",
+        "frame": {
+          "cutoff": "2026-05-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": [
+          "arch-100dd|arch-100dd|arch-log",
+          "door-101|arch-100dd|a-601"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "client",
+        "frame": {
+          "cutoff": "2026-05-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": []
+      }
+    }
+  ]
+}

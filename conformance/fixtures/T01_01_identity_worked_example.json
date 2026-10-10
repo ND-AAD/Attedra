@@ -1,0 +1,400 @@
+{
+  "id": "T01_01_identity_worked_example",
+  "family": "T01",
+  "rules": [
+    "2.1.4",
+    "2.3.2",
+    "4.5.1",
+    "8.1.2",
+    "8.1.3",
+    "10.2.1",
+    "9.2.3",
+    "9.4.2",
+    "12.1"
+  ],
+  "description": "Equal marks from two sources stay two Items; a renumbered door is one Item with dated mark assertions and one mark conflict; replay is a no-op, changed content fails occupied; two events at one instant stay distinct contexts.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-a",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "door-b",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "hw-schedule",
+          "kind": "hardware-schedule"
+        },
+        {
+          "id": "ev-0513a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0513b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-a",
+      "context": "ev-0513a",
+      "source": "a-601",
+      "values": {
+        "mark": "101"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-b",
+      "context": "ev-0513b",
+      "source": "hw-schedule",
+      "values": {
+        "mark": "101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-a"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "door",
+        "label": "Door 101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-b"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "door",
+        "label": "Door 101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-a",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "mark": {
+            "classification": "asserted",
+            "value": "101",
+            "origin": "door-a|ev-0513a|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-a",
+        "source": "hw-schedule",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "mark"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "mark": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-b",
+        "source": "hw-schedule",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "mark": {
+            "classification": "asserted",
+            "value": "101",
+            "origin": "door-b|ev-0513b|hw-schedule"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-b",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        },
+        "properties": [
+          "mark"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "mark": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-a",
+      "context": "ev-0601",
+      "source": "a-601",
+      "values": {
+        "mark": "201"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-a",
+      "context": "ev-0601",
+      "source": "hw-schedule",
+      "values": {
+        "mark": "101"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-a",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "mark": {
+            "classification": "asserted",
+            "value": "201",
+            "origin": "door-a|ev-0601|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-a",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "mark",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "201",
+                "origin": "door-a|ev-0601|a-601"
+              },
+              {
+                "source": "hw-schedule",
+                "value": "101",
+                "origin": "door-a|ev-0601|hw-schedule"
+              }
+            ]
+          }
+        ],
+        "expectation_conflicts": [],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-b",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-a",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "mark": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "201",
+              "origin": "door-a|ev-0601|a-601"
+            },
+            "hw-schedule": {
+              "classification": "asserted",
+              "value": "101",
+              "origin": "door-a|ev-0601|hw-schedule"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-a|ev-0513a|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "mark": "101"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-a|ev-0601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "mark": "201"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-a",
+      "context": "ev-0601",
+      "source": "a-601",
+      "values": {
+        "mark": "201"
+      },
+      "expect": {
+        "status": "replayed"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-a",
+      "context": "ev-0601",
+      "source": "a-601",
+      "values": {
+        "mark": "202"
+      },
+      "expect_error": "occupied"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-a|ev-0601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "mark": "201"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-0513a"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-05-13T09:45:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-0513b"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-05-13T09:45:00-07:00"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "id": "T02_09_resolved_view_side_by_side",
+  "family": "T02",
+  "rules": [
+    "9.2.3",
+    "5.2.2",
+    "7.1.3",
+    "I-12",
+    "9.4.2"
+  ],
+  "description": "The resolved view reports every source's position per property, each with its own origin, and elects no winner: a newer document does not replace an older source's value.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "hw-schedule",
+          "kind": "hardware-schedule"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-20T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-3",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "spec-0991",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-3",
+      "source": "hw-schedule",
+      "values": {
+        "hardware": "HW-2"
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "paint",
+              "origin": "door-101|ev-1|a-601"
+            },
+            "spec-0991": {
+              "classification": "asserted",
+              "value": "stain",
+              "origin": "door-101|ev-2|spec-0991"
+            }
+          },
+          "hardware": {
+            "a-601": {
+              "classification": "asserted",
+              "value": "HW-1",
+              "origin": "door-101|ev-1|a-601"
+            },
+            "hw-schedule": {
+              "classification": "asserted",
+              "value": "HW-2",
+              "origin": "door-101|ev-3|hw-schedule"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          "~unordered",
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "paint",
+                "origin": "door-101|ev-1|a-601"
+              },
+              {
+                "source": "spec-0991",
+                "value": "stain",
+                "origin": "door-101|ev-2|spec-0991"
+              }
+            ]
+          },
+          {
+            "property": "hardware",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "HW-1",
+                "origin": "door-101|ev-1|a-601"
+              },
+              {
+                "source": "hw-schedule",
+                "value": "HW-2",
+                "origin": "door-101|ev-3|hw-schedule"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "spec-0991",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    }
+  ]
+}

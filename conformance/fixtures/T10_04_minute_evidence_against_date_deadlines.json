@@ -1,0 +1,204 @@
+{
+  "id": "T10_04_minute_evidence_against_date_deadlines",
+  "family": "T10",
+  "rules": [
+    "4.2.5",
+    "4.2.3",
+    "4.2.2",
+    "6.2.1",
+    "6.5.4",
+    "I-5"
+  ],
+  "description": "An email at 09:45 on 14 May is at or before a deadline written as 14 May (on time) and after a deadline of 13 May (late, by the difference between the ends of the two intervals). Importing it on 20 May does not make it late.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "door-105",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-11T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-email-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-by-0514",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-05-14-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-by-0513",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-05-13-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "e-by-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-105",
+      "context": "e-by-0513",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "e-by-0514",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-105",
+            "context": "e-by-0513",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-104|e-by-0514|a-601",
+        "frame": {
+          "cutoff": "2026-05-16-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "a601-email-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-05-20T08:00:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-105",
+      "context": "a601-email-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_at": "2026-05-20T08:00:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-104|e-by-0514|a-601",
+        "frame": {
+          "cutoff": "2026-05-16-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-104|a601-email-0514|a-601",
+            "qualifying_moment": "2026-05-14T09:45-07:00",
+            "timeliness": "on_time"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-105|e-by-0513|a-601",
+        "frame": {
+          "cutoff": "2026-05-16-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-105|a601-email-0514|a-601",
+            "qualifying_moment": "2026-05-14T09:45-07:00",
+            "timeliness": "late",
+            "late_by": "PT35160S"
+          }
+        }
+      }
+    }
+  ]
+}

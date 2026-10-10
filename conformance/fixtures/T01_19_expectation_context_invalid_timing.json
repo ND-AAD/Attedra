@@ -1,0 +1,253 @@
+{
+  "id": "T01_19_expectation_context_invalid_timing",
+  "family": "T01",
+  "rules": [
+    "10.2.3",
+    "4.1.1",
+    "6.2.1"
+  ],
+  "description": "An expectation context without a valid timing is rejected with 10.2.3: no timing, an undefined type, or a type missing its members. Each defined timing form is accepted.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "ph-cd",
+          "kind": "phase",
+          "definition": {
+            "@context": {
+              "role": "phase",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "starts": "2026-06-01-07:00",
+              "ends": "2026-06-30-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "e-x",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-x",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "soon"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-x",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "at"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-x",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "during"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-x",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "by"
+          },
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "e-x",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": "2026-06-27-07:00",
+          "fresh": false
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-x"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "item",
+      "id": "e-at",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "at",
+            "milestone": {
+              "@ref": "item",
+              "id": "arch-50cd"
+            }
+          },
+          "fresh": false,
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          }
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "e-during",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "during",
+            "phase": {
+              "@ref": "item",
+              "id": "ph-cd"
+            }
+          },
+          "fresh": false
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "e-by-instant",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "by",
+            "instant": "2026-06-27-07:00"
+          },
+          "fresh": true
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "e-by-milestone",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "by",
+            "milestone": {
+              "@ref": "item",
+              "id": "arch-50cd"
+            }
+          },
+          "fresh": false
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "e-any",
+      "kind": "expectation-context",
+      "definition": {
+        "@context": {
+          "role": "expectation",
+          "timing": {
+            "type": "any"
+          },
+          "fresh": false
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "e-by-instant"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "expectation",
+            "timing": {
+              "type": "by",
+              "instant": "2026-06-27-07:00"
+            },
+            "fresh": true
+          }
+        }
+      }
+    }
+  ]
+}

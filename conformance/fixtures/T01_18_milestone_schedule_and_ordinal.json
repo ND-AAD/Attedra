@@ -1,0 +1,134 @@
+{
+  "id": "T01_18_milestone_schedule_and_ordinal",
+  "family": "T01",
+  "rules": [
+    "10.2.3",
+    "4.1.1",
+    "4.3.1",
+    "4.3.2"
+  ],
+  "description": "A milestone that names no schedule, or whose ordinal duplicates another milestone of the same schedule, is rejected with 10.2.3; the same ordinal on a different schedule is valid.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "cons-schedule",
+          "kind": "milestone-schedule"
+        }
+      ]
+    },
+    {
+      "op": "item",
+      "id": "arch-50cd",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "stage": "50% CD",
+          "ordinal": 50
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "arch-50cd",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD",
+          "ordinal": 50
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "arch-50cd-b",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD reissue",
+          "ordinal": 50
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "arch-50cd-b"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "item",
+      "id": "cons-50cd",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "cons-schedule"
+          },
+          "stage": "50% CD",
+          "ordinal": 50
+        }
+      }
+    },
+    {
+      "op": "item",
+      "id": "arch-100cd",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "100% CD",
+          "ordinal": 100
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "cons-50cd"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "arch-100cd"
+      },
+      "expect": {
+        "status": "found"
+      }
+    }
+  ]
+}

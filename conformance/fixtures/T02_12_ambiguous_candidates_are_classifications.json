@@ -1,0 +1,185 @@
+{
+  "id": "T02_12_ambiguous_candidates_are_classifications",
+  "family": "T02",
+  "rules": [
+    "5.6.1",
+    "4.5.3",
+    "4.6.1",
+    "9.2.2",
+    "8.4.1"
+  ],
+  "description": "Candidates of an ambiguous classification are themselves classifications. A date-only letter unordered with a 12:00 cutoff on the same day, with no earlier value, gives candidates asserted and never_asserted. A withdrawal whose date @effective is unordered with the cutoff gives candidates asserted and withdrawn (the withdrawn candidate carries the withdrawn Assertion as origin and the withdrawal). Once ordered, a withdrawn classification carries withdrawn_by and withdrawn_assertion.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a601-letter-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-letter-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "value": "~absent",
+            "candidates": [
+              "~unordered",
+              {
+                "classification": "asserted",
+                "value": "stain",
+                "origin": "door-101|a601-letter-0514|a-601"
+              },
+              {
+                "classification": "never_asserted"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-03-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "value": "~absent",
+            "candidates": [
+              "~unordered",
+              {
+                "classification": "asserted",
+                "value": "paint",
+                "origin": "door-102|a601-0601|a-601"
+              },
+              {
+                "classification": "withdrawn",
+                "origin": "door-102|a601-0601|a-601",
+                "withdrawn_by": "wd-1|wd-1-at|wd-1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "withdrawn",
+            "value": "~absent",
+            "origin": "~absent",
+            "withdrawn_by": "wd-1|wd-1-at|wd-1",
+            "withdrawn_assertion": "door-102|a601-0601|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

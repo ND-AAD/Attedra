@@ -1,0 +1,383 @@
+{
+  "id": "T08_14_by_party_and_by_source_reads",
+  "family": "T08",
+  "rules": [
+    "9.2.4",
+    "3.1.1",
+    "3.1.3",
+    "3.2.1",
+    "3.2.2",
+    "2.3.1",
+    "I-7",
+    "12.8",
+    "12.12"
+  ],
+  "description": "By-party returns the statements whose issuance names the party as @producer and the acts whose @party is the party; by-source returns the communication's statements and the acts sourced from it. Expectations are not statements, an addressee is not a party, and the recording operator is neither a party nor a source. A document-sourced act without @basis or @issuance is still accepted (3.2.1 is not write-validated).",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "role-spm",
+          "kind": "role"
+        },
+        {
+          "id": "operator-jane",
+          "kind": "person"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "email-7",
+          "kind": "email"
+        },
+        {
+          "id": "minutes-0514",
+          "kind": "minutes"
+        },
+        {
+          "id": "letter-9",
+          "kind": "letter"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "instr-2",
+          "kind": "instruction"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "a601-issued-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T14:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-0514-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "email-7-sent",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-16T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "letter-9-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-stain",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "meeting-0514",
+      "source": "minutes-0514",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-05-14.pdf",
+            "edition": "issued 2026-05-15"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-0514-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        },
+        "addressed_to": {
+          "@ref": "item",
+          "id": "architect"
+        }
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "assert",
+      "item": "email-7",
+      "context": "email-7-sent",
+      "source": "email-7",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "@agent": [
+          {
+            "@ref": "item",
+            "id": "role-spm"
+          }
+        ]
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "email-7-sent",
+      "source": "email-7",
+      "values": {
+        "finish": "stain"
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "assert",
+      "item": "instr-2",
+      "context": "letter-9-issued",
+      "source": "letter-9",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-stain",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      },
+      "recorded_by": "operator-jane"
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "party": "architect",
+        "frame": {}
+      },
+      "expect": {
+        "statements": [
+          "~unordered",
+          "a-601|a601-issued-0514|a-601",
+          "door-101|a601-issued-0514|a-601",
+          "email-7|email-7-sent|email-7",
+          "door-101|email-7-sent|email-7"
+        ],
+        "acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "source": "a-601",
+        "frame": {}
+      },
+      "expect": {
+        "statements": [
+          "~unordered",
+          "a-601|a601-issued-0514|a-601",
+          "door-101|a601-issued-0514|a-601"
+        ],
+        "acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "party": "client",
+        "frame": {}
+      },
+      "expect": {
+        "statements": [],
+        "acts": [
+          "instr-1|meeting-0514|minutes-0514",
+          "instr-2|letter-9-issued|letter-9"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "source": "minutes-0514",
+        "frame": {}
+      },
+      "expect": {
+        "statements": [],
+        "acts": [
+          "instr-1|meeting-0514|minutes-0514"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "party": "operator-jane",
+        "frame": {}
+      },
+      "expect": {
+        "statements": [],
+        "acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "operator-jane",
+        "frame": {},
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-stain|a-601",
+        "frame": {
+          "cutoff": "2026-05-22-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          "~unordered",
+          {
+            "support": "instr-1|meeting-0514|minutes-0514",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          },
+          {
+            "support": "instr-2|letter-9-issued|letter-9",
+            "covers": [
+              "finish"
+            ],
+            "withdrawn_by": []
+          }
+        ]
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 16: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

@@ -1,0 +1,248 @@
+{
+  "id": "T04_11_required_null_met_by_explicit_null",
+  "family": "T04",
+  "rules": [
+    "6.4.1",
+    "6.4.4",
+    "5.2.3",
+    "5.3.2",
+    "6.5.1",
+    "6.5.3",
+    "9.3.1",
+    "12.4"
+  ],
+  "description": "An expectation requiring hardware: null is met by an explicit null (or an empty string, which normalizes to null), not by an Assertion that omits hardware; fulfillment does not backdate.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-hw",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "est-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "est-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-0604",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0602",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0602",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-hw",
+      "source": "a-601",
+      "values": {
+        "hardware": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-hw",
+      "source": "a-601",
+      "values": {
+        "hardware": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "est-1",
+      "context": "est-1-at",
+      "source": "est-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-hw",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-hw",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-hw|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "est-1|est-1-at|est-1",
+            "covers": [
+              "hardware"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "hardware": {
+            "standing": "outstanding",
+            "source_current": {
+              "classification": "never_asserted",
+              "value": "~absent",
+              "origin": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0604",
+      "source": "a-601",
+      "values": {
+        "hardware": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0604",
+      "source": "a-601",
+      "values_json": "{\"hardware\": \"\"}"
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-hw|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "hardware": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-101|ev-0604|a-601",
+            "source_current": {
+              "classification": "asserted",
+              "value": null,
+              "origin": "door-101|ev-0604|a-601"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-hw|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "hardware": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-102|ev-0604|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-hw|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "hardware": {
+            "standing": "outstanding"
+          }
+        }
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 7: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

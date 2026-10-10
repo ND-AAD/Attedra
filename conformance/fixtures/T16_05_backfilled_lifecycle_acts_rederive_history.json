@@ -1,0 +1,233 @@
+{
+  "id": "T16_05_backfilled_lifecycle_acts_rederive_history",
+  "family": "T16",
+  "rules": [
+    "8.6.6",
+    "8.6.4",
+    "4.2.2",
+    "I-5"
+  ],
+  "description": "A disconnect recorded for Friday, then a backfilled Wednesday disconnect: the Friday act stops changing the state. A backfilled Thursday reconnect then makes Friday's disconnect effective again. State is always derived from the acts in occurrence order.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room",
+          "label": "Room 12"
+        },
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "disc-2",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-2",
+      "context": "disc-2-at",
+      "source": "disc-2",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-03T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-03T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-1",
+      "context": "recon-1-at",
+      "source": "recon-1",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": [
+          "room-12"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-03T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-03T09:00-07:00",
+              "to": "2026-06-04T09:00-07:00"
+            },
+            {
+              "state": "active",
+              "from": "2026-06-04T09:00-07:00",
+              "to": "2026-06-05T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-05T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

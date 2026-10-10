@@ -1,0 +1,299 @@
+{
+  "id": "T10_11_publication_and_later_distribution_history",
+  "family": "T10",
+  "rules": [
+    "4.4.1",
+    "4.4.2",
+    "4.6.1",
+    "4.6.3",
+    "9.7.1",
+    "9.7.2",
+    "I-15",
+    "12.10"
+  ],
+  "description": "A set published Wednesday to the architect and contractor and redistributed Friday to the consultant has two dated distributions. A Thursday consultant-perspective frame excludes the set's statements, a Saturday one includes them, and a participant never listed is not assumed to have them.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-100dd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% DD",
+              "ordinal": 300
+            }
+          }
+        },
+        {
+          "id": "dist-0515",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "arch-100dd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-05-13T11:45:12-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "architect"
+          },
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ],
+        "edition": "set 4"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-100dd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100dd",
+      "context": "dist-0515",
+      "source": "arch-log",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ],
+        "edition": "set 4"
+      }
+    },
+    {
+      "op": "read",
+      "read": "distribution",
+      "args": {
+        "item": "arch-100dd"
+      },
+      "expect": {
+        "distributions": [
+          {
+            "record": "arch-100dd|arch-100dd|arch-log",
+            "at": "2026-05-13T11:45:12-07:00",
+            "recipients": [
+              "~unordered",
+              "architect",
+              "contractor"
+            ]
+          },
+          {
+            "record": "arch-100dd|dist-0515|arch-log",
+            "at": "2026-05-15T10:00-07:00",
+            "recipients": [
+              "consultant"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00",
+          "perspective": "consultant"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        },
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00",
+          "perspective": "consultant"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-16T12:00-07:00",
+          "perspective": "consultant"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-100dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00",
+          "perspective": "contractor"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-100dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|arch-100dd|a-601"
+          }
+        },
+        "frame": {
+          "perspective": "record"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-16T12:00-07:00",
+          "perspective": "client"
+        },
+        "properties": [
+          "finish"
+        ]
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "consultant",
+        "frame": {
+          "scope": [
+            "door-101"
+          ],
+          "cutoff": "2026-05-14T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "distributed_to",
+      "args": {
+        "participant": "consultant",
+        "frame": {
+          "scope": [
+            "door-101"
+          ],
+          "cutoff": "2026-05-16T12:00-07:00"
+        }
+      },
+      "expect": {
+        "records": [
+          "door-101|arch-100dd|a-601"
+        ]
+      }
+    }
+  ]
+}

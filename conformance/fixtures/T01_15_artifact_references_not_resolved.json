@@ -1,0 +1,135 @@
+{
+  "id": "T01_15_artifact_references_not_resolved",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "2.4.2",
+    "3.2.1",
+    "9.2.1"
+  ],
+  "description": "Artifact references name documents held outside the store; they are not resolved on write, so a write citing an artifact absent from the store succeeds and keeps the reference.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "drawing": {
+          "@ref": "artifact",
+          "id": "a-601-rev-3.pdf",
+          "edition": "2026-05-14"
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "wd-1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-0514",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-02.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stain",
+          "drawing": {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "2026-05-14"
+          }
+        },
+        "withdrawals": [
+          "wd-1|wd-1-at|wd-1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "wd-1|wd-1-at|wd-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@basis": [
+            {
+              "@ref": "artifact",
+              "id": "minutes-2026-06-02.pdf",
+              "edition": "issued 2026-06-03"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

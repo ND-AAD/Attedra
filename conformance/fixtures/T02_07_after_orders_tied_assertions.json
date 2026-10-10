@@ -1,0 +1,206 @@
+{
+  "id": "T02_07_after_orders_tied_assertions",
+  "family": "T02",
+  "rules": [
+    "4.5.2",
+    "5.2.1",
+    "5.6.1"
+  ],
+  "description": "An @after reference is explicit sequence evidence: it orders tied or unordered Assertions of one source, whatever the write order.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-a",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-b",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T09:45:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-date",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-min",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "ev-a",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-date",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-min",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-102",
+          "context": "ev-date",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-b",
+      "source": "a-601",
+      "values": {
+        "finish": "oil"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-a",
+      "source": "a-601",
+      "values": {
+        "finish": "wax",
+        "@after": {
+          "@ref": "assertion",
+          "item": "door-103",
+          "context": "ev-b",
+          "source": "a-601"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-101|ev-b|a-601"
+          },
+          "@after": "~absent"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-102|ev-min|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-103",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "wax",
+            "origin": "door-103|ev-a|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

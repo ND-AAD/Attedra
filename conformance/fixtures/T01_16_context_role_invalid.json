@@ -1,0 +1,71 @@
+{
+  "id": "T01_16_context_role_invalid",
+  "family": "T01",
+  "rules": [
+    "10.2.3",
+    "4.1.1"
+  ],
+  "description": "A context Item whose @context has no role, or a role other than event, milestone, phase or expectation, is rejected with 10.2.3.",
+  "steps": [
+    {
+      "op": "item",
+      "id": "ctx-1",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "season",
+          "at": "2026-05-14-07:00"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "ctx-1",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "at": "2026-05-14-07:00"
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ctx-1"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "item",
+      "id": "ctx-1",
+      "kind": "event",
+      "definition": {
+        "@context": {
+          "role": "event",
+          "at": "2026-05-14-07:00"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ctx-1"
+      },
+      "expect": {
+        "status": "found",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-05-14-07:00"
+          }
+        }
+      }
+    }
+  ]
+}

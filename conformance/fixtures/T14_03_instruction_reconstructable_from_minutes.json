@@ -1,0 +1,293 @@
+{
+  "id": "T14_03_instruction_reconstructable_from_minutes",
+  "family": "T14",
+  "rules": [
+    "3.2.1",
+    "3.2.3",
+    "3.1.3",
+    "3.1.1",
+    "9.2.4",
+    "7.5.1",
+    "6.3.1",
+    "2.3.1",
+    "12.14"
+  ],
+  "description": "The client's fire-rating instruction is recorded from minutes produced by the contractor: source the minutes, @basis the minutes as issued (artifact and edition), @issuance the minutes' issuance and @party the client, with no record of who typed it. The instruction is reconstructable: the exact read returns that basis and party, the client's by-party read returns the act, the minutes' by-source read returns their self-description and the act, and the expectation lists the act as its support.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "minutes-14",
+          "kind": "minutes"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "meeting-14",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-14-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-15T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "e-fr-by",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-27-07:00"
+              },
+              "fresh": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "minutes-14",
+      "context": "minutes-14-issued",
+      "source": "minutes-14",
+      "values": {
+        "@producer": {
+          "@ref": "item",
+          "id": "contractor"
+        },
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "client"
+          },
+          {
+            "@ref": "item",
+            "id": "architect"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr-by",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "meeting-14",
+      "source": "minutes-14",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr-by",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-05-14.pdf",
+            "edition": "issued 2026-05-15"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-14-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "instr-1|meeting-14|minutes-14"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "establish",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "e-fr-by",
+              "source": "a-601"
+            }
+          ],
+          "@basis": [
+            {
+              "@ref": "artifact",
+              "id": "minutes-2026-05-14.pdf",
+              "edition": "issued 2026-05-15"
+            }
+          ],
+          "@issuance": {
+            "@ref": "item",
+            "id": "minutes-14-issued"
+          },
+          "@party": {
+            "@ref": "item",
+            "id": "client"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        },
+        "party": "client"
+      },
+      "expect": {
+        "statements": [],
+        "acts": [
+          "instr-1|meeting-14|minutes-14"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        },
+        "source": "minutes-14"
+      },
+      "expect": {
+        "statements": [
+          "minutes-14|minutes-14-issued|minutes-14"
+        ],
+        "acts": [
+          "instr-1|meeting-14|minutes-14"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "by_party",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        },
+        "party": "contractor"
+      },
+      "expect": {
+        "statements": [
+          "minutes-14|minutes-14-issued|minutes-14"
+        ],
+        "acts": [
+          "instr-1|meeting-14|minutes-14"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr-by|a-601",
+        "frame": {
+          "cutoff": "2026-06-01-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "supports": [
+          {
+            "support": "instr-1|meeting-14|minutes-14",
+            "covers": [
+              "fire_rating"
+            ],
+            "withdrawn_by": []
+          }
+        ],
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr-by|a-601",
+        "frame": {
+          "cutoff": "2026-05-14T09:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    }
+  ],
+  "note": "9.3.1: the expectation read returns \"its supports, meaning every support whose occurrence time is at or before the cutoff, each with the properties it covers at the cutoff and, for coverage that has ended or never began, the withdrawals that ended it (6.3.3, 6.7.2)\". README section 5 gives each as {\"support\", \"covers\", \"withdrawn_by\"}. Step 10: `supports` lists <support> objects; every support listed covers all of the expectation's properties at that cutoff and none was withdrawn, and no other support occurred by then."
+}

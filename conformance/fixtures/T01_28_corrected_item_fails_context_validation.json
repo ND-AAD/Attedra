@@ -1,0 +1,346 @@
+{
+  "id": "T01_28_corrected_item_fails_context_validation",
+  "family": "T01",
+  "rules": [
+    "10.2.5",
+    "8.3.8",
+    "10.2.3",
+    "4.3.2"
+  ],
+  "description": "An Item correction whose corrected definition would fail 10.2.3 is rejected with 10.2.5, with ordinal distinctness evaluated against the corrected definitions of the schedule's other milestones.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "m-50",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "m-100",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "m-150",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "Record set",
+              "ordinal": 150
+            }
+          }
+        },
+        {
+          "id": "ev-x",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "review-log",
+          "kind": "log"
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-2",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-3",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T12:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "m-100"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": null,
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 50
+            }
+          }
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "m-50"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": null,
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 75
+            }
+          }
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-2",
+      "context": "cor-2-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "m-100"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": null,
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 50
+            }
+          }
+        }
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-3",
+      "context": "cor-3-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "m-150"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": null,
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "Record set",
+              "ordinal": 75
+            }
+          }
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-3",
+      "context": "cor-3-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "m-150"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": null,
+          "definition": {
+            "@context": {
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "Record set",
+              "ordinal": 150
+            }
+          }
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "assert",
+      "item": "cor-3",
+      "context": "cor-3-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "ev-x"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "event",
+          "label": null,
+          "definition": {
+            "@context": {
+              "role": "event"
+            }
+          }
+        }
+      },
+      "expect_error": "10.2.5"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "cor-3|cor-3-at|review-log"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "m-50"
+      },
+      "expect": {
+        "status": "found",
+        "corrections": [
+          "cor-1|cor-1-at|review-log"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "m-150"
+      },
+      "expect": {
+        "status": "found",
+        "corrections": []
+      }
+    }
+  ]
+}

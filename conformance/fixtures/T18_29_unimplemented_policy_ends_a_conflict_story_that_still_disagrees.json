@@ -1,0 +1,581 @@
+{
+  "id": "T18_29_unimplemented_policy_ends_a_conflict_story_that_still_disagrees",
+  "family": "T18",
+  "rules": [
+    "7.7.1",
+    "7.7.2",
+    "7.7.4",
+    "7.7.5",
+    "7.6.7",
+    "7.6.14",
+    "10.2.9",
+    "10.2.7",
+    "9.5.2",
+    "9.5.8",
+    "12.19"
+  ],
+  "description": "A conflict story names an application policy the reference does not implement. The application records that policy's end act at the review, on the story Item, sourced from its workflow process. The story then reads ended under its policy, with the policy's cause as the ending kind and no baseline ending, while it still reads disagreeing and the sources still conflict: a policy changes no derived fact. The end act is read without policy code, and the transition check lists it as unverified, within its scope only. A policy end act carrying @effective, a second end act under the same policy, and an end act naming a policy that does not govern the story are rejected.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "architect",
+          "kind": "party"
+        },
+        {
+          "id": "story-1",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-1/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "workflow-app",
+          "kind": "process"
+        },
+        {
+          "id": "other-project",
+          "kind": "project"
+        },
+        {
+          "id": "rv-1",
+          "kind": "decision"
+        },
+        {
+          "id": "rv-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "app-end-0-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:05-07:00"
+            }
+          }
+        },
+        {
+          "id": "app-end-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:05-07:00"
+            }
+          }
+        },
+        {
+          "id": "app-end-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:10-07:00"
+            }
+          }
+        },
+        {
+          "id": "app-end-3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:15-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-spec",
+      "source": "spec-09-91",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-mon-spec|spec-09-91",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "story-1/d1",
+      "source": "story-1",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-101"
+          },
+          "property": "finish"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-01T17:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null,
+          "policy": "app-review-closes",
+          "policy_version": "2"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-1|story-1/d1|story-1",
+        "generated": [],
+        "transition_acts": [
+          "story-1|story-1/b1|story-1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "rv-1",
+      "context": "rv-1-at",
+      "source": "rv-1",
+      "values": {
+        "@action": "review",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/d1",
+            "source": "story-1"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-spec",
+            "source": "spec-09-91",
+            "property": "finish"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-02T10:00-07:00",
+          "perspective": "record",
+          "interpretation": null,
+          "interpretation_version": null
+        },
+        "@outcome": "no_change",
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "rv-1|rv-1-at|rv-1",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "app-end-0-at",
+      "source": "workflow-app",
+      "values": {
+        "@action": "end",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/b1",
+            "source": "story-1"
+          }
+        ],
+        "@period": {
+          "at": "2026-06-02T10:00-07:00",
+          "record": {
+            "@ref": "assertion",
+            "item": "rv-1",
+            "context": "rv-1-at",
+            "source": "rv-1"
+          },
+          "cause": "reviewed",
+          "policy": {
+            "name": "app-review-closes",
+            "version": "2"
+          }
+        },
+        "@effective": "2026-06-02T10:05-07:00"
+      },
+      "expect_error": "10.2.7"
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "app-end-1-at",
+      "source": "workflow-app",
+      "values": {
+        "@action": "end",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/b1",
+            "source": "story-1"
+          }
+        ],
+        "@period": {
+          "at": "2026-06-02T10:00-07:00",
+          "record": {
+            "@ref": "assertion",
+            "item": "rv-1",
+            "context": "rv-1-at",
+            "source": "rv-1"
+          },
+          "cause": "reviewed",
+          "policy": {
+            "name": "app-review-closes",
+            "version": "2"
+          }
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-1|app-end-1-at|workflow-app",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "policy": {
+          "name": "app-review-closes",
+          "version": "2"
+        },
+        "ending": {
+          "kind": "reviewed",
+          "record": "rv-1|rv-1-at|rv-1",
+          "at": "2026-06-02T10:00-07:00"
+        },
+        "baseline_ending": null,
+        "interval": {
+          "start": "2026-06-01T11:00-07:00",
+          "end": null
+        },
+        "periods": [
+          {
+            "begin": {
+              "act": "story-1|story-1/b1|story-1",
+              "at": "2026-06-01T11:00-07:00",
+              "record": "door-101|ev-mon-spec|spec-09-91",
+              "cause": "disagreement"
+            },
+            "end": null,
+            "policy_end": {
+              "act": "story-1|app-end-1-at|workflow-app",
+              "at": "2026-06-02T10:00-07:00",
+              "record": "rv-1|rv-1-at|rv-1",
+              "cause": "reviewed"
+            }
+          }
+        ],
+        "standing": {
+          "open": "ended",
+          "review": "reviewed",
+          "disagreement": "disagreeing"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-1",
+        "frame": {
+          "cutoff": "2026-06-02T09:00-07:00"
+        }
+      },
+      "expect": {
+        "ending": null,
+        "standing": {
+          "open": "open"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "superseded": [],
+        "ambiguous": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "finish"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "app-end-2-at",
+      "source": "workflow-app",
+      "values": {
+        "@action": "end",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/b1",
+            "source": "story-1"
+          }
+        ],
+        "@period": {
+          "at": "2026-06-02T10:00-07:00",
+          "record": {
+            "@ref": "assertion",
+            "item": "rv-1",
+            "context": "rv-1-at",
+            "source": "rv-1"
+          },
+          "cause": "reviewed",
+          "policy": {
+            "name": "app-review-closes",
+            "version": "2"
+          }
+        }
+      },
+      "expect_error": "10.2.9"
+    },
+    {
+      "op": "assert",
+      "item": "story-1",
+      "context": "app-end-3-at",
+      "source": "workflow-app",
+      "values": {
+        "@action": "end",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "story-1",
+            "context": "story-1/b1",
+            "source": "story-1"
+          }
+        ],
+        "@period": {
+          "at": "2026-06-02T10:00-07:00",
+          "record": {
+            "@ref": "assertion",
+            "item": "rv-1",
+            "context": "rv-1-at",
+            "source": "rv-1"
+          },
+          "cause": "reviewed",
+          "policy": {
+            "name": "other-policy",
+            "version": "1"
+          }
+        }
+      },
+      "expect_error": "10.2.9"
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": [
+          "story-1|app-end-1-at|workflow-app"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "differences": [],
+        "unverified": [
+          "story-1|app-end-1-at|workflow-app"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {
+          "scope": "other-project"
+        }
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "id": "T01_38_coordinates_naming_missing_items_are_unresolved_references",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "2.3.2",
+    "2.3.1",
+    "2.2.1"
+  ],
+  "description": "An Assertion whose item, context or source coordinate names an Item that does not exist, and a Connection whose endpoint does not exist, are rejected with 10.2.2. No Item is created implicitly and the store is unchanged; with the Items created the same write succeeds.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        },
+        {
+          "id": "room-12",
+          "kind": "room"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-999",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-999",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "src-999",
+      "values": {
+        "finish": "paint"
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "connect",
+      "from": "room-99",
+      "to": "door-101",
+      "at": "2026-05-11T09:00-07:00",
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-999",
+      "at": "2026-05-11T09:00-07:00",
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-999"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-999"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "src-999"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "room-99"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-999|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

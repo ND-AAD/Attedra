@@ -1,0 +1,195 @@
+{
+  "id": "T01_40_new_milestone_ordinal_checked_against_corrected_definitions",
+  "family": "T01",
+  "rules": [
+    "4.3.2",
+    "8.3.8",
+    "10.2.3",
+    "8.3.3"
+  ],
+  "description": "Ordinal distinctness is evaluated in the corrected account for creation as well as correction: after m-50 is corrected to ordinal 75, a new milestone with ordinal 50 is created, and one with ordinal 75 (or 100) is rejected under 10.2.3.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "arch-schedule",
+          "kind": "milestone-schedule"
+        },
+        {
+          "id": "review-log",
+          "kind": "log"
+        },
+        {
+          "id": "m-50",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        },
+        {
+          "id": "m-100",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 100
+            }
+          }
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-21T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "m-50"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "milestone",
+          "label": null,
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 75
+            }
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "item",
+      "id": "m-new-50",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "50% CD reissue",
+          "ordinal": 50
+        }
+      },
+      "expect": {
+        "status": "created",
+        "id": "m-new-50"
+      }
+    },
+    {
+      "op": "item",
+      "id": "m-new-75",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "75% CD",
+          "ordinal": 75
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "item",
+      "id": "m-new-100",
+      "kind": "milestone",
+      "definition": {
+        "@context": {
+          "role": "milestone",
+          "schedule": {
+            "@ref": "item",
+            "id": "arch-schedule"
+          },
+          "stage": "100% CD reissue",
+          "ordinal": 100
+        }
+      },
+      "expect_error": "10.2.3"
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "m-new-50"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "m-new-75"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "m-new-100"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    }
+  ]
+}

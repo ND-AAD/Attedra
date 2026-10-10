@@ -1,0 +1,196 @@
+{
+  "id": "T10_03_date_and_minute_instants_same_day_are_unordered",
+  "family": "T10",
+  "rules": [
+    "4.2.1",
+    "4.2.5",
+    "4.5.3",
+    "4.6.1",
+    "5.6.1",
+    "12.10"
+  ],
+  "description": "A letter dated 14 May and an email at 09:45 on 14 May from one source are unordered, so its current value is ambiguous. A date-only letter is also unordered against a 12:00 cutoff that day (ambiguous), included by a 14 May date cutoff, and excluded by a 12 May one.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "a601-issued-0510",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-10T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-letter-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-email-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-letter-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-email-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "lacquer"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "candidates": [
+              "~unordered",
+              {
+                "value": "stain",
+                "origin": "door-101|a601-letter-0514|a-601"
+              },
+              {
+                "value": "lacquer",
+                "origin": "door-101|a601-email-0514|a-601"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-issued-0510",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "a601-letter-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "ambiguous",
+            "candidates": [
+              "~unordered",
+              {
+                "value": "paint",
+                "origin": "door-102|a601-issued-0510|a-601"
+              },
+              {
+                "value": "stain",
+                "origin": "door-102|a601-letter-0514|a-601"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-14-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "stain",
+            "origin": "door-102|a601-letter-0514|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-05-12-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-102|a601-issued-0510|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

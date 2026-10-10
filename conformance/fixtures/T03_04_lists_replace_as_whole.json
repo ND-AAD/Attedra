@@ -1,0 +1,334 @@
+{
+  "id": "T03_04_lists_replace_as_whole",
+  "family": "T03",
+  "rules": [
+    "5.4.1",
+    "5.4.2",
+    "5.1.1",
+    "5.3.2",
+    "5.6.2",
+    "12.3"
+  ],
+  "description": "A supplied list replaces the whole earlier list: no element, duplicate or union is inherited, an empty list is a value, and omitting the list carries it forward.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "door-105",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "tags": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "c"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-105",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "tags": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-105",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "tags": {
+            "classification": "asserted",
+            "value": [
+              "b"
+            ],
+            "origin": "door-101|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-102",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "tags": {
+            "classification": "asserted",
+            "value": [
+              "a"
+            ],
+            "origin": "door-102|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-103",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "tags": {
+            "classification": "asserted",
+            "value": [],
+            "origin": "door-103|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-104",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "tags": {
+            "classification": "asserted",
+            "value": [
+              "a",
+              "c"
+            ],
+            "origin": "door-104|ev-cd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-105",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "tags": {
+            "classification": "asserted",
+            "value": [
+              "a",
+              "b"
+            ],
+            "origin": "door-105|ev-dd|a-601"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-101",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "tags",
+            "transition": "changed",
+            "prior": "door-101|ev-dd|a-601",
+            "new": "door-101|ev-cd|a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "changes",
+      "args": {
+        "source": "a-601",
+        "subject": "door-103",
+        "from": {
+          "cutoff": "2026-06-01-07:00"
+        },
+        "to": {
+          "cutoff": "2026-06-30-07:00"
+        }
+      },
+      "expect": {
+        "transitions": [
+          {
+            "property": "tags",
+            "transition": "changed",
+            "prior": "door-103|ev-dd|a-601",
+            "new": "door-103|ev-cd|a-601"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,547 @@
+{
+  "id": "T18_46_evidence_that_meets_a_requirement_only_under_a_normalization_fulfils_it_from_then",
+  "family": "T18",
+  "rules": [
+    "7.3.8",
+    "6.5.1",
+    "6.6.1",
+    "7.6.5",
+    "7.6.13",
+    "7.6.14",
+    "9.3.1",
+    "9.3.2",
+    "12.20"
+  ],
+  "description": "An expectation requires A-602 to show Door 102's fire rating as \"90 min\", and A-602's Monday issue shows \"1.5 h\". A Wednesday normalization of the project names the fixture fire-rating interpretation. The property is fulfilled on Wednesday, not on Monday: the normalization's write records its end act at Wednesday, citing the Monday evidence, with the interpretation and matched_by the normalization. A Tuesday read shows it outstanding. A second expectation, whose context names the fixture accept-empty interpretation, is untouched by the normalization: read under its own interpretation it stays outstanding, and the normalization's write records nothing for it.",
+  "note": "6.5.1: the qualifying moment is the latest of the evidence's occurrence time, the establishment time \"and, for evidence that meets the value requirement only under an interpretation that a normalization put in force (7.3.8), the instant from which that interpretation is in force for the subject ... fulfillment never reaches back before the normalization ... Where the evidence meets the requirement only under an interpretation that a normalization put in force, the result also references that normalization, beside the evidence (5.5.4).\" 7.6.13: \"An expectation's interpretation is the one its context names, at every instant.\" 7.3.8: \"An expectation property whose period is open at T, whose interpretation is the one in force (7.6.13), and whose evidence meets its requirement only under the interpretation in force from T, is fulfilled no earlier than T, citing the normalization beside the evidence (6.5.1).\"",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "minutes-wed",
+          "kind": "minutes"
+        },
+        {
+          "id": "norm-1",
+          "kind": "normalization"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-wed",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-wed-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T18:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a-602",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-110",
+          "kind": "door"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-acc",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false,
+              "interpretation": {
+                "name": "fixture-accept-empty:fire_rating",
+                "version": "1"
+              }
+            }
+          }
+        },
+        {
+          "id": "sup-1",
+          "kind": "decision"
+        },
+        {
+          "id": "sup-2",
+          "kind": "decision"
+        },
+        {
+          "id": "sup-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T08:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-mon-a602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-102",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-110",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-fr",
+      "source": "a-602",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-102|e-fr|a-602",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-1",
+      "context": "sup-at",
+      "source": "sup-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-fr",
+            "source": "a-602"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-1|sup-at|sup-1",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-102/e-fr/a-602/fire_rating/b1|exp:door-102/e-fr/a-602/fire_rating/b1/at|exp:door-102/e-fr/a-602/fire_rating/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-110",
+      "context": "e-acc",
+      "source": "a-602",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-110|e-acc|a-602",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "sup-2",
+      "context": "sup-at",
+      "source": "sup-2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-110",
+            "context": "e-acc",
+            "source": "a-602"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "sup-2|sup-at|sup-2",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-110/e-acc/a-602/fire_rating/b1|exp:door-110/e-acc/a-602/fire_rating/b1/at|exp:door-110/e-acc/a-602/fire_rating/b1"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-mon-a602",
+      "source": "a-602",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-102|ev-mon-a602|a-602",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-110",
+      "context": "ev-mon-a602",
+      "source": "a-602",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-110|ev-mon-a602|a-602",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "norm-1",
+      "context": "meeting-wed",
+      "source": "minutes-wed",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-03.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-wed-issued"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "norm-1|meeting-wed|minutes-wed",
+        "generated": [],
+        "transition_acts": [
+          "exp:door-102/e-fr/a-602/fire_rating/e1|exp:door-102/e-fr/a-602/fire_rating/e1/at|exp:door-102/e-fr/a-602/fire_rating/e1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "exp:door-102/e-fr/a-602/fire_rating/e1|exp:door-102/e-fr/a-602/fire_rating/e1/at|exp:door-102/e-fr/a-602/fire_rating/e1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "exp:door-102/e-fr/a-602/fire_rating/b1",
+              "context": "exp:door-102/e-fr/a-602/fire_rating/b1/at",
+              "source": "exp:door-102/e-fr/a-602/fire_rating/b1"
+            }
+          ],
+          "@period": {
+            "at": "2026-06-03T10:00-07:00",
+            "record": {
+              "@ref": "assertion",
+              "item": "door-102",
+              "context": "ev-mon-a602",
+              "source": "a-602",
+              "property": "~absent"
+            },
+            "cause": "fulfillment",
+            "policy": null,
+            "timeliness": "on_time",
+            "interpretation": {
+              "name": "fixture-fire-rating",
+              "version": "1"
+            },
+            "matched_by": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-fr|a-602",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false,
+            "interpretation": null,
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-102/e-fr/a-602/fire_rating/b1|exp:door-102/e-fr/a-602/fire_rating/b1/at|exp:door-102/e-fr/a-602/fire_rating/b1",
+                  "at": "2026-06-01T08:00-07:00",
+                  "record": "sup-1|sup-at|sup-1",
+                  "cause": "in_force"
+                },
+                "end": {
+                  "act": "exp:door-102/e-fr/a-602/fire_rating/e1|exp:door-102/e-fr/a-602/fire_rating/e1/at|exp:door-102/e-fr/a-602/fire_rating/e1",
+                  "at": "2026-06-03T10:00-07:00",
+                  "record": "door-102|ev-mon-a602|a-602",
+                  "cause": "fulfillment",
+                  "timeliness": "on_time",
+                  "interpretation": {
+                    "name": "fixture-fire-rating",
+                    "version": "1"
+                  },
+                  "matched_by": "norm-1|meeting-wed|minutes-wed"
+                },
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-fr|a-602",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "fulfilled",
+            "timeliness": "on_time",
+            "fulfilled_by": "door-102|ev-mon-a602|a-602",
+            "qualifying_moment": "2026-06-03T10:00-07:00",
+            "matched_by": "norm-1|meeting-wed|minutes-wed",
+            "interpretation": "fixture-fire-rating"
+          }
+        },
+        "overall": "fulfilled"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-102|e-fr|a-602",
+            "outstanding": [
+              "fire_rating"
+            ]
+          },
+          {
+            "expectation": "door-110|e-acc|a-602",
+            "outstanding": [
+              "fire_rating"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-110|e-acc|a-602",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "interpretation": "fixture-accept-empty:fire_rating"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "interpretation": "fixture-accept-empty:fire_rating",
+            "periods": [
+              {
+                "begin": {
+                  "act": "exp:door-110/e-acc/a-602/fire_rating/b1|exp:door-110/e-acc/a-602/fire_rating/b1/at|exp:door-110/e-acc/a-602/fire_rating/b1",
+                  "at": "2026-06-01T08:00-07:00",
+                  "record": "sup-2|sup-at|sup-2",
+                  "cause": "in_force"
+                },
+                "end": null,
+                "policy_end": "~absent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "project",
+          "interpretation": "fixture-accept-empty:fire_rating"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "kind": "expectation",
+            "unit": "door-102|e-fr|a-602#fire_rating",
+            "began": {
+              "act": null
+            },
+            "interpretation": "fixture-accept-empty:fire_rating"
+          },
+          {
+            "kind": "expectation",
+            "unit": "door-110|e-acc|a-602#fire_rating",
+            "began": {
+              "act": "exp:door-110/e-acc/a-602/fire_rating/b1|exp:door-110/e-acc/a-602/fire_rating/b1/at|exp:door-110/e-acc/a-602/fire_rating/b1"
+            },
+            "interpretation": "fixture-accept-empty:fire_rating"
+          }
+        ],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 2
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

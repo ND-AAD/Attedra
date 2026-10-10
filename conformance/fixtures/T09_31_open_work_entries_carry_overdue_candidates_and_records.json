@@ -1,0 +1,313 @@
+{
+  "id": "T09_31_open_work_entries_carry_overdue_candidates_and_records",
+  "family": "T09",
+  "rules": [
+    "9.3.2",
+    "6.6.1",
+    "4.5.3",
+    "9.6.1",
+    "6.2.2"
+  ],
+  "description": "An open-work entry lists its outstanding properties and, separately, those whose overdue condition holds (omitted when none). An entry whose list depends on an ambiguous standing is returned among the ambiguous entries with the ambiguous properties, their complete candidate standings and the records concerned; an entry that every combination of candidates places in the same list stays in that list. Entries are ordered by the expectation's item, context and source.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-f",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "e-by0601",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-01-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-late",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d0",
+          "kind": "decision"
+        },
+        {
+          "id": "d0-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-30T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-dated-0602",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-f",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "e-f",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-by0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "e-late",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d0",
+      "context": "d0-at",
+      "source": "d0",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-by0601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "e-late",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-f",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "e-f",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-dated-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "a601-dated-0602",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-102|e-by0601|a-601",
+            "outstanding": [
+              "fire_rating"
+            ],
+            "overdue": [
+              "fire_rating"
+            ]
+          },
+          {
+            "expectation": "door-103|e-late|a-601",
+            "outstanding": [
+              "fire_rating"
+            ],
+            "overdue": "~absent"
+          },
+          {
+            "expectation": "door-104|e-f|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "ambiguous": [
+              "fire_rating"
+            ]
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [
+          {
+            "expectation": "door-101|e-f|a-601",
+            "ambiguous": [
+              "fire_rating"
+            ],
+            "candidates": {
+              "fire_rating": [
+                "~unordered",
+                {
+                  "standing": "fulfilled",
+                  "fulfilled_by": "door-101|a601-dated-0602|a-601"
+                },
+                {
+                  "standing": "outstanding",
+                  "overdue": false
+                }
+              ]
+            },
+            "records": {
+              "fire_rating": "~any"
+            }
+          }
+        ],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-f|a-601",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "overall": "ambiguous",
+        "properties": {
+          "fire_rating": {
+            "standing": "ambiguous",
+            "records": "~any",
+            "candidates": [
+              "~unordered",
+              {
+                "standing": "fulfilled"
+              },
+              {
+                "standing": "outstanding",
+                "overdue": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

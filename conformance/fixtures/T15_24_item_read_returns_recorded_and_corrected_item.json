@@ -1,0 +1,187 @@
+{
+  "id": "T15_24_item_read_returns_recorded_and_corrected_item",
+  "family": "T15",
+  "rules": [
+    "8.3.8",
+    "9.2.1",
+    "8.3.2"
+  ],
+  "description": "The item read returns the Item as recorded (kind, label, definition) with the corrections that target it, and, when a correction applies, the corrected kind, label and definition that every other read uses. An Item no correction targets has no corrected member; the exact read of an Item id returns the same result.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "ev-x",
+          "kind": "event",
+          "label": "A-601 issued 5 June",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-y",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-08T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-x",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "ev-x"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "kind": "event",
+          "label": "A-601 issued 1 June",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "a-601-rev-3.pdf",
+            "edition": "rev 3"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-x"
+      },
+      "expect": {
+        "status": "found",
+        "kind": "event",
+        "label": "A-601 issued 5 June",
+        "definition": {
+          "@context": {
+            "role": "event",
+            "at": "2026-06-05T09:00-07:00"
+          }
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ],
+        "corrected": {
+          "kind": "event",
+          "label": "A-601 issued 1 June",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "ev-x"
+      },
+      "expect": {
+        "status": "found",
+        "label": "A-601 issued 5 June",
+        "corrected": {
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "ev-y"
+      },
+      "expect": {
+        "status": "found",
+        "corrections": [],
+        "corrected": "~absent"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint"
+          }
+        }
+      }
+    }
+  ]
+}

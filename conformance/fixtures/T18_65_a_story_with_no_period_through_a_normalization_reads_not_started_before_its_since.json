@@ -1,0 +1,1188 @@
+{
+  "id": "T18_65_a_story_with_no_period_through_a_normalization_reads_not_started_before_its_since",
+  "family": "T18",
+  "rules": [
+    "7.6.12",
+    "7.6.5",
+    "7.6.6",
+    "7.6.14",
+    "7.2.6",
+    "7.2.7",
+    "9.5.2",
+    "9.5.3",
+    "9.5.8",
+    "4.2.5",
+    "12.19",
+    "12.20"
+  ],
+  "description": "The project is normalized under the fixture fire-rating interpretation from Wednesday. On Thursday A-601 shows Door 103 as \"90 min\" at 09:00 and the specification \"1.5 h\" at 11:00, and A-601 revises Door 104 from Monday's \"1.5 h\" to \"90 min\". The stories an application records anyway have no period. Each end act has cause normalization, cites the normalization, has no time, and carries since: the instant the sides first differ literally (Thursday 11:00), or the revision's occurrence time (Thursday 09:00). Each story reads not_started, with no ending, at cutoffs before its since, and ended from it. Door 113's sides are dated by day, so its since is Thursday: a Thursday-noon cutoff is neither before it nor at or after it, and the open dimension reads ambiguous. No listing read lists these stories. Door 123's story is like Door 103's until a correction shows that the specification said \"90 min\": its sides never differed even literally, so the correction revises the end act to cause correction, without since, and the story reads ended at every cutoff, Wednesday included.",
+  "note": "7.6.12: \"for a normalization, cause `normalization`, with as its record the normalization or normalizations that put the story's interpretation in force: for a conflict story, at the instant at which its interval would begin under literal comparison (7.2.6) ... for a change story, at its revised Assertion's occurrence time (7.2.7). The end act also carries `since`: that instant\"; \"Reads report the story as ended at every cutoff with an empty interval (9.5.2), except that a story whose ending is a normalization reads `not_started` at a cutoff before its `since`, and ended at a cutoff that its `since` is at or before (4.2.5). Where neither holds, its open dimension is ambiguous (4.5.3).\" 7.6.12, order of precedence: \"`correction` applies when, without the corrections, the story would have a period under its interpretation, or would have one under literal comparison while in the corrected account it has none under literal comparison.\" 4.2.5: \"A is *at or before* B when A's interval ends no later than B's interval ends\", so Thursday 11:00 is at or before a Thursday-noon cutoff and a Thursday date is not.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-09-91",
+          "kind": "specification"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "minutes-wed",
+          "kind": "minutes"
+        },
+        {
+          "id": "norm-1",
+          "kind": "normalization"
+        },
+        {
+          "id": "log",
+          "kind": "log"
+        },
+        {
+          "id": "cor-1",
+          "kind": "correction"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "door-113",
+          "kind": "door"
+        },
+        {
+          "id": "door-123",
+          "kind": "door"
+        },
+        {
+          "id": "story-3",
+          "kind": "story"
+        },
+        {
+          "id": "chg-4",
+          "kind": "story"
+        },
+        {
+          "id": "story-13",
+          "kind": "story"
+        },
+        {
+          "id": "story-23",
+          "kind": "story"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-wed",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-thu-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-thu-spec",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T11:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "thu-a601-day",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04-07:00"
+            }
+          }
+        },
+        {
+          "id": "thu-spec-day",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-3/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "chg-4/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-13/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "story-23/d1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T17:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "cor-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-103",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-104",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-113",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-123",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-104|ev-mon-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "norm-1",
+      "context": "meeting-wed",
+      "source": "minutes-wed",
+      "values": {
+        "@action": "reinterpret",
+        "@targets": [
+          {
+            "@ref": "item",
+            "id": "project"
+          }
+        ],
+        "@interpretation": {
+          "name": "fixture-fire-rating",
+          "version": "1"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-03.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "norm-1|meeting-wed|minutes-wed",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-103|ev-thu-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "ev-thu-spec",
+      "source": "spec-09-91",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-103|ev-thu-spec|spec-09-91",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-3",
+      "context": "story-3/d1",
+      "source": "story-3",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-103"
+          },
+          "property": "fire_rating"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "ev-thu-a601",
+            "source": "a-601",
+            "property": "fire_rating"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "ev-thu-spec",
+            "source": "spec-09-91",
+            "property": "fire_rating"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-3|story-3/d1|story-3",
+        "generated": [],
+        "transition_acts": [
+          "story-3|story-3/b1|story-3",
+          "story-3|story-3/e1|story-3"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-3|story-3/b1|story-3"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "begin",
+          "@period": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-3|story-3/e1|story-3"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "story-3",
+              "context": "story-3/b1",
+              "source": "story-3"
+            }
+          ],
+          "@period": {
+            "at": null,
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null,
+            "since": "2026-06-04T11:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-3",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "not_started"
+        },
+        "ending": null,
+        "baseline_ending": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-3",
+        "frame": {
+          "cutoff": "2026-06-04T10:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "not_started"
+        },
+        "ending": null,
+        "baseline_ending": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-3",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null,
+          "at_is_provenance": "~absent"
+        },
+        "baseline_ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-3",
+        "frame": {
+          "cutoff": "2026-06-04T11:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "ended"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-104|ev-thu-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "chg-4",
+      "context": "chg-4/d1",
+      "source": "chg-4",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "change",
+          "subject": {
+            "@ref": "item",
+            "id": "door-104"
+          }
+        },
+        "@transitions": [
+          {
+            "property": "fire_rating",
+            "transition": "changed",
+            "prior": {
+              "@ref": "assertion",
+              "item": "door-104",
+              "context": "ev-mon-a601",
+              "source": "a-601"
+            },
+            "new": {
+              "@ref": "assertion",
+              "item": "door-104",
+              "context": "ev-thu-a601",
+              "source": "a-601"
+            }
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "ev-thu-a601",
+            "source": "a-601"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "chg-4|chg-4/d1|chg-4",
+        "generated": [],
+        "transition_acts": [
+          "chg-4|chg-4/b1|chg-4",
+          "chg-4|chg-4/e1|chg-4"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "chg-4|chg-4/e1|chg-4"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "chg-4",
+              "context": "chg-4/b1",
+              "source": "chg-4"
+            }
+          ],
+          "@period": {
+            "at": null,
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null,
+            "since": "2026-06-04T09:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-4",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "not_started"
+        },
+        "ending": null,
+        "baseline_ending": null,
+        "kind": "change"
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "chg-4",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null,
+          "at_is_provenance": "~absent"
+        },
+        "baseline_ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null
+        },
+        "kind": "change"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-113",
+      "context": "thu-a601-day",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-113|thu-a601-day|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-113",
+      "context": "thu-spec-day",
+      "source": "spec-09-91",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-113|thu-spec-day|spec-09-91",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-13",
+      "context": "story-13/d1",
+      "source": "story-13",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-113"
+          },
+          "property": "fire_rating"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-113",
+            "context": "thu-a601-day",
+            "source": "a-601",
+            "property": "fire_rating"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-113",
+            "context": "thu-spec-day",
+            "source": "spec-09-91",
+            "property": "fire_rating"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-13|story-13/d1|story-13",
+        "generated": [],
+        "transition_acts": [
+          "story-13|story-13/b1|story-13",
+          "story-13|story-13/e1|story-13"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-13|story-13/e1|story-13"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "story-13",
+              "context": "story-13/b1",
+              "source": "story-13"
+            }
+          ],
+          "@period": {
+            "at": null,
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null,
+            "since": "2026-06-04-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-13",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "not_started"
+        },
+        "ending": null,
+        "baseline_ending": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-13",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "ambiguous"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-13",
+        "frame": {
+          "cutoff": "2026-06-05T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null,
+          "at_is_provenance": "~absent"
+        },
+        "baseline_ending": {
+          "kind": "normalization",
+          "record": "norm-1|meeting-wed|minutes-wed",
+          "at": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-13",
+        "frame": {
+          "cutoff": "2026-06-04-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "ended"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_stories",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "stories": [],
+        "count": 0,
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "what_remains",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "superseded": [],
+        "ambiguous": [],
+        "limitations": [],
+        "counts": {
+          "conflict": 0,
+          "change": 0,
+          "expectation": 0
+        },
+        "filter": null
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-123",
+      "context": "ev-thu-a601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-123|ev-thu-a601|a-601",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-123",
+      "context": "ev-thu-spec",
+      "source": "spec-09-91",
+      "values": {
+        "fire_rating": "1.5 h"
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "door-123|ev-thu-spec|spec-09-91",
+        "generated": [],
+        "transition_acts": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "story-23",
+      "context": "story-23/d1",
+      "source": "story-23",
+      "values": {
+        "@action": "detect",
+        "@story": {
+          "kind": "conflict",
+          "subject": {
+            "@ref": "item",
+            "id": "door-123"
+          },
+          "property": "fire_rating"
+        },
+        "@basis": [
+          {
+            "@ref": "assertion",
+            "item": "door-123",
+            "context": "ev-thu-a601",
+            "source": "a-601",
+            "property": "fire_rating"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-123",
+            "context": "ev-thu-spec",
+            "source": "spec-09-91",
+            "property": "fire_rating"
+          }
+        ],
+        "@frame": {
+          "scope": {
+            "@ref": "item",
+            "id": "project"
+          },
+          "cutoff": "2026-06-04T17:00-07:00",
+          "perspective": "record",
+          "interpretation": "fixture-fire-rating",
+          "interpretation_version": "1"
+        }
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "story-23|story-23/d1|story-23",
+        "generated": [],
+        "transition_acts": [
+          "story-23|story-23/b1|story-23",
+          "story-23|story-23/e1|story-23"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-23|story-23/e1|story-23"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "end",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "story-23",
+              "context": "story-23/b1",
+              "source": "story-23"
+            }
+          ],
+          "@period": {
+            "at": null,
+            "record": {
+              "@ref": "assertion",
+              "item": "norm-1",
+              "context": "meeting-wed",
+              "source": "minutes-wed",
+              "property": "~absent"
+            },
+            "cause": "normalization",
+            "policy": null,
+            "since": "2026-06-04T11:00-07:00"
+          }
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "cor-1",
+      "context": "cor-1-at",
+      "source": "log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-123",
+            "context": "ev-thu-spec",
+            "source": "spec-09-91"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "fire_rating": "90 min"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "spec-09-91-rev-2.pdf",
+            "edition": "rev 2"
+          }
+        ]
+      },
+      "expect": {
+        "status": "inserted",
+        "ref": "cor-1|cor-1-at|log",
+        "generated": [],
+        "transition_acts": [
+          "story-23/v1|story-23/v1/at|story-23/v1"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "story-23/v1|story-23/v1/at|story-23/v1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "reconcile",
+          "@outcome": "revise",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "story-23",
+              "context": "story-23/e1",
+              "source": "story-23"
+            }
+          ],
+          "@period": {
+            "at": null,
+            "record": {
+              "@ref": "assertion",
+              "item": "cor-1",
+              "context": "cor-1-at",
+              "source": "log",
+              "property": "~absent"
+            },
+            "cause": "correction",
+            "policy": null,
+            "since": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-23",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "interval": {
+          "start": null,
+          "end": null,
+          "empty": true
+        },
+        "periods": [],
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "correction",
+          "record": "cor-1|cor-1-at|log",
+          "at": "2026-06-05T10:00-07:00",
+          "at_is_provenance": true
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "story",
+      "args": {
+        "story": "story-23",
+        "frame": {
+          "cutoff": "2026-06-05T12:00-07:00",
+          "scope": "project"
+        }
+      },
+      "expect": {
+        "standing": {
+          "open": "ended"
+        },
+        "ending": {
+          "kind": "correction",
+          "record": "cor-1|cor-1-at|log",
+          "at": "2026-06-05T10:00-07:00",
+          "at_is_provenance": true
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "transition_check",
+      "args": {
+        "frame": {}
+      },
+      "expect": {
+        "differences": [],
+        "unverified": []
+      }
+    }
+  ]
+}

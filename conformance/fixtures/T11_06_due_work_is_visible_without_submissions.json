@@ -1,0 +1,336 @@
+{
+  "id": "T11_06_due_work_is_visible_without_submissions",
+  "family": "T11",
+  "rules": [
+    "4.6.2",
+    "6.2.1",
+    "6.6.1",
+    "9.3.1",
+    "9.3.2",
+    "12.11"
+  ],
+  "description": "With no submissions at all, a 'by 10 June' expectation is outstanding at every frame from its establishment (overdue after the deadline), and an 'at 100% CD' expectation is not yet due until the milestone is published and outstanding (overdue) from then. Open work lists them as open or upcoming accordingly.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "schedule"
+        },
+        {
+          "id": "arch-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "instr-1",
+          "kind": "instruction"
+        },
+        {
+          "id": "arch-100cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "100% CD",
+              "ordinal": 400
+            }
+          }
+        },
+        {
+          "id": "instr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "e-by-0610",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-10-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-at-100cd",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "at",
+                "milestone": {
+                  "@ref": "item",
+                  "id": "arch-100cd"
+                }
+              },
+              "fresh": false,
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-by-0610",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-at-100cd",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "instr-1",
+      "context": "instr-1-at",
+      "source": "instr-1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-by-0610",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-at-100cd",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "arch-100cd",
+      "context": "arch-100cd",
+      "source": "arch-log",
+      "values": {
+        "@published": "2026-06-15T10:00-07:00"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by-0610|a-601",
+        "frame": {
+          "cutoff": "2026-05-31-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "finish": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by-0610|a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by-0610|a-601",
+        "frame": {
+          "cutoff": "2026-06-12-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-by-0610|a-601",
+        "frame": {
+          "cutoff": "2026-07-15-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-at-100cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "not_yet_due"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-at-100cd|a-601",
+        "frame": {
+          "cutoff": "2026-06-16-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": true
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-05-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          {
+            "expectation": "door-101|e-by-0610|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": []
+          }
+        ],
+        "upcoming": [
+          {
+            "expectation": "door-102|e-at-100cd|a-601",
+            "outstanding": [],
+            "not_yet_due": [
+              "finish"
+            ],
+            "withdrawn": [],
+            "fulfilled": []
+          }
+        ],
+        "ambiguous": [],
+        "limitations": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "2026-06-16-07:00"
+        }
+      },
+      "expect": {
+        "open": [
+          "~unordered",
+          {
+            "expectation": "door-101|e-by-0610|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": []
+          },
+          {
+            "expectation": "door-102|e-at-100cd|a-601",
+            "outstanding": [
+              "finish"
+            ],
+            "not_yet_due": [],
+            "withdrawn": [],
+            "fulfilled": []
+          }
+        ],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": []
+      }
+    }
+  ]
+}

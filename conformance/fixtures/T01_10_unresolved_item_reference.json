@@ -1,0 +1,90 @@
+{
+  "id": "T01_10_unresolved_item_reference",
+  "family": "T01",
+  "rules": [
+    "10.2.2",
+    "2.4.2",
+    "2.4.5"
+  ],
+  "description": "A write carrying an Item reference that does not resolve is rejected with 10.2.2, at any depth, and leaves the store unchanged.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "governed_by": {
+          "@ref": "item",
+          "id": "spec-missing"
+        }
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "governing": [
+          {
+            "clause": "2.1",
+            "doc": {
+              "@ref": "item",
+              "id": "spec-missing"
+            }
+          }
+        ]
+      },
+      "expect_error": "10.2.2"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    }
+  ]
+}

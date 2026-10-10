@@ -1,0 +1,203 @@
+{
+  "id": "T04_09_declared_interpretation_fire_rating",
+  "family": "T04",
+  "rules": [
+    "5.5.3",
+    "5.5.4",
+    "5.5.1",
+    "4.6.1",
+    "9.4.2",
+    "9.4.3",
+    "I-15",
+    "12.4"
+  ],
+  "description": "\"90 min\" and \"1.5 h\" (and 90 against \"1.5 h\") are unequal under the literal comparison and equal under the declared fire-rating interpretation; each result names the interpretation it applied.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": "1.5 h"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": "1.5 h"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": null
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "fire_rating",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "90 min"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "1.5 h"
+              }
+            ]
+          }
+        ],
+        "interpretation": null,
+        "frame": {
+          "interpretation": null
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": "fixture-fire-rating",
+        "frame": {
+          "interpretation": "fixture-fire-rating"
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": null
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "fire_rating",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-102|ev-0514|a-601",
+                "value": 90
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-102|ev-0514|spec-0991",
+                "value": "1.5 h"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": "fixture-fire-rating"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "asserted",
+            "value": "90 min",
+            "origin": "door-101|ev-0514|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

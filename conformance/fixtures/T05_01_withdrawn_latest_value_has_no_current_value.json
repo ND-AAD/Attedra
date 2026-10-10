@@ -1,0 +1,226 @@
+{
+  "id": "T05_01_withdrawn_latest_value_has_no_current_value",
+  "family": "T05",
+  "rules": [
+    "6.7.1",
+    "6.7.4",
+    "6.7.5",
+    "6.7.6",
+    "6.7.8",
+    "5.6.1",
+    "9.2.1",
+    "9.2.2",
+    "3.2.1",
+    "I-8",
+    "12.5"
+  ],
+  "description": "A-601 asserts fire_rating 60, later 90, then withdraws the 90 Assertion by letter. Before the withdrawal the 90 is current. After it the classification is withdrawn, carrying the withdrawal and no value, and the 60 is not revived. Both earlier Assertions and the withdrawal stay readable by exact reference.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "architect",
+          "kind": "party",
+          "label": "Architect"
+        },
+        {
+          "id": "letter-17",
+          "kind": "letter",
+          "label": "Architect letter 17"
+        },
+        {
+          "id": "letter-17-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal",
+          "label": "Withdrawal of the 90 fire rating"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 60
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "letter-17-issued",
+      "source": "letter-17",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0603",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "letter-17.pdf",
+            "edition": "issued 2026-06-05"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "letter-17-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "architect"
+        },
+        "note": "Fire rating withdrawn pending review."
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "asserted",
+            "value": 90,
+            "origin": "door-101|a601-0603|a-601",
+            "withdrawn_by": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "classification": "withdrawn",
+            "withdrawn_by": "w1|letter-17-issued|letter-17",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|a601-0603|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 90
+        },
+        "corrections": [],
+        "withdrawals": [
+          "w1|letter-17-issued|letter-17"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|a601-0601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "fire_rating": 60
+        },
+        "corrections": [],
+        "withdrawals": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "w1|letter-17-issued|letter-17"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "withdraw",
+          "@targets": [
+            {
+              "@ref": "assertion",
+              "item": "door-101",
+              "context": "a601-0603",
+              "source": "a-601"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

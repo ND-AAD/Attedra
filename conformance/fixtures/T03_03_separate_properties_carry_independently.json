@@ -1,0 +1,89 @@
+{
+  "id": "T03_03_separate_properties_carry_independently",
+  "family": "T03",
+  "rules": [
+    "5.4.3",
+    "5.2.1",
+    "5.2.2"
+  ],
+  "description": "Separately named properties are separate carry-forward units: a later height alone carries width forward, even though both were first submitted together.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-dd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-13T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-cd",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-16T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-dd",
+      "source": "a-601",
+      "values": {
+        "width": 900,
+        "height": 2100
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-cd",
+      "source": "a-601",
+      "values": {
+        "height": 2200
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "width": {
+            "classification": "asserted",
+            "value": 900,
+            "origin": "door-101|ev-dd|a-601"
+          },
+          "height": {
+            "classification": "asserted",
+            "value": 2200,
+            "origin": "door-101|ev-cd|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

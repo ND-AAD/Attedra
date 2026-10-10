@@ -1,0 +1,257 @@
+{
+  "id": "T15_26_relocation_limitations_name_correction_and_record",
+  "family": "T15",
+  "rules": [
+    "8.3.7",
+    "9.6.1",
+    "9.3.1",
+    "9.3.2",
+    "12.15"
+  ],
+  "description": "Limitations carry a code and members. While the establish act D1 still targets an expectation that a correction relocated, the replacement's standing is the limitation relocated_reference, naming the correction and D1, and an expectation read of the relocated original is the limitation relocated, naming the correction and the replacement. Open work lists the replacement among its limitations with the same members.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "a-602",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "client",
+          "kind": "party"
+        },
+        {
+          "id": "import-review-log",
+          "kind": "process"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1-instr",
+          "kind": "instruction"
+        },
+        {
+          "id": "minutes-mon",
+          "kind": "minutes"
+        },
+        {
+          "id": "meeting-mon",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "minutes-mon-issued",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T16:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1-instr",
+      "context": "meeting-mon",
+      "source": "minutes-mon",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-mon-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "client"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-602",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@outcome": "relocated",
+        "@corrected": {
+          "@ref": "assertion",
+          "item": "door-101",
+          "context": "e-fr",
+          "source": "a-602"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-01.pdf",
+            "edition": "issued 2026-06-01"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-602",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "relocated_reference",
+        "correction": "corr-1|corr-1-at|import-review-log",
+        "record": "d1-instr|meeting-mon|minutes-mon"
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "limitation": "relocated",
+        "correction": "corr-1|corr-1-at|import-review-log",
+        "replacement": "door-101|e-fr|a-602"
+      }
+    },
+    {
+      "op": "read",
+      "read": "open_work",
+      "args": {
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "open": [],
+        "upcoming": [],
+        "ambiguous": [],
+        "limitations": [
+          {
+            "expectation": "door-101|e-fr|a-602",
+            "limitation": "relocated_reference",
+            "correction": "corr-1|corr-1-at|import-review-log",
+            "record": "d1-instr|meeting-mon|minutes-mon"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectations_about",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "expectations": [
+          {
+            "expectation": "door-101|e-fr|a-602",
+            "limitation": "relocated_reference",
+            "correction": "corr-1|corr-1-at|import-review-log",
+            "record": "d1-instr|meeting-mon|minutes-mon"
+          }
+        ]
+      }
+    }
+  ]
+}

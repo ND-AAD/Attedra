@@ -1,0 +1,186 @@
+{
+  "id": "T02_13_source_position_lists_properties_asserted_at_any_cutoff",
+  "family": "T02",
+  "rules": [
+    "9.2.2",
+    "5.6.1",
+    "4.6.1",
+    "4.4.2"
+  ],
+  "description": "source_position lists every property carried by any statement of the source about the subject in the corrected account. A property first asserted after the cutoff reads never_asserted at that cutoff without being named in args.properties, and so does a property carried only by statements a participant perspective excludes.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "consultant",
+          "kind": "party"
+        },
+        {
+          "id": "ev-1",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-2",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "ev-3",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-06T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "a-601",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "consultant"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-1",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-2",
+      "source": "a-601",
+      "values": {
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-3",
+      "source": "a-601",
+      "values": {
+        "closer": "C-1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-1|a-601"
+          },
+          "hardware": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          },
+          "closer": {
+            "classification": "never_asserted",
+            "value": "~absent",
+            "origin": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now",
+          "perspective": "consultant"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|ev-1|a-601"
+          },
+          "hardware": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          },
+          "closer": {
+            "classification": "never_asserted",
+            "value": "~absent"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted"
+          },
+          "hardware": {
+            "classification": "asserted",
+            "value": "HW-1"
+          },
+          "closer": {
+            "classification": "asserted",
+            "value": "C-1"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+{
+  "id": "T06_08_withdrawal_ends_earlier_support_with_later_effective_time",
+  "family": "T06",
+  "rules": [
+    "6.7.2",
+    "6.3.3",
+    "6.6.1",
+    "8.4.1",
+    "12.6"
+  ],
+  "description": "Support D3 occurred on 1 June, before the 2 June withdrawal of E, with @effective 10 June, after the withdrawal's 5 June effective time. The withdrawal ends D3 too, so E does not come back into force on 10 June.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "e-fr",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": true
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d3",
+          "kind": "decision"
+        },
+        {
+          "id": "d3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T15:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "owner",
+          "kind": "party",
+          "label": "Owner"
+        },
+        {
+          "id": "minutes-0602",
+          "kind": "minutes",
+          "label": "Minutes of the 2 June meeting"
+        },
+        {
+          "id": "minutes-0602-issued",
+          "kind": "event",
+          "label": "Minutes of 2 June issued",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "meeting-0602",
+          "kind": "event",
+          "label": "Meeting 2 June",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w-0602",
+          "kind": "withdrawal",
+          "label": "Withdrawal of E at the 2 June meeting"
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-fr",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d3",
+      "context": "d3-at",
+      "source": "d3",
+      "values": {
+        "@action": "reaffirm",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-10-07:00"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w-0602",
+      "context": "meeting-0602",
+      "source": "minutes-0602",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-fr",
+            "source": "a-601"
+          }
+        ],
+        "@effective": "2026-06-05-07:00",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "minutes-2026-06-02.pdf",
+            "edition": "issued 2026-06-03"
+          }
+        ],
+        "@issuance": {
+          "@ref": "item",
+          "id": "minutes-0602-issued"
+        },
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "note": "Requirement to be restated under the revised specification."
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-04T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "properties": {
+          "fire_rating": {
+            "standing": "outstanding",
+            "overdue": false
+          },
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-06T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-0602|meeting-0602|minutes-0602"
+            ]
+          },
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-0602|meeting-0602|minutes-0602"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-fr|a-601",
+        "frame": {
+          "cutoff": "2026-06-11T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "properties": {
+          "fire_rating": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-0602|meeting-0602|minutes-0602"
+            ]
+          },
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w-0602|meeting-0602|minutes-0602"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

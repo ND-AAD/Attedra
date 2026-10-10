@@ -1,0 +1,129 @@
+{
+  "id": "T17_10_declared_reference_extension_refuses_removal",
+  "family": "T17",
+  "rules": [
+    "10.4.4",
+    "8.5.2",
+    "8.5.3",
+    "10.3",
+    "10.5.3",
+    "12.17"
+  ],
+  "description": "The reference declares one extension, @x-fixture-refs, holding Item ids as a non-standard reference form. A record carrying it has downstream impact by definition, so its removal plan is refused naming the extension (with no other dependents here); the same kind of record without the extension is planned. Reads treat the member as any extension.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint",
+        "@x-fixture-refs": [
+          "door-102"
+        ]
+      },
+      "expect": {
+        "status": "inserted"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-0514|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "refused",
+        "dependents": [],
+        "extension": "@x-fixture-refs",
+        "plan": "~absent"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-102|ev-0514|a-601",
+      "as": "p2",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "cancel_removal",
+      "plan": "$p2",
+      "expect": {
+        "status": "cancelled"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint",
+          "@x-fixture-refs": [
+            "door-102"
+          ]
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint"
+          },
+          "@x-fixture-refs": "~absent"
+        }
+      }
+    }
+  ]
+}

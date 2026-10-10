@@ -1,0 +1,173 @@
+{
+  "id": "T04_06_no_inferred_conversions",
+  "family": "T04",
+  "rules": [
+    "5.5.2",
+    "5.5.1",
+    "5.1.2"
+  ],
+  "description": "The model infers no conversions: case, surrounding whitespace, leading zeros, units, synonyms and numeric strings all stay unequal.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values": {
+        "case": "Stain",
+        "trim": "stain ",
+        "leading_zero": "0900",
+        "units": "900 mm",
+        "synonym": "HM",
+        "number_text": 1
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "spec-0991",
+      "values": {
+        "case": "stain",
+        "trim": "stain",
+        "leading_zero": "900",
+        "units": "0.9 m",
+        "synonym": "hollow metal",
+        "number_text": "1"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "now"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          "~unordered",
+          {
+            "property": "case",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "Stain"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "stain"
+              }
+            ]
+          },
+          {
+            "property": "trim",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "stain "
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "stain"
+              }
+            ]
+          },
+          {
+            "property": "leading_zero",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "0900"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "900"
+              }
+            ]
+          },
+          {
+            "property": "units",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "900 mm"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "0.9 m"
+              }
+            ]
+          },
+          {
+            "property": "synonym",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": "HM"
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "hollow metal"
+              }
+            ]
+          },
+          {
+            "property": "number_text",
+            "sides": [
+              {
+                "source": "a-601",
+                "origin": "door-101|ev-0514|a-601",
+                "value": 1
+              },
+              {
+                "source": "spec-0991",
+                "origin": "door-101|ev-0514|spec-0991",
+                "value": "1"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,460 @@
+{
+  "id": "T06_19_overall_standing_leaves_out_properties_no_support_covered",
+  "family": "T06",
+  "rules": [
+    "6.4.5",
+    "6.6.2",
+    "6.6.1",
+    "6.3.1",
+    "6.7.2",
+    "9.3.1",
+    "9.3.3",
+    "2.4.3"
+  ],
+  "description": "A property that no support has covered at or before the cutoff (not_in_force) does not count toward the overall standing. Each expectation has fire_rating, which no support covers. Door 101 (finish outstanding) is open. Door 102 is open until its finish is withdrawn, then closed and no longer in force. Door 103 (finish fulfilled, hardware withdrawn) is closed. Door 104 (finish fulfilled) is fulfilled, although A-601 also asserted the uncovered fire_rating. The expectations-about read reports the same overall values.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "door-102",
+          "kind": "door"
+        },
+        {
+          "id": "door-103",
+          "kind": "door"
+        },
+        {
+          "id": "door-104",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "e-req",
+          "kind": "expectation-context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "d2",
+          "kind": "decision"
+        },
+        {
+          "id": "d2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:30-07:00"
+            }
+          }
+        },
+        {
+          "id": "d3",
+          "kind": "decision"
+        },
+        {
+          "id": "d3-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "a601-0603",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-03T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-102",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain",
+        "hardware": "HW-1"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "e-req",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90,
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-104",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d2",
+      "context": "d2-at",
+      "source": "d2",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "finish"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d3",
+      "context": "d3-at",
+      "source": "d3",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "hardware"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-102",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "finish"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-103",
+            "context": "e-req",
+            "source": "a-601",
+            "property": "hardware"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-103",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-104",
+      "context": "a601-0603",
+      "source": "a-601",
+      "values": {
+        "finish": "stain",
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-101|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "overall": "open",
+        "properties": {
+          "finish": {
+            "standing": "outstanding",
+            "overdue": false
+          },
+          "fire_rating": {
+            "standing": "not_in_force",
+            "withdrawn_by": []
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "overall": "open",
+        "properties": {
+          "finish": {
+            "standing": "outstanding"
+          },
+          "fire_rating": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-102|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": false,
+        "overall": "closed",
+        "properties": {
+          "finish": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          },
+          "fire_rating": {
+            "standing": "not_in_force",
+            "withdrawn_by": []
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-103|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "overall": "closed",
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-103|a601-0603|a-601"
+          },
+          "hardware": {
+            "standing": "withdrawn",
+            "withdrawn_by": [
+              "w1|w1-at|w1"
+            ]
+          },
+          "fire_rating": {
+            "standing": "not_in_force",
+            "withdrawn_by": []
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-104|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "overall": "open",
+        "properties": {
+          "finish": {
+            "standing": "outstanding"
+          },
+          "fire_rating": {
+            "standing": "not_in_force"
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectation",
+      "args": {
+        "ref": "door-104|e-req|a-601",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "in_force": true,
+        "overall": "fulfilled",
+        "properties": {
+          "finish": {
+            "standing": "fulfilled",
+            "fulfilled_by": "door-104|a601-0603|a-601"
+          },
+          "fire_rating": {
+            "standing": "not_in_force",
+            "withdrawn_by": []
+          }
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectations_about",
+      "args": {
+        "subject": "door-104",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "expectations": [
+          {
+            "expectation": "door-104|e-req|a-601",
+            "in_force": true,
+            "overall": "fulfilled"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "expectations_about",
+      "args": {
+        "subject": "door-102",
+        "frame": {
+          "cutoff": "2026-06-04-07:00"
+        }
+      },
+      "expect": {
+        "expectations": [
+          {
+            "expectation": "door-102|e-req|a-601",
+            "in_force": false,
+            "overall": "closed"
+          }
+        ]
+      }
+    }
+  ]
+}

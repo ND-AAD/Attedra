@@ -1,0 +1,155 @@
+{
+  "id": "T01_05_connections_directional_one_per_pair",
+  "family": "T01",
+  "rules": [
+    "2.2.1",
+    "2.2.2",
+    "2.2.3",
+    "8.6.1",
+    "9.9.1",
+    "I-4"
+  ],
+  "description": "A Connection is one per ordered pair: re-creating a pair is a no-op that keeps the original connected_at, and the reverse direction is a separate Connection. Adjacency reports both directions.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-schedule",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-schedule",
+      "at": "2026-05-01T09:00-07:00",
+      "expect": {
+        "status": "created"
+      }
+    },
+    {
+      "op": "connect",
+      "from": "door-schedule",
+      "to": "door-101",
+      "at": "2026-05-01T09:00-07:00",
+      "expect": {
+        "status": "created"
+      }
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-schedule",
+      "at": "2026-05-02T09:00-07:00",
+      "expect": {
+        "status": "exists"
+      }
+    },
+    {
+      "op": "connect",
+      "from": "door-101",
+      "to": "door-schedule",
+      "at": "2026-05-03T09:00-07:00",
+      "expect": {
+        "status": "created"
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-schedule",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": [
+          "door-101",
+          "project"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "project",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-schedule"
+        ],
+        "incoming": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-05-10-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-schedule"
+        ],
+        "incoming": [
+          "door-schedule"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-schedule",
+        "frame": {
+          "cutoff": "2026-05-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-101"
+        ],
+        "incoming": [
+          "project"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "project",
+        "frame": {
+          "cutoff": "2026-05-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [
+          "door-schedule"
+        ],
+        "incoming": []
+      }
+    }
+  ]
+}

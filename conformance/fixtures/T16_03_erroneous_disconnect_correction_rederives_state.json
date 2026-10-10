@@ -1,0 +1,290 @@
+{
+  "id": "T16_03_erroneous_disconnect_correction_rederives_state",
+  "family": "T16",
+  "rules": [
+    "8.6.6",
+    "8.3.1",
+    "8.3.2",
+    "8.3.3",
+    "9.2.1",
+    "10.2.8",
+    "6.7.9",
+    "12.16"
+  ],
+  "description": "A disconnect act later corrected as erroneous leaves the Connection active throughout, at every cutoff; Thursday's reconnect then changes nothing and adds no boundary. The original act stays readable with its correction, and later lifecycle acts are validated against the corrected state.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room",
+          "label": "Room 12"
+        },
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "import-review-log",
+          "kind": "log"
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-1",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-04T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "recon-2",
+          "kind": "reconnection"
+        },
+        {
+          "id": "recon-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-05T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "disc-2",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-2-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-06T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-01T09:00-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-1",
+      "context": "recon-1-at",
+      "source": "recon-1",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "import-review-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "disc-1",
+            "context": "disc-1-at",
+            "source": "disc-1"
+          }
+        ],
+        "@outcome": "erroneous",
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "site-diary-2026-06-02.pdf",
+            "edition": "2026-06-02"
+          }
+        ],
+        "reason": "No disconnection occurred; the entry belonged to another door."
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": [
+          "room-12"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "disc-1|disc-1-at|disc-1"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "@action": "disconnect"
+        },
+        "corrections": [
+          "corr-1|corr-1-at|import-review-log"
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "recon-2",
+      "context": "recon-2-at",
+      "source": "recon-2",
+      "values": {
+        "@action": "reconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      },
+      "expect_error": "10.2.8"
+    },
+    {
+      "op": "assert",
+      "item": "disc-2",
+      "context": "disc-2-at",
+      "source": "disc-2",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-06T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-06T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

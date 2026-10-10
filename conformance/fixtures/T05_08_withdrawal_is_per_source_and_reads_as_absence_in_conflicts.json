@@ -1,0 +1,175 @@
+{
+  "id": "T05_08_withdrawal_is_per_source_and_reads_as_absence_in_conflicts",
+  "family": "T05",
+  "rules": [
+    "6.7.4",
+    "9.2.3",
+    "9.4.2",
+    "7.1.3",
+    "7.1.4"
+  ],
+  "description": "A-601 (90) and the specification (60) disagree on fire_rating until A-601's value is withdrawn. Afterwards the resolved view shows A-601 withdrawn beside the specification's 60. The conflict read reports no conflict, because a withdrawn side is absence.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification",
+          "label": "Specification 09 91"
+        },
+        {
+          "id": "a601-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "spec-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T10:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "w1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "w1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": 90
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "spec-0601",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": 60
+      }
+    },
+    {
+      "op": "assert",
+      "item": "w1",
+      "context": "w1-at",
+      "source": "w1",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "a601-0601",
+            "source": "a-601"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-01T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "fire_rating",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": 90,
+                "origin": "door-101|a601-0601|a-601"
+              },
+              {
+                "source": "spec-0991",
+                "value": 60,
+                "origin": "door-101|spec-0601|spec-0991"
+              }
+            ]
+          }
+        ],
+        "expectation_conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": []
+      }
+    },
+    {
+      "op": "read",
+      "read": "resolved_view",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-03T12:00-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "fire_rating": {
+            "a-601": {
+              "classification": "withdrawn",
+              "withdrawn_by": "w1|w1-at|w1",
+              "value": "~absent",
+              "origin": "~absent"
+            },
+            "spec-0991": {
+              "classification": "asserted",
+              "value": 60,
+              "origin": "door-101|spec-0601|spec-0991",
+              "withdrawn_by": "~absent"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

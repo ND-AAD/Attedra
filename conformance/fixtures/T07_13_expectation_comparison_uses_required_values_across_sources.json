@@ -1,0 +1,180 @@
+{
+  "id": "T07_13_expectation_comparison_uses_required_values_across_sources",
+  "family": "T07",
+  "rules": [
+    "7.1.5",
+    "6.3.4",
+    "6.4.1",
+    "6.4.3",
+    "9.4.2"
+  ],
+  "description": "Required finish stain on A-601 and required finish paint on the specification conflict, although they name different obligated sources and different timings. An information request on A-602 that suggests paint is not compared.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule",
+          "label": "Door schedule A-601"
+        },
+        {
+          "id": "a-602",
+          "kind": "schedule",
+          "label": "Door schedule A-602"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification",
+          "label": "Specification 09 91"
+        },
+        {
+          "id": "e-a601-stain",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "by",
+                "instant": "2026-06-30-07:00"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-ask",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "e-spec-paint",
+          "kind": "expectation_context",
+          "definition": {
+            "@context": {
+              "role": "expectation",
+              "timing": {
+                "type": "any"
+              },
+              "fresh": false
+            }
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "decision"
+        },
+        {
+          "id": "d1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-a601-stain",
+      "source": "a-601",
+      "values": {
+        "finish": "stain"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-ask",
+      "source": "a-602",
+      "values": {
+        "finish": {
+          "@ask": true,
+          "@suggested": "paint"
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "e-spec-paint",
+      "source": "spec-0991",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "d1",
+      "context": "d1-at",
+      "source": "d1",
+      "values": {
+        "@action": "establish",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-a601-stain",
+            "source": "a-601"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-ask",
+            "source": "a-602"
+          },
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "e-spec-paint",
+            "source": "spec-0991"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "expectation_conflicts": [
+          {
+            "property": "finish",
+            "sides": [
+              {
+                "expectation": "door-101|e-a601-stain|a-601",
+                "value": "stain"
+              },
+              {
+                "expectation": "door-101|e-spec-paint|spec-0991",
+                "value": "paint"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

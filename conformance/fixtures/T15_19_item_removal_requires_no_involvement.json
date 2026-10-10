@@ -1,0 +1,163 @@
+{
+  "id": "T15_19_item_removal_requires_no_involvement",
+  "family": "T15",
+  "rules": [
+    "8.5.6",
+    "8.5.2",
+    "8.5.3",
+    "8.5.5"
+  ],
+  "description": "An Item used by an Assertion, touched by a Connection, or named by another Item's definition cannot be removed; each plan is refused and lists that dependent. An Item nothing involves is removed and then reads not_found.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "door-201",
+          "kind": "door"
+        },
+        {
+          "id": "door-999",
+          "kind": "door"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "issue-schedule"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-201",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101",
+      "as": "p1",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "~unordered",
+          "door-101|ev-mon-a601|a-601",
+          "project->door-101"
+        ]
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-201",
+      "as": "p2",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "project->door-201"
+        ]
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "arch-schedule",
+      "as": "p3",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "arch-50cd"
+        ]
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-999",
+      "as": "p4",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p4",
+      "expect": {
+        "status": "removed"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-999"
+      },
+      "expect": {
+        "status": "not_found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "item",
+      "args": {
+        "id": "door-101"
+      },
+      "expect": {
+        "status": "found"
+      }
+    }
+  ]
+}

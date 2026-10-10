@@ -1,0 +1,137 @@
+{
+  "id": "T15_15_publication_with_assertions_at_milestone_refused",
+  "family": "T15",
+  "rules": [
+    "8.5.2",
+    "8.5.3",
+    "8.5.6",
+    "4.2.4",
+    "4.4.1",
+    "12.15"
+  ],
+  "description": "The publication of a milestone that A-601's statement is at supplies that statement's occurrence time. Its removal plan is refused; so is removal of the milestone Item, which Assertions use. The statement keeps its occurrence time.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "arch-schedule",
+          "kind": "issue-schedule"
+        },
+        {
+          "id": "arch-issue-log",
+          "kind": "issue-log"
+        },
+        {
+          "id": "contractor",
+          "kind": "party"
+        },
+        {
+          "id": "arch-50cd",
+          "kind": "milestone",
+          "definition": {
+            "@context": {
+              "role": "milestone",
+              "schedule": {
+                "@ref": "item",
+                "id": "arch-schedule"
+              },
+              "stage": "50% CD",
+              "ordinal": 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "arch-50cd",
+      "context": "arch-50cd",
+      "source": "arch-issue-log",
+      "values": {
+        "@published": "2026-06-02T10:00-07:00",
+        "@distribution": [
+          {
+            "@ref": "item",
+            "id": "contractor"
+          }
+        ]
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "arch-50cd",
+      "source": "a-601",
+      "values": {
+        "finish": "paint"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "arch-50cd|arch-50cd|arch-issue-log",
+      "as": "p1",
+      "expect": {
+        "status": "refused",
+        "dependents": "~any"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "arch-50cd",
+      "as": "p2",
+      "expect": {
+        "status": "refused",
+        "dependents": "~any"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "arch-50cd|arch-50cd|arch-issue-log"
+      },
+      "expect": {
+        "status": "found"
+      }
+    },
+    {
+      "op": "read",
+      "read": "source_position",
+      "args": {
+        "subject": "door-101",
+        "source": "a-601",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "properties": {
+          "finish": {
+            "classification": "asserted",
+            "value": "paint",
+            "origin": "door-101|arch-50cd|a-601"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "id": "T15_17_confirm_after_intervening_change_is_stale",
+  "family": "T15",
+  "rules": [
+    "8.5.4",
+    "8.5.3",
+    "8.5.2",
+    "12.15"
+  ],
+  "description": "A removal is planned for an entry with no dependents. Before confirmation a withdrawal targeting the entry is recorded. The confirm is rejected as stale and the entry is untouched; a new plan is refused, naming the withdrawal.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "project",
+          "kind": "project"
+        },
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "owner",
+          "kind": "party"
+        },
+        {
+          "id": "ev-mon-a601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "wd-1",
+          "kind": "withdrawal"
+        },
+        {
+          "id": "transmittal-3",
+          "kind": "transmittal"
+        },
+        {
+          "id": "wd-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T10:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "project",
+      "to": "door-101",
+      "at": "2026-05-01-07:00"
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-mon-a601",
+      "source": "a-601",
+      "values": {
+        "finish": "stian"
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-mon-a601|a-601",
+      "as": "p1",
+      "expect": {
+        "status": "planned",
+        "plan": "~any"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "wd-1",
+      "context": "wd-1-at",
+      "source": "transmittal-3",
+      "values": {
+        "@action": "withdraw",
+        "@targets": [
+          {
+            "@ref": "assertion",
+            "item": "door-101",
+            "context": "ev-mon-a601",
+            "source": "a-601"
+          }
+        ],
+        "@party": {
+          "@ref": "item",
+          "id": "owner"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "transmittal-3.pdf",
+            "edition": "issued 2026-06-02"
+          }
+        ]
+      }
+    },
+    {
+      "op": "confirm_removal",
+      "plan": "$p1",
+      "expect_error": "plan_stale"
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-mon-a601|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "stian"
+        },
+        "withdrawals": [
+          "wd-1|wd-1-at|transmittal-3"
+        ]
+      }
+    },
+    {
+      "op": "plan_removal",
+      "target": "door-101|ev-mon-a601|a-601",
+      "as": "p2",
+      "expect": {
+        "status": "refused",
+        "dependents": [
+          "wd-1|wd-1-at|transmittal-3"
+        ]
+      }
+    }
+  ]
+}

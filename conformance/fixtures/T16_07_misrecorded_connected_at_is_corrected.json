@@ -1,0 +1,195 @@
+{
+  "id": "T16_07_misrecorded_connected_at_is_corrected",
+  "family": "T16",
+  "rules": [
+    "8.3.9",
+    "8.6.6",
+    "8.3.3",
+    "8.6.1",
+    "10.2.8"
+  ],
+  "description": "A Connection recorded as created Wednesday but really created Monday is corrected with 'replace'. Its state is derived from the corrected connected_at at every cutoff, and a Tuesday disconnect is then valid.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "room-12",
+          "kind": "room",
+          "label": "Room 12"
+        },
+        {
+          "id": "door-101",
+          "kind": "door",
+          "label": "Door 101"
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "site-log",
+          "kind": "log"
+        },
+        {
+          "id": "corr-1",
+          "kind": "correction"
+        },
+        {
+          "id": "corr-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-10T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "disc-1",
+          "kind": "disconnection"
+        },
+        {
+          "id": "disc-1-at",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-02T09:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "connect",
+      "from": "room-12",
+      "to": "door-101",
+      "at": "2026-06-03T09:00-07:00"
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": []
+      }
+    },
+    {
+      "op": "assert",
+      "item": "corr-1",
+      "context": "corr-1-at",
+      "source": "site-log",
+      "values": {
+        "@action": "correct",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ],
+        "@outcome": "replace",
+        "@corrected": {
+          "connected_at": "2026-06-01T09:00-07:00"
+        },
+        "@basis": [
+          {
+            "@ref": "artifact",
+            "id": "site-diary-2026-06-01.pdf",
+            "edition": "2026-06-01"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02T12:00-07:00"
+        }
+      },
+      "expect": {
+        "outgoing": [],
+        "incoming": [
+          "room-12"
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "assert",
+      "item": "disc-1",
+      "context": "disc-1-at",
+      "source": "disc-1",
+      "values": {
+        "@action": "disconnect",
+        "@targets": [
+          {
+            "@ref": "connection",
+            "from": "room-12",
+            "to": "door-101"
+          }
+        ]
+      }
+    },
+    {
+      "op": "read",
+      "read": "adjacency",
+      "args": {
+        "item": "door-101",
+        "frame": {},
+        "history": true
+      },
+      "expect": {
+        "history": {
+          "room-12->door-101": [
+            {
+              "state": "active",
+              "from": "2026-06-01T09:00-07:00",
+              "to": "2026-06-02T09:00-07:00"
+            },
+            {
+              "state": "inactive",
+              "from": "2026-06-02T09:00-07:00",
+              "to": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

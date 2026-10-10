@@ -1,0 +1,119 @@
+{
+  "id": "T11_11_conflicts_apply_the_frame_interpretation",
+  "family": "T11",
+  "rules": [
+    "7.1.3",
+    "5.5.2",
+    "5.5.3",
+    "5.5.4",
+    "9.4.2",
+    "9.4.3",
+    "I-15"
+  ],
+  "description": "'90 min' against '1.5 h' is a literal conflict and no conflict under the declared fire-rating interpretation; each result names the interpretation it applied.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "schedule"
+        },
+        {
+          "id": "spec-0991",
+          "kind": "specification"
+        },
+        {
+          "id": "a601-issued-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T09:00-07:00"
+            }
+          }
+        },
+        {
+          "id": "spec-issued-0601",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-06-01T11:00-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "a601-issued-0601",
+      "source": "a-601",
+      "values": {
+        "fire_rating": "90 min"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "spec-issued-0601",
+      "source": "spec-0991",
+      "values": {
+        "fire_rating": "1.5 h"
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00"
+        }
+      },
+      "expect": {
+        "conflicts": [
+          {
+            "property": "fire_rating",
+            "sides": [
+              {
+                "source": "a-601",
+                "value": "90 min",
+                "origin": "door-101|a601-issued-0601|a-601"
+              },
+              {
+                "source": "spec-0991",
+                "value": "1.5 h",
+                "origin": "door-101|spec-issued-0601|spec-0991"
+              }
+            ]
+          }
+        ],
+        "interpretation": null
+      }
+    },
+    {
+      "op": "read",
+      "read": "conflicts",
+      "args": {
+        "subject": "door-101",
+        "frame": {
+          "cutoff": "2026-06-02-07:00",
+          "interpretation": "fixture-fire-rating"
+        }
+      },
+      "expect": {
+        "conflicts": [],
+        "interpretation": "fixture-fire-rating",
+        "frame": {
+          "interpretation": "fixture-fire-rating"
+        }
+      }
+    }
+  ]
+}

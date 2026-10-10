@@ -1,0 +1,109 @@
+{
+  "id": "T01_02_identical_replay_after_normalization",
+  "family": "T01",
+  "rules": [
+    "8.1.1",
+    "8.1.2",
+    "5.3.2",
+    "5.5.1",
+    "2.3.1",
+    "4.2.2"
+  ],
+  "description": "A write whose values equal the stored values under literal comparison after normalization is a successful no-op: empty string versus null, key order, 1 versus 1.0 and different bookkeeping all replay.",
+  "steps": [
+    {
+      "op": "items",
+      "items": [
+        {
+          "id": "door-101",
+          "kind": "door"
+        },
+        {
+          "id": "a-601",
+          "kind": "door-schedule"
+        },
+        {
+          "id": "ev-0514",
+          "kind": "event",
+          "definition": {
+            "@context": {
+              "role": "event",
+              "at": "2026-05-14T09:45-07:00"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\", \"notes\": \"\", \"dims\": {\"width\": 900, \"height\": 2100}, \"count\": 1, \"tags\": [\"a\", \"b\"]}",
+      "recorded_at": "2026-05-14T10:00:00-07:00",
+      "recorded_by": "operator-1",
+      "expect": {
+        "status": "inserted",
+        "ref": "door-101|ev-0514|a-601"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\", \"notes\": \"\", \"dims\": {\"width\": 900, \"height\": 2100}, \"count\": 1, \"tags\": [\"a\", \"b\"]}",
+      "expect": {
+        "status": "replayed"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"tags\": [\"a\", \"b\"], \"count\": 1.0, \"dims\": {\"height\": 2100, \"width\": 900}, \"notes\": null, \"finish\": \"paint\"}",
+      "expect": {
+        "status": "replayed"
+      }
+    },
+    {
+      "op": "assert",
+      "item": "door-101",
+      "context": "ev-0514",
+      "source": "a-601",
+      "values_json": "{\"finish\": \"paint\", \"notes\": null, \"dims\": {\"width\": 900, \"height\": 2100}, \"count\": 1, \"tags\": [\"a\", \"b\"]}",
+      "recorded_at": "2026-05-20T08:00:00-07:00",
+      "recorded_by": "operator-2",
+      "expect": {
+        "status": "replayed"
+      }
+    },
+    {
+      "op": "read",
+      "read": "exact",
+      "args": {
+        "ref": "door-101|ev-0514|a-601"
+      },
+      "expect": {
+        "status": "found",
+        "values": {
+          "finish": "paint",
+          "notes": null,
+          "dims": {
+            "width": 900,
+            "height": 2100
+          },
+          "count": 1,
+          "tags": [
+            "a",
+            "b"
+          ]
+        },
+        "corrections": [],
+        "withdrawals": [],
+        "dependents": []
+      }
+    }
+  ]
+}
